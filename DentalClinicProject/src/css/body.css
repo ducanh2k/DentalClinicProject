@@ -1,5 +1,139 @@
-.main{
-    width: 100%;
-    height: 100%;
-    background-color: #d9d9d9;
+.main {
+  width: 100%;
+  height: 100%;
+  background-color: #d9d9d9;
+}
+
+.search-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: inherit;
+  margin-top: 1vh;
+}
+
+.search-box {
+  border: 3px solid #ccc;
+  padding: 10px;
+  width: 40%;
+  height: 4vh;
+}
+
+.search-button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 3.7vh;
+  width: 6%;
+  background-color: #333;
+  color: white;
+  border-radius: 0.1vh;
+  font-size: 1.4vh;
+  cursor: pointer;
+}
+
+.search-button:hover {
+  background-color: #555;
+}
+
+.button-create {
+  margin-left: -25vw;
+  margin-right: -24vw;
+  border: #fff;
+  border-radius: 0.3vh;
+  color: #fff;
+  background-color: rgba(44, 158, 30, 255);
+  float: right;
+  height: 3.8vh;
+  width: 8vw;
+  font-size: 1.5vh;
+  cursor: pointer;
+
+}
+
+.button-create:hover {
+  background-color: rgb(6, 103, 43);
+}
+
+table {
+  font-size: 2vh;
+  margin-top: 10px;
+  width: 100%;
+  border-collapse: collapse;
+  table-layout: fixed;
+}
+
+table, th, td {
+  border: 1px solid #ddd;
+  text-align: left;
+}
+
+th, td {
+  padding: 10px;
+  border-left: none; 
+  border-right: none; 
+}
+
+th {
+  background-color: #f2f2f2;
+}
+
+tr:hover {
+  background-color: #e2e2e2;
+}
+
+.text-center {
+  text-align: center;
+}
+
+.icon {
+  cursor: pointer;
+}
+
+tr:nth-child(odd) {
+  background-color: #fff; 
+}
+
+tr:nth-child(even) {
+  background-color: #f2f2f2; 
+}
+.sum__staff{
+  margin-left: 3px;
+  margin-top: 10px;
+}
+.pagination {
+  float: right;
+  display: inline-block;
+  padding-left: 0;
+  border-radius: 4px;
+  margin-top: -2vh;
+}
+
+.pagination li {
+  display: inline;
+}
+
+.pagination li a {
+  border-radius: 50%;
+  color: black;
+  float: left;
+  padding: 8px 16px;
+  background-color: #fff;
+  text-decoration: none;
+  transition: background-color .3s;
+  border: 1px solid #ddd;
+  margin: 0 4px;
+}
+
+.pagination li a.page-1 {
+  background-color: rgba(57, 58, 62, 255);
+  color: white;
+  border: 1px solid rgba(57, 58, 62, 255);
+}
+
+.pagination li a:hover:not(.active) {background-color: rgba(57, 58, 62, 255);}
+
+.pagination li a.Next-page {
+  border-radius: 20%;
 }

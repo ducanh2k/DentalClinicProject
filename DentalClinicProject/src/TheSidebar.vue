@@ -1,7 +1,9 @@
 <template>
   <div class="sidebar">
-    <div class="logo__picture">
-      <button class="logo"></button>
+    <div class="header__logo">
+      <div class="logo__picture">
+        <button class="logo"></button>
+      </div>
     </div>
     <div class="sidebar-main">
       <div class="item1" tabindex="1">

@@ -1,7 +1,8 @@
 <template>
     <div class="container">
       <TheSidebar></TheSidebar>
-      <TheMain></TheMain>
+      <TheMain>
+      </TheMain>
     </div>
   </template>
   
