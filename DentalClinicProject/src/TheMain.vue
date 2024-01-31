@@ -16,7 +16,9 @@
           <button class="button-create">Thêm mới nhân viên</button>
         </div>
       </div>
-      <AdminTable></AdminTable>
+      <div class="range">
+        <AdminTable></AdminTable>
+      </div>
       <div class="under-table">
         <div class="sum__staff">Tổng số nhân viên: <strong>14</strong></div>
         <div class="pagination">
