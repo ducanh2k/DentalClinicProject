@@ -3,13 +3,14 @@
       <TheSidebar></TheSidebar>
       <TheMain>
       </TheMain>
+      <h1>hello</h1>
     </div>
   </template>
   
   <script>
-  import './css/main.css'
-  import TheMain from "./TheMain.vue";
-  import TheSidebar from "./TheSidebar.vue";
+  import './css/Admin/main.css'
+  import TheMain from './layout/Admin/TheMain.vue';
+  import TheSidebar from './TheSidebar.vue';
   export default {
     name: "Admin",
     components: {

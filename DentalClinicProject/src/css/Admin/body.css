@@ -158,3 +158,9 @@ tr:nth-child(even) {
   font-size: 1.6vh;
   border-radius: 20%;
 }
+
+.pagination li a:hover{
+  background-color: rgba(57, 58, 62, 255);
+  color: white;
+  border: 1px solid rgba(57, 58, 62, 255);
+}

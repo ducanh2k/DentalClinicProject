@@ -1,6 +1,24 @@
 <template>
-  <table>
-    <tr>
+  <table class="table table-bordered">
+    <thead>
+      <tr>
+        <th>ID</th>
+        <th>Username</th>
+        <th>Password</th>
+        <th>Role</th>
+        <th>Name</th>
+        <th>Email</th>
+        <th>Phone</th>
+        <th>Address</th>
+        <th>NumOfLogins</th>
+        <th class="text-center">Edit</th>
+        <th class="text-center">Delete</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr v-for="(item, index) in users" :key="index"></tr>
+    </tbody>
+    <!-- <tr>
       <th>Họ và tên</th>
       <th>CCCD</th>
       <th>Số điện thoại</th>
@@ -129,13 +147,18 @@
       <td>7.000.000 đ</td>
       <td class="text-center icon">✏️</td>
       <td class="text-center icon">🗑️</td>
-    </tr>
+    </tr> -->
   </table>
 </template>
 
 <script>
 export default {
   name: "AdminTable",
+  data() {
+    return {
+      users: [{}],
+    };
+  },
 };
 </script>
 

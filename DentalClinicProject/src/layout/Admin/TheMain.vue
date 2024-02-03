@@ -33,7 +33,7 @@
 </template>
 
 <script>
-import AdminTable from "./AdminTable.vue";
+import AdminTable from './AdminTable.vue';
 export default {
   name: "TheMain",
   components: {
