@@ -1,15 +1,18 @@
 <template>
   <div>
-    <HPSideBar></HPSideBar>
+  <SidebarBoostrap></SidebarBoostrap>
+  <HPBody></HPBody>
   </div>
 </template>
 
 <script>
-import HPSideBar from './HPSideBar.vue'
+import SidebarBoostrap from './Sidebar-boostrap.vue';
+import HPBody from './HPBody.vue';
 export default {
   name: "HomePage",
   components:{
-    HPSideBar
+    SidebarBoostrap,
+    HPBody
   }
 };
 </script>
