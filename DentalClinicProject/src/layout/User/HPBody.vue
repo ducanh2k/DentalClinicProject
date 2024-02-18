@@ -5,11 +5,6 @@
       <DentalService></DentalService>
     </section>
 
-    <section class="customer-comments"></section>
-
-    <section class="dental-knowledge"></section>
-
-    <footer class="contact-us"></footer>
   </div>
 </template>
 

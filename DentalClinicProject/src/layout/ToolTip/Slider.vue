@@ -195,6 +195,12 @@ h3{
   border: 0.5px solid rgb(201, 201, 201);
 }
 
+.btn-primary:hover ,.btn-primary:focus{
+  transition: background-color 0.5s ease, color 0.5s ease;
+  background-color: #e3e3e3;
+  border: 1px solid rgb(224, 196, 140);
+  color: rgb(74, 85, 110);
+}
 /* .slide{
   height: 50%;
 }

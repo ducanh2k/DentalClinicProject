@@ -15,12 +15,12 @@
         <nav class="navbar navbar-inverse">
           <div class="container-fluid">
             <div class="navbar-header">
-              <a class="navbar-brand" href="#">WebSiteName</a>
+              <a class="navbar-brand" href="#" style="color: rgb(74,85,110);">WebSiteName</a>
             </div>
-            <ul class="nav navbar-nav">
+            <ul class="nav navbar-nav" >
               <li class="dropdown">
                 <a class="dropdown-toggle" data-toggle="dropdown" href="#"
-                  >About us <span class="caret"></span
+                style="color: rgb(74,85,110);"><strong>About us</strong> <span class="caret"></span
                 ></a>
                 <ul class="dropdown-menu">
                   <li><a href="#">Page 1-1</a></li>
@@ -30,7 +30,7 @@
               </li>
               <li class="dropdown">
                 <a class="dropdown-toggle" data-toggle="dropdown" href="#"
-                  >Services <span class="caret"></span
+                style="color: rgb(74,85,110);"><strong>Services</strong> <span class="caret"></span
                 ></a>
                 <ul class="dropdown-menu">
                   <li><a href="#">Page 1-1</a></li>
@@ -38,22 +38,22 @@
                   <li><a href="#">Page 1-3</a></li>
                 </ul>
               </li>
-              <li><a href="#">Price</a></li>
-              <li><a href="#">Customer</a></li>
+              <li><a href="#" style="color: rgb(74,85,110);"><strong>Price</strong></a></li>
+              <li><a href="#" style="color: rgb(74,85,110);"><strong>Customer</strong></a></li>
             </ul>
             <ul class="nav navbar-nav navbar-right">
               <li>
-                <a href="#"
-                  >News <span><i class="fa-solid fa-caret-down"></i></span> </a
+                <a href="#" style="color: rgb(74,85,110);"
+                  ><strong>News</strong> <span><i class="fa-solid fa-caret-down"></i></span> </a
                 >
               </li>
               <li>
-                <a href="#"
-                  >Contact</a
+                <a href="#" style="color: rgb(74,85,110);"
+                  ><strong>Contact</strong></a
                 >
               </li>
               <li>
-                <a href="#"><span></span> English</a>
+                <a href="#" style="color: rgb(74,85,110);"><span></span><strong> English</strong></a>
               </li>
             </ul>
           </div>
@@ -79,6 +79,7 @@ export default {
   background-color: rgb(226, 210, 183);
 }
 .navbar-inverse{
+  color: rgb(74,85,110);
   background-color: #fff;
   position: fixed;
   width: 100%;
