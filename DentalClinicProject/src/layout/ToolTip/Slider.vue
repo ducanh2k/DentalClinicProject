@@ -159,7 +159,12 @@ export default {
 .about-us-picture {
   width: 25%; 
   transition: width 0.3s ease;
-  background-color: rgb(224, 196, 140);
+  /* background-color: rgb(224, 196, 140); */
+  background-image: url("../../imgs/about-us.jpg");
+  background-size: cover;
+  /* background-attachment: fixed; */
+  background-repeat: no-repeat;
+  background-position: center;
   height: 100%;
 }
 h3{
@@ -181,13 +186,7 @@ h3{
   height: 70vh;
   }
 }
-/* .btnlearn{
-  border: 0.5px solid rgb(161, 161, 161);
-  border-radius: 40%;
-  width: 15%;
-  height: 10%;
-  background-color: rgb(224, 196, 140);
-} */
+
 .btn-primary{
   background-color: #fff;
   color: rgb(224, 196, 140);
@@ -201,13 +200,7 @@ h3{
   border: 1px solid rgb(224, 196, 140);
   color: rgb(74, 85, 110);
 }
-/* .slide{
-  height: 50%;
-}
 
-.carousel-inner{
-  height: 50%;
-} */
 .item{
   background-color: black;
   height: 70vh;

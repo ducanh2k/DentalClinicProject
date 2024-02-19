@@ -72,6 +72,36 @@
     <button type="button" class="btn btn-primary">
       <strong>View All &nbsp;&nbsp;&nbsp;</strong>>
     </button>
+    <div class="parallax">
+      <div class="stats-container">
+        <div class="stat-item">
+          <span class="stat-icon">📈</span>
+          <h3 class="stat-number">14+</h3>
+          <p class="stat-description">
+            Forming and developing the iMed Dental brand
+          </p>
+        </div>
+        <div class="stat-item">
+          <span class="stat-icon">👥</span>
+          <h3 class="stat-number">20,560+</h3>
+          <p class="stat-description">
+            Customers are treated at iMed Dental Clinic
+          </p>
+        </div>
+        <div class="stat-item">
+          <span class="stat-icon">🏥</span>
+          <h3 class="stat-number">7,489,000+</h3>
+          <p class="stat-description">
+            The surgical treatment is performed by the dental team
+          </p>
+        </div>
+        <div class="stat-item">
+          <span class="stat-icon">💡</span>
+          <h3 class="stat-number">3327+</h3>
+          <p class="stat-description">The surgical treatment is performed by the dental team</p>
+        </div>
+      </div>
+    </div>
   </div>
 </template>
 
@@ -142,6 +172,9 @@ export default {
   font-size: 14px;
   margin-bottom: 0;
 }
+.btn-primary{
+  margin-left: 35%;
+}
 @media (max-width: 1500px) {
   .headerDental1 {
     margin-left: 22%;
@@ -168,8 +201,10 @@ export default {
   color: rgb(224, 196, 140);
   border-radius: 6px;
   border: 0.5px solid rgb(201, 201, 201);
+  margin-bottom: 2%;
 }
-.btn-primary:hover ,.btn-primary:focus{
+.btn-primary:hover,
+.btn-primary:focus {
   transition: background-color 0.5s ease, color 0.5s ease;
   background-color: #e3e3e3;
   border: 1px solid rgb(224, 196, 140);
@@ -182,5 +217,64 @@ export default {
   /* color: rgb(224, 196, 140); */
   cursor: pointer;
   transition: background-color 0.5s ease, color 0.5s ease;
+}
+.stats-container {
+  height: 60vh;
+  background-image: url("../../imgs/nhakhoavietsing3.jpg");
+  background-size: cover;
+  background-attachment: fixed;
+  background-repeat: no-repeat;
+  background-position: center;
+}
+.stats-container {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  padding: 20px;
+  background-color: #fff; 
+  border-radius: 10px; 
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); 
+}
+
+.stat-item {
+  height: 40%;
+  text-align: center;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  padding: 20px;
+  background: #ffffff;
+  position: relative;
+  max-width: 300px;
+  margin: 20px;
+  text-align: center;
+  flex-basis: 25%; 
+}
+
+.stat-icon {
+  display: block;
+  margin: 0 auto 10px; 
+  font-size: 24px; 
+}
+
+.stat-number {
+  font-size: 24px;
+  font-weight: bold;
+  margin-bottom: 5px; 
+}
+
+.stat-description {
+  font-size: 16px; 
+  color: #666; 
+}
+
+/* Add responsive design as needed */
+@media (max-width: 1500px) {
+  .stats-container {
+    /* flex-direction: column;  */
+  }
+  .stat-item {
+    height: 65%;
+    margin-bottom: 20px; 
+  }
 }
 </style>

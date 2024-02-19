@@ -19,7 +19,7 @@
             </div>
             <ul class="nav navbar-nav" >
               <li class="dropdown">
-                <a class="dropdown-toggle" data-toggle="dropdown" href="#"
+                <a class="header-navbar" data-toggle="dropdown" href="#"
                 style="color: rgb(74,85,110);"><strong>About us</strong> <span class="caret"></span
                 ></a>
                 <ul class="dropdown-menu">
@@ -29,7 +29,7 @@
                 </ul>
               </li>
               <li class="dropdown">
-                <a class="dropdown-toggle" data-toggle="dropdown" href="#"
+                <a class="header-navbar" data-toggle="dropdown" href="#"
                 style="color: rgb(74,85,110);"><strong>Services</strong> <span class="caret"></span
                 ></a>
                 <ul class="dropdown-menu">
@@ -38,22 +38,22 @@
                   <li><a href="#">Page 1-3</a></li>
                 </ul>
               </li>
-              <li><a href="#" style="color: rgb(74,85,110);"><strong>Price</strong></a></li>
-              <li><a href="#" style="color: rgb(74,85,110);"><strong>Customer</strong></a></li>
+              <li><a class="header-navbar" href="#" style="color: rgb(74,85,110);"><strong>Price</strong></a></li>
+              <li><a class="header-navbar" href="#" style="color: rgb(74,85,110);"><strong>Customer</strong></a></li>
             </ul>
             <ul class="nav navbar-nav navbar-right">
               <li>
-                <a href="#" style="color: rgb(74,85,110);"
+                <a class="header-navbar" href="#" style="color: rgb(74,85,110);"
                   ><strong>News</strong> <span><i class="fa-solid fa-caret-down"></i></span> </a
                 >
               </li>
               <li>
-                <a href="#" style="color: rgb(74,85,110);"
+                <a class="header-navbar" href="#" style="color: rgb(74,85,110);"
                   ><strong>Contact</strong></a
                 >
               </li>
               <li>
-                <a href="#" style="color: rgb(74,85,110);"><span></span><strong> English</strong></a>
+                <a class="header-navbar" href="#" style="color: rgb(74,85,110); "><span></span><strong> English</strong></a>
               </li>
             </ul>
           </div>
@@ -87,4 +87,9 @@ export default {
   border: 1px solid #ddd;
   box-shadow: 0px 0px 10px 0px rgba(0,0,0,0.5);
 }
+li:hover, li:focus{
+  background-color: rgb(223, 223, 223);
+  transition: background-color 0.5s ease, color 0.5s ease;
+}
+
 </style>
