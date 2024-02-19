@@ -6,6 +6,7 @@
       <TeamDoctor></TeamDoctor>
       <Certificate></Certificate>
       <Facilites></Facilites>
+      <example></example>
     </section>
   </div>
 </template>
@@ -17,6 +18,7 @@ import DentalService from "./DentalService.vue";
 import TeamDoctor from "./TeamDoctor.vue";
 import Certificate from "./Certificate.vue";
 import Facilites from './Facilites.vue';
+import example from './example.vue';
 export default {
   name: "HPBody",
   components: {
@@ -24,7 +26,8 @@ export default {
     DentalService,
     TeamDoctor,
     Certificate,
-    Facilites
+    Facilites,
+    example
   },
 };
 </script>

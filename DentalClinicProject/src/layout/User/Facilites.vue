@@ -15,6 +15,7 @@
         <a href="#" class="feature-link"><strong>More</strong></a>
       </div>
     </div>
+    
   </div>
 </template>
 
