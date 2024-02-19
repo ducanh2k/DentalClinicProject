@@ -54,4 +54,12 @@ export default {
   background-repeat: no-repeat;
   background-position: center;
 }
+@media (max-width: 1500px) {
+  .picture {
+  border-radius: 12px;
+  margin: 0 13px;
+  width: 22.3%;
+  height: 65%;
+}
+}
 </style>
