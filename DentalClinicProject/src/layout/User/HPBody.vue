@@ -7,6 +7,10 @@
       <Certificate></Certificate>
       <Facilites></Facilites>
       <example></example>
+      <CustomerComment></CustomerComment>
+      <DentalKnowledge></DentalKnowledge>
+      <ContactUs></ContactUs>
+      <Footer></Footer>
     </section>
   </div>
 </template>
@@ -17,8 +21,12 @@ import Slider from "../ToolTip/Slider.vue";
 import DentalService from "./DentalService.vue";
 import TeamDoctor from "./TeamDoctor.vue";
 import Certificate from "./Certificate.vue";
-import Facilites from './Facilites.vue';
-import example from './example.vue';
+import Facilites from "./Facilites.vue";
+import example from "./example.vue";
+import CustomerComment from "./CustomerComment.vue";
+import DentalKnowledge from "./DentalKnowledge.vue";
+import ContactUs from "./ContactUs.vue";
+import Footer from "./Footer.vue";
 export default {
   name: "HPBody",
   components: {
@@ -27,7 +35,11 @@ export default {
     TeamDoctor,
     Certificate,
     Facilites,
-    example
+    example,
+    CustomerComment,
+    DentalKnowledge,
+    ContactUs,
+    Footer,
   },
 };
 </script>

@@ -66,7 +66,7 @@
 </template>
 
 <script>
-import 'bootstrap';
+// import 'bootstrap';
 import 'https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js'
 import 'https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js'
 export default {
