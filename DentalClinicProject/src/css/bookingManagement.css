@@ -1,0 +1,91 @@
+.containerEm{
+    width: 100%;
+    display: flex;
+}
+
+.leftEm{
+    border: 1px solid black;
+    width: 20%;
+}
+
+.rightEm{
+    width: 80%;
+    
+}
+.headEm{
+    display: flex;
+    height: 40px;
+    width: 100%;
+}
+
+
+.fa-solid.fa-bars {
+    margin-top: 0.5em;
+    margin-left: 1.5vw;
+    font-size: 20px !important;
+    margin-right: 1vw;
+}  
+
+.titleEm{
+    margin-top: 6px;
+    font-weight: bold;
+    font-size: 18px !important;
+}
+
+.fa-solid.fa-right-from-bracket{
+    
+    font-size: 20px !important;
+}
+
+.logoutEm{
+    margin-top: 8px;
+    margin-left: 58vw;
+    /* width: 60vw; */
+}
+
+.fa-solid:hover{
+    color: #757779;
+    cursor: pointer;
+}
+
+.mainEm{
+    height: 100vh;
+    background-color: #D9D9D9;
+}
+
+.formEm{
+    margin-bottom: 1vh;
+    margin-left: 18%;
+    margin-top: 3vh;
+    height: 30px;
+    width: 28vw;
+}
+
+.btnSearch{
+    border: none;
+    color: white;
+    background-color: rgb(67, 68, 68);
+    height: 30px;
+    width: 90px;
+    border-radius: 2px;
+}
+
+.btnSearch:hover{
+    background-color: #818283;
+    cursor: pointer;
+}
+
+.btnAdd{
+    border: none;
+    color: white;
+    background-color: #2C9F7F;
+    height: 30px;
+    width: 170px;
+    border-radius: 2px;
+    margin-left: 1vw;
+}
+
+.btnAdd:hover{
+    background-color: #60b89f;
+    cursor: pointer;
+}
