@@ -6,9 +6,10 @@
 
 <script>
 import '@fortawesome/fontawesome-free/css/all.css'
-import HomePage from './layout/Admin/HomePage.vue';
-import Service from './layout/Admin/ServiceManagement/Service.vue';
+// import HomePage from './layout/User/HomePage.vue';
 // import AdminVue from './Admin.vue';
+import Service from './layout/Admin/ServiceManagement/Service.vue';
+// import ServiceManagement from './layout/Admin/Service/ServiceManagement.vue';
 export default {
   name: "App",
   components: {

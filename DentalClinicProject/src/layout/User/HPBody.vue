@@ -27,6 +27,7 @@ import CustomerComment from "./CustomerComment.vue";
 import DentalKnowledge from "./DentalKnowledge.vue";
 import ContactUs from "./ContactUs.vue";
 import Footer from "./Footer.vue";
+import FacilitesVue from './Facilites.vue';
 export default {
   name: "HPBody",
   components: {
