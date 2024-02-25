@@ -9,15 +9,17 @@
       </div>
     </div>
     <div class="main-body">
+      <!-- <AddEButton></AddEButton> -->
       <div class="search-container">
         <input type="text" placeholder="Nhập từ khóa" class="search-box" />
         <button class="search-button">Tìm kiếm</button>
         <div class="addnew">
-          <button class="button-create">Thêm mới nhân viên</button>
+          <button class="button-create">Thêm mới</button>
         </div>
       </div>
       <div class="range">
-        <AdminTable></AdminTable>
+        <!-- <AdminTable></AdminTable> -->
+        <!--  -->
       </div>
       <div class="under-table">
         <div class="sum__staff">Tổng số nhân viên: <strong>14</strong></div>
@@ -33,11 +35,12 @@
 </template>
 
 <script>
-import AdminTable from './AdminTable.vue';
+// import AdminTable from './AdminTable.vue';
+// import AddEButton from '../ToolTip/AddE-button.vue';
 export default {
   name: "TheMain",
   components: {
-    AdminTable,
+    // AddEButton
   },
 };
 </script>

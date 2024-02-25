@@ -16,18 +16,17 @@
           </p>
           <div class="pic"></div>
         </div>
-  
-        <div class="footer-block" style="margin-left: 7%;">
+
+        <div class="footer-block" style="margin-left: 7%">
           <h4><strong>Information</strong></h4>
           <ul class="footer-list">
             <li>Owner Information</li>
             <li>General trading conditions</li>
             <li>Payments</li>
             <li>Protecty personal Information</li>
-            <!-- More list items here -->
           </ul>
         </div>
-        <div class="footer-block" style="margin-left: 7%;">
+        <div class="footer-block" style="margin-left: 7%">
           <h4><strong>Services</strong></h4>
           <ul class="footer-list">
             <li>Implant</li>
@@ -39,10 +38,9 @@
             <li>Children's Dentistry</li>
             <li>General Dentistry</li>
             <li>Removal dentures</li>
-            <!-- More list items here -->
           </ul>
         </div>
-        <div class="footer-block" style="margin-left: 7%;">
+        <div class="footer-block" style="margin-left: 7%">
           <h4><strong>Contact</strong></h4>
           <address>
             <i class="fa-solid fa-map-location-dot"></i>&nbsp; 3rd floor, 125
@@ -53,7 +51,6 @@
             <i class="fa-solid fa-calendar-days"></i>&nbsp; 9am - 8pm Monday to
             Friday, 8am to 5pm Saturday
           </address>
-          <!-- Embed Google Maps iframe here if needed -->
         </div>
       </div>
     </footer>
@@ -68,7 +65,7 @@ export default {
 
 <style scoped>
 .site-footer {
-  background-color: #f8f9fa; /* Light grey background */
+  background-color: #f8f9fa;
   padding: 20px 0;
   font-family: Arial, sans-serif;
 }
@@ -76,7 +73,7 @@ export default {
 .footer-container {
   display: flex;
   justify-content: space-around;
-  max-width: 1200px; /* Or the max-width of your content area */
+  max-width: 1200px;
   margin: auto;
   margin-left: 14%;
 }
@@ -85,10 +82,10 @@ export default {
   width: 20%;
   /* margin: 0 15px; */
   /* background-color: aqua; */
-} 
+}
 
 .footer-logo {
-  width: 100px; /* Adjust as needed */
+  width: 100px;
   margin-bottom: 10px;
 }
 
@@ -98,12 +95,12 @@ export default {
 }
 
 .footer-list li {
-  padding: 5px 0; /* Spacing between list items */
+  padding: 5px 0;
 }
 
 footer address {
-  font-style: normal; /* Removes italic style from address tag */
-  line-height: 1.6; /* Adjust line height for better readability */
+  font-style: normal;
+  line-height: 1.6;
 }
 .pic {
   width: 100%;
@@ -115,7 +112,11 @@ footer address {
 }
 @media (max-width: 1500px) {
   .footer-container {
-    margin-left: 0;
+    margin-left: 4%;
+    font-size: 1.5rem;
+  }
+  .pic {
+    width: 115%;
   }
 }
 </style>
