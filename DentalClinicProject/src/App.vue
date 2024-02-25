@@ -5,7 +5,7 @@
 
 <script>
 import '@fortawesome/fontawesome-free/css/all.css'
-import HomePage from './layout/User/HomePage.vue';
+import HomePage from './layout/Admin/HomePage.vue';
 // import AdminVue from './Admin.vue';
 export default {
   name: "App",
