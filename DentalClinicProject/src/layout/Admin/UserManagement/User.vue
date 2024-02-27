@@ -1,4 +1,4 @@
-<template>
+<!-- <template>
   <div class="container-Admin">
     <TheSidebar></TheSidebar>
     <div class="main">
@@ -22,7 +22,7 @@
               data-bs-target="#exampleModal"
               @click="addClick()"
             >
-              Thêm mới dịch vụ
+              Thêm mới user
             </button>
           </div>
         </div>
@@ -31,26 +31,36 @@
             <thead>
               <tr>
                 <th scope="col">#</th>
-                <th scope="col">ServiceName</th>
-                <th scope="col">BriefInfo</th>
+                <th scope="col">Name</th>
+                <th scope="col">DateCreated</th>
+                <th scope="col">Phone</th>
+                <th scope="col">Email</th>
+                <th scope="col">Img</th>
                 <th scope="col">Description</th>
-                <th scope="col">Price</th>
+                <th scope="col">Salary</th>
+                <th scope="col">Role</th>
+                <th scope="col">Password</th>
               </tr>
             </thead>
             <tbody>
-              <tr v-for="(service, index) in services" :key="service.ServiceId">
+              <tr v-for="(user, index) in users" :key="user.UserId">
                 <th scope="row">{{ index + 1 }}</th>
-                <td>{{ service.ServiceName }}</td>
-                <td>{{ service.BriefInfo }}</td>
-                <td>{{ service.Description }}</td>
-                <td>{{ service.Price }}</td>
+                <td>{{ user.Name }}</td>
+                <td>{{ user.DateCreated }}</td>
+                <td>{{ user.Phone }}</td>
+                <td>{{ user.Email }}</td>
+                <td>{{ user.Img }}</td>
+                <td>{{ user.Description }}</td>
+                <td>{{ user.Salary }}</td>
+                <td>{{ user.Role }}</td>
+                <td>{{ user.Password }}</td>
                 <td>
                   <button
                     type="button"
                     class="btn btn-light mr-1"
                     data-bs-toggle="modal"
                     data-bs-target="#exampleModal"
-                    @click="editClick(service)"
+                    @click="editClick(user)"
                   >
                     <svg
                       xmlns="http://www.w3.org/2000/svg"
@@ -73,7 +83,7 @@
                 <td>
                   <button
                     type="button"
-                    @click="deleteClick(service.ServiceId)"
+                    @click="deleteClick(user.UserId)"
                     class="btn btn-light mr-1"
                   >
                     <svg
@@ -95,13 +105,13 @@
           </table>
         </div>
         <div class="under-table">
-          <div class="sum__staff">Tổng số dịch vụ: <strong>14</strong></div>
+          <div class="sum__staff">Tổng số User: <strong>14</strong></div>
           <!-- <div class="pagination">
-            <li><a href="#" class="page-1">1</a></li>
-            <li><a href="#" class="page-2">2</a></li>
-            <li><a href="#" class="page-3">3</a></li>
-            <li><a href="#" class="Next-page">Next ></a></li>
-          </div> -->
+              <li><a href="#" class="page-1">1</a></li>
+              <li><a href="#" class="page-2">2</a></li>
+              <li><a href="#" class="page-3">3</a></li>
+              <li><a href="#" class="Next-page">Next ></a></li>
+            </div> -->
         </div>
       </div>
     </div>
@@ -130,11 +140,11 @@
           <div class="modal-body">
             <div class="input-group md-3">
               <div>
-                <span class="input-group-text">ServiceName</span>
+                <span class="input-group-text">Name</span>
                 <input type="text" class="form-control" v-model="ServiceName" />
               </div>
               <div>
-                <span class="input-group-text">BriefInfo</span>
+                <span class="input-group-text">DateCreated</span>
                 <input type="text" class="form-control" v-model="BriefInfo" />
               </div>
               <div>
@@ -146,7 +156,27 @@
                 />
               </div>
               <div>
-                <span class="input-group-text">Price</span>
+                <span class="input-group-text">Email</span>
+                <input type="text" class="form-control" v-model="Price" />
+              </div>
+              <div>
+                <span class="input-group-text">Img</span>
+                <input type="text" class="form-control" v-model="Price" />
+              </div>
+              <div>
+                <span class="input-group-text">Phone</span>
+                <input type="text" class="form-control" v-model="Price" />
+              </div>
+              <div>
+                <span class="input-group-text">Salary</span>
+                <input type="text" class="form-control" v-model="Price" />
+              </div>
+              <div>
+                <span class="input-group-text">Role</span>
+                <input type="text" class="form-control" v-model="Price" />
+              </div>
+              <div>
+                <span class="input-group-text">Password</span>
                 <input type="text" class="form-control" v-model="Price" />
               </div>
             </div>
@@ -157,7 +187,7 @@
                 v-if="ID === 0"
                 class="btn btn-primary"
               >
-                Create
+                Create User
               </button>
 
               <button
@@ -166,7 +196,7 @@
                 v-if="ID != 0"
                 class="btn btn-primary"
               >
-                Update
+                Update User
               </button>
             </div>
           </div>
@@ -181,26 +211,30 @@ import "/src/css/Admin/main.css";
 import axios from "axios";
 import TheSidebar from "../TheSidebar.vue";
 export default {
-  name: "Service",
+  name: "Account",
   components: {
     TheSidebar,
   },
   data() {
     return {
-      services: [], // Data property to store the servicers data
+      users: [], // Data property to store the servicers data
       modalTitle: "",
-      ServiceId: 0,
-      ServiceName: "",
-      BriefInfo: "",
+      UserId: 0,
+      Name: "",
+      DateCreated: "",
+      Email: "",
+      Img: "",
       Description: "",
-      Price: "",
+      Salary: 0,
+      Role: "",
+      Password: "",
       ID: 0,
     };
   },
   methods: {
-    async fetchServices() {
+    async fetchUsers() {
       axios
-        .get("https://localhost:7034/api/Service/list")
+        .get("https://localhost:7034/api/User/list")
         .then((response) => {
           this.services = response.data;
           console.log(this.services);
@@ -212,41 +246,55 @@ export default {
     addClick() {
       this.modalTitle = "Thêm dịch vụ";
       this.ID = 0;
-      this.ServiceName = "";
+      this.Name = "";
     },
     editClick(u) {
       this.modalTitle = "Sửa dịch vụ";
-      this.ID = u.ServiceId;
-      this.ServiceName = u.ServiceName;
-      this.BriefInfo = u.BriefInfo;
+      this.ID = u.UserId;
+      this.Name = u.Service;
+      this.DateCreated = u.DateCreated;
+      this.Phone = u.Phone;
+      this.Email = u.Email;
+      this.Img = u.Img;
       this.Description = u.Description;
-      this.Price = u.Price;
+      this.Salary = u.Salary;
+      this.Role = u.Role;
+      this.Password = u.Password;
     },
     createClick() {
       axios
-        .post("https://localhost:7034/api/Service", {
-          ServiceName: this.ServiceName,
-          BriefInfo: this.BriefInfo,
+        .post("https://localhost:7034/api/User", {
+          Name: this.Name,
+          DateCreated: this.DateCreated,
+          Phone: this.Phone,
+          Email: this.Email,
+          Img: this.Img,
           Description: this.Description,
-          Price: this.Price,
+          Salary: this.Salary,
+          Role: this.Role,
+          Password: this.Password,
         })
         .then((response) => {
           alert(response.data);
-          this.fetchServices();
+          this.fetchUsers();
         });
     },
     updateClick() {
       axios
-        .put("https://localhost:7034/api/Service/" + this.ID, {
-          // ServiceId: this.ID,
-          ServiceName: this.ServiceName,
-          BriefInfo: this.BriefInfo,
+        .put("https://localhost:7034/api/User/" + this.ID, {
+          Name: this.Name,
+          DateCreated: this.DateCreated,
+          Phone: this.Phone,
+          Email: this.Email,
+          Img: this.Img,
           Description: this.Description,
-          Price: this.Price,
+          Salary: this.Salary,
+          Role: this.Role,
+          Password: this.Password,
         })
         .then((response) => {
           alert("Update thành công!");
-          this.fetchServices();
+          this.fetchUsers();
         });
     },
     deleteClick(id) {
@@ -254,20 +302,20 @@ export default {
         return;
       }
       axios
-        .delete("https://localhost:7034/api/Service/" + id)
+        .delete("https://localhost:7034/api/User/" + id)
         .then((response) => {
-          this.fetchServices();
+          this.fetchUsers();
           alert("Xóa thành công!");
         })
         .catch((error) => {
           // Handle errors
           console.error("Error:", error);
-          this.message = "Lỗi xóa service.";
+          this.message = "Lỗi xóa user.";
         });
     },
   },
   mounted: function () {
-    this.fetchServices();
+    this.fetchUsers();
   },
 };
 </script>
@@ -287,4 +335,4 @@ export default {
 .btn-primary {
   margin-top: 3%;
 }
-</style>
+</style> -->

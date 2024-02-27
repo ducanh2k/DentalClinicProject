@@ -35,8 +35,12 @@
 </template>
 
 <script>
+// import Service from './ServiceManagement/Service.vue';
 export default {
   name: "TheSidebar",
+  components:{
+    // Service
+  }
 };
 </script>
 
