@@ -1,4 +1,4 @@
-<!-- <template>
+<template>
   <div class="container-Admin">
     <TheSidebar></TheSidebar>
     <div class="main">
@@ -43,17 +43,17 @@
               </tr>
             </thead>
             <tbody>
-              <tr v-for="(user, index) in users" :key="user.UserId">
+              <tr v-for="(user, index) in users" :key="user.userId">
                 <th scope="row">{{ index + 1 }}</th>
-                <td>{{ user.Name }}</td>
-                <td>{{ user.DateCreated }}</td>
-                <td>{{ user.Phone }}</td>
-                <td>{{ user.Email }}</td>
-                <td>{{ user.Img }}</td>
-                <td>{{ user.Description }}</td>
-                <td>{{ user.Salary }}</td>
-                <td>{{ user.Role }}</td>
-                <td>{{ user.Password }}</td>
+                <td class="data-from-db">{{ user.name }}</td>
+                <td class="data-from-db">{{ user.dateCreated }}</td>
+                <td class="data-from-db">{{ user.phone }}</td>
+                <td class="data-from-db">{{ user.email }}</td>
+                <td class="data-from-db">{{ user.img }}</td>
+                <td class="data-from-db">{{ user.description }}</td>
+                <td class="data-from-db">{{ user.salary }}</td>
+                <td class="data-from-db">{{ user.roleName }}</td>
+                <td class="data-from-db">{{ user.password }}</td>
                 <td>
                   <button
                     type="button"
@@ -83,7 +83,7 @@
                 <td>
                   <button
                     type="button"
-                    @click="deleteClick(user.UserId)"
+                    @click="deleteClick(user.userId)"
                     class="btn btn-light mr-1"
                   >
                     <svg
@@ -140,44 +140,66 @@
           <div class="modal-body">
             <div class="input-group md-3">
               <div>
-                <span class="input-group-text">Name</span>
-                <input type="text" class="form-control" v-model="ServiceName" />
-              </div>
-              <div>
-                <span class="input-group-text">DateCreated</span>
-                <input type="text" class="form-control" v-model="BriefInfo" />
-              </div>
-              <div>
-                <span class="input-group-text">Description</span>
+                <span class="input-group-text">userId</span>
                 <input
                   type="text"
-                  class="form-control form-Des"
-                  v-model="Description"
+                  class="form-control"
+                  v-model="userId"
+                  readonly
                 />
               </div>
               <div>
-                <span class="input-group-text">Email</span>
-                <input type="text" class="form-control" v-model="Price" />
+                <span class="input-group-text">Name</span>
+                <input type="text" class="form-control" v-model="name" />
               </div>
               <div>
-                <span class="input-group-text">Img</span>
-                <input type="text" class="form-control" v-model="Price" />
+                <span class="input-group-text">DateCreated</span>
+                <input type="text" class="form-control" v-model="dateCreated" />
               </div>
               <div>
                 <span class="input-group-text">Phone</span>
-                <input type="text" class="form-control" v-model="Price" />
+                <input type="text" class="form-control" v-model="phone" />
               </div>
               <div>
-                <span class="input-group-text">Salary</span>
-                <input type="text" class="form-control" v-model="Price" />
+                <span class="input-group-text">Email</span>
+                <input type="text" class="form-control" v-model="email" />
               </div>
               <div>
-                <span class="input-group-text">Role</span>
-                <input type="text" class="form-control" v-model="Price" />
+                <span class="input-group-text">Img</span>
+                <input type="text" class="form-control" v-model="img" />
               </div>
               <div>
                 <span class="input-group-text">Password</span>
-                <input type="text" class="form-control" v-model="Price" />
+                <input type="text" class="form-control" v-model="password" />
+              </div>
+
+              <div>
+                <span class="input-group-text">Salary</span>
+                <input type="text" class="form-control" v-model="salary" />
+              </div>
+              <div>
+                <span class="input-group-text">RoleID</span>
+                <input type="number" class="form-control" v-model="roleId" />
+              </div>
+              <div>
+                <span class="input-group-text">RoleName</span>
+                <input type="text" class="form-control" v-model="role" />
+              </div>
+              <div>
+                <span class="input-group-text">Delete Flag</span>
+                <input type="text" class="form-control" v-model="deleteFlag" />
+              </div>
+              <div>
+                <span class="input-group-text">Description</span>
+                <textarea
+                  type="text"
+                  class="form-control form-Des"
+                  v-model="description"
+                  name=""
+                  id=""
+                  cols="30"
+                  rows="10"
+                ></textarea>
               </div>
             </div>
             <div>
@@ -219,15 +241,18 @@ export default {
     return {
       users: [], // Data property to store the servicers data
       modalTitle: "",
-      UserId: 0,
-      Name: "",
-      DateCreated: "",
-      Email: "",
-      Img: "",
-      Description: "",
-      Salary: 0,
-      Role: "",
-      Password: "",
+      userId: 0,
+      name: "",
+      dateCreated: "",
+      phone: "",
+      email: "",
+      img: "",
+      description: "",
+      salary: 0,
+      roleId: 0,
+      role: "",
+      deleteFlag: false,
+      password: "",
       ID: 0,
     };
   },
@@ -236,43 +261,56 @@ export default {
       axios
         .get("https://localhost:7034/api/User/list")
         .then((response) => {
-          this.services = response.data;
-          console.log(this.services);
+          this.users = response.data;
         })
         .catch((error) => {
           console.error("There has been a problem");
         });
     },
     addClick() {
-      this.modalTitle = "Thêm dịch vụ";
+      this.modalTitle = "Thêm người dùng";
       this.ID = 0;
-      this.Name = "";
+      this.name = "";
+      this.dateCreated = "";
+      this.phone = "";
+      this.email = "";
+      this.img = "";
+      this.description = "";
+      this.salary = "";
+      this.roleId = 1;
+      this.role = "";
+      this.deleteFlag = false;
+      this.password = "";
     },
     editClick(u) {
-      this.modalTitle = "Sửa dịch vụ";
-      this.ID = u.UserId;
-      this.Name = u.Service;
-      this.DateCreated = u.DateCreated;
-      this.Phone = u.Phone;
-      this.Email = u.Email;
-      this.Img = u.Img;
-      this.Description = u.Description;
-      this.Salary = u.Salary;
-      this.Role = u.Role;
-      this.Password = u.Password;
+      this.modalTitle = "Sửa thông tin người dùng";
+      this.ID = u.userId;
+      this.name = u.name;
+      this.dateCreated = u.dateCreated;
+      this.phone = u.phone;
+      this.email = u.email;
+      this.img = u.img;
+      this.description = u.description;
+      this.salary = u.salary;
+      this.roleId = u.roleId;
+      this.role = u.roleName;
+      this.deleteFlag = u.deleteFlag;
+      this.password = u.password;
     },
     createClick() {
       axios
         .post("https://localhost:7034/api/User", {
-          Name: this.Name,
-          DateCreated: this.DateCreated,
-          Phone: this.Phone,
-          Email: this.Email,
-          Img: this.Img,
-          Description: this.Description,
-          Salary: this.Salary,
-          Role: this.Role,
-          Password: this.Password,
+          name: this.name,
+          dateCreated: this.dateCreated,
+          phone: this.phone,
+          email: this.email,
+          img: this.img,
+          description: this.description,
+          salary: this.salary,
+          roleId: this.roleId,
+          roleName: this.role,
+          deleteFlag: true,
+          password: this.password,
         })
         .then((response) => {
           alert(response.data);
@@ -282,15 +320,18 @@ export default {
     updateClick() {
       axios
         .put("https://localhost:7034/api/User/" + this.ID, {
-          Name: this.Name,
-          DateCreated: this.DateCreated,
-          Phone: this.Phone,
-          Email: this.Email,
-          Img: this.Img,
-          Description: this.Description,
-          Salary: this.Salary,
-          Role: this.Role,
-          Password: this.Password,
+          userId: this.userId,
+          name: this.name,
+          dateCreated: this.dateCreated,
+          phone: this.phone,
+          email: this.email,
+          img: this.img,
+          description: this.description,
+          salary: this.salary,
+          roleId: this.roleId,
+          roleName: this.role,
+          deleteFlag: this.deleteFlag,
+          password: this.password,
         })
         .then((response) => {
           alert("Update thành công!");
@@ -310,7 +351,7 @@ export default {
         .catch((error) => {
           // Handle errors
           console.error("Error:", error);
-          this.message = "Lỗi xóa user.";
+          this.message = "Lỗi xóa người dùng.";
         });
     },
   },
@@ -330,9 +371,19 @@ export default {
   width: 80%;
 }
 .form-Des {
-  width: 170%;
+  width: 80%;
+  height: 50%;
+  word-wrap: break-word;
 }
 .btn-primary {
   margin-top: 3%;
 }
-</style> -->
+.table th,
+.table td {
+  min-width: 120px; /* Hoặc một giá trị phù hợp với nội dung của bạn */
+  word-wrap: break-word;
+}
+.form-control{
+  margin-bottom: 10%;
+}
+</style>

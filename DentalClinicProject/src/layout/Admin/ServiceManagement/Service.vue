@@ -38,12 +38,12 @@
               </tr>
             </thead>
             <tbody>
-              <tr v-for="(service, index) in services" :key="service.ServiceId">
+              <tr v-for="(service, index) in services" :key="service.serviceId">
                 <th scope="row">{{ index + 1 }}</th>
-                <td>{{ service.ServiceName }}</td>
-                <td>{{ service.BriefInfo }}</td>
-                <td>{{ service.Description }}</td>
-                <td>{{ service.Price }}</td>
+                <td>{{ service.serviceName }}</td>
+                <td>{{ service.briefInfo }}</td>
+                <td>{{ service.description }}</td>
+                <td>{{ service.price }}</td>
                 <td>
                   <button
                     type="button"
@@ -73,7 +73,7 @@
                 <td>
                   <button
                     type="button"
-                    @click="deleteClick(service.ServiceId)"
+                    @click="deleteClick(service.serviceId)"
                     class="btn btn-light mr-1"
                   >
                     <svg
@@ -131,25 +131,35 @@
             <div class="input-group md-3">
               <div>
                 <span class="input-group-text">ServiceName</span>
-                <input type="text" class="form-control" v-model="ServiceName" />
+                <input type="text" class="form-control" v-model="serviceName" />
               </div>
               <div>
                 <span class="input-group-text">BriefInfo</span>
-                <input type="text" class="form-control" v-model="BriefInfo" />
+                <input type="text" class="form-control" v-model="briefInfo" />
+              </div>
+
+              <div>
+                <span class="input-group-text">Price</span>
+                <input type="text" class="form-control" v-model="price" />
+              </div>
+              <div>
+                <span class="input-group-text">Delete Flag</span>
+                <input type="text" class="form-control" v-model="deleteFlag" />
               </div>
               <div>
                 <span class="input-group-text">Description</span>
-                <input
+                <textarea
                   type="text"
                   class="form-control form-Des"
-                  v-model="Description"
-                />
-              </div>
-              <div>
-                <span class="input-group-text">Price</span>
-                <input type="text" class="form-control" v-model="Price" />
+                  v-model="description"
+                  name=""
+                  id=""
+                  cols="30"
+                  rows="10"
+                ></textarea>
               </div>
             </div>
+
             <div>
               <button
                 type="button"
@@ -157,7 +167,7 @@
                 v-if="ID === 0"
                 class="btn btn-primary"
               >
-                Create
+                Create Service
               </button>
 
               <button
@@ -166,7 +176,7 @@
                 v-if="ID != 0"
                 class="btn btn-primary"
               >
-                Update
+                Update Service
               </button>
             </div>
           </div>
@@ -189,11 +199,12 @@ export default {
     return {
       services: [], // Data property to store the servicers data
       modalTitle: "",
-      ServiceId: 0,
-      ServiceName: "",
-      BriefInfo: "",
-      Description: "",
-      Price: "",
+      serviceId: 0,
+      serviceName: "",
+      briefInfo: "",
+      description: "",
+      price: "",
+      deleteFlag: false,
       ID: 0,
     };
   },
@@ -203,7 +214,6 @@ export default {
         .get("https://localhost:7034/api/Service/list")
         .then((response) => {
           this.services = response.data;
-          console.log(this.services);
         })
         .catch((error) => {
           console.error("There has been a problem");
@@ -212,23 +222,29 @@ export default {
     addClick() {
       this.modalTitle = "Thêm dịch vụ";
       this.ID = 0;
-      this.ServiceName = "";
+      this.serviceName = "";
+      this.briefInfo = "";
+      this.description = "";
+      this.deleteFlag = false;
+      this.price = "";
     },
     editClick(u) {
       this.modalTitle = "Sửa dịch vụ";
-      this.ID = u.ServiceId;
-      this.ServiceName = u.ServiceName;
-      this.BriefInfo = u.BriefInfo;
-      this.Description = u.Description;
-      this.Price = u.Price;
+      this.ID = u.serviceId;
+      this.serviceName = u.serviceName;
+      this.briefInfo = u.briefInfo;
+      this.description = u.description;
+      this.deleteFlag = u.deleteFlag;
+      this.price = u.price;
     },
     createClick() {
       axios
         .post("https://localhost:7034/api/Service", {
-          ServiceName: this.ServiceName,
-          BriefInfo: this.BriefInfo,
-          Description: this.Description,
-          Price: this.Price,
+          serviceName: this.serviceName,
+          briefInfo: this.briefInfo,
+          description: this.description,
+          deleteFlag: false,
+          price: this.price,
         })
         .then((response) => {
           alert(response.data);
@@ -239,10 +255,11 @@ export default {
       axios
         .put("https://localhost:7034/api/Service/" + this.ID, {
           // ServiceId: this.ID,
-          ServiceName: this.ServiceName,
-          BriefInfo: this.BriefInfo,
-          Description: this.Description,
-          Price: this.Price,
+          serviceName: this.serviceName,
+          briefInfo: this.briefInfo,
+          description: this.description,
+          deleteFlag: this.deleteFlag,
+          price: this.price,
         })
         .then((response) => {
           alert("Update thành công!");
@@ -282,7 +299,12 @@ export default {
   width: 80%;
 }
 .form-Des {
-  width: 170%;
+  width: 80%;
+  height: 50%;
+  word-wrap: break-word;
+}
+.form-control{
+  margin-bottom: 10%;
 }
 .btn-primary {
   margin-top: 3%;
