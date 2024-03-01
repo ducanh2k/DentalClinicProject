@@ -1,6 +1,6 @@
 <template>
   <div class="container-Admin">
-    <TheSidebar></TheSidebar>
+    <!-- <TheSidebar></TheSidebar> -->
     <TheMain> </TheMain>
   </div>
 </template>

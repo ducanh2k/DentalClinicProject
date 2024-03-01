@@ -49,7 +49,6 @@
   width: 8vw;
   font-size: 1.5vh;
   cursor: pointer;
-
 }
 
 .button-create:hover {
@@ -70,22 +69,21 @@ table {
   table-layout: fixed;
 }
 
-table, th, td {
+table,
+th,
+td {
   border: 1px solid #ddd;
   text-align: left;
 }
 
-th, td {
+th,
+td {
   padding: 10px;
-  border-left: none; 
-  border-right: none; 
+  border-left: none;
+  border-right: none;
   min-width: 60px;
 }
-@media screen and (max-width: 600px) {
-  th, td {
-      padding: 4px; /* Giảm padding trên các thiết bị nhỏ */
-  }
-}
+
 th {
   background-color: #f2f2f2;
 }
@@ -103,13 +101,13 @@ tr:hover {
 }
 
 tr:nth-child(odd) {
-  background-color: #fff; 
+  background-color: #fff;
 }
 
 tr:nth-child(even) {
-  background-color: #f2f2f2; 
+  background-color: #f2f2f2;
 }
-.sum__staff{
+.sum__staff {
   font-size: 2vh;
   margin-left: 3px;
   margin-top: 10px;
@@ -130,7 +128,7 @@ tr:nth-child(even) {
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 2vw;
+  width: 40px;
   height: 4vh;
   font-size: 2vh;
   border-radius: 50%;
@@ -139,28 +137,52 @@ tr:nth-child(even) {
   padding: 8px 16px;
   background-color: #fff;
   text-decoration: none;
-  transition: background-color .3s;
+  transition: background-color 0.3s;
   border: 1px solid #ddd;
   margin: 0 4px;
+  cursor: pointer;
 }
 
-.pagination li a.page-1 {
+/* .pagination li a.page-1 {
+  background-color: rgba(57, 58, 62, 255);
+  color: white;
+  border: 1px solid rgba(57, 58, 62, 255);
+} */
+
+.pagination li a:hover:not(.active) {
+  background-color: rgba(57, 58, 62, 255);
+}
+
+.pagination li a:focus {
   background-color: rgba(57, 58, 62, 255);
   color: white;
   border: 1px solid rgba(57, 58, 62, 255);
 }
-
-.pagination li a:hover:not(.active) {background-color: rgba(57, 58, 62, 255);}
-
 .pagination li a.Next-page {
   width: 4vw;
   height: 4vh;
   font-size: 1.6vh;
-  border-radius: 20%;
+  border-radius: 10px;
 }
 
-.pagination li a:hover{
+.pagination li a:hover {
   background-color: rgba(57, 58, 62, 255);
   color: white;
   border: 1px solid rgba(57, 58, 62, 255);
+}
+@media screen and (max-width: 1300px) {
+  th,
+  td {
+    padding: 4px; /* Giảm padding trên các thiết bị nhỏ */
+  }
+  .pagination li a {
+    width: 10px;
+    border-radius: 40%;
+  }
+  .pagination li a.Next-page {
+    width: 4vw;
+    height: 4vh;
+    font-size: 1.6vh;
+    border-radius: 10px;
+  }
 }

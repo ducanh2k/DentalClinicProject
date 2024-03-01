@@ -1,6 +1,6 @@
 <template>
   <div class="container-Admin">
-    <TheSidebar></TheSidebar>
+    <!-- <TheSidebar @navigate="handleNavigation"></TheSidebar> -->
     <div class="main">
       <div class="main-header">
         <div class="title">
@@ -13,8 +13,14 @@
       <div class="main-body">
         <!-- <AddEButton></AddEButton> -->
         <div class="search-container">
-          <input type="text" placeholder="Nhập từ khóa" class="search-box" />
-          <button class="search-button">Tìm kiếm</button>
+          <input
+            type="text"
+            placeholder="Nhập từ khóa"
+            class="search-box"
+            v-model="searchText"
+            @input="filterResults"
+          />
+          <button class="search-button" @click="filterResults">Tìm kiếm</button>
           <div class="addnew">
             <button
               class="button-create"
@@ -96,12 +102,12 @@
         </div>
         <div class="under-table">
           <div class="sum__staff">Tổng số dịch vụ: <strong>14</strong></div>
-          <!-- <div class="pagination">
-            <li><a href="#" class="page-1">1</a></li>
-            <li><a href="#" class="page-2">2</a></li>
-            <li><a href="#" class="page-3">3</a></li>
-            <li><a href="#" class="Next-page">Next ></a></li>
-          </div> -->
+          <div class="pagination">
+            <li><a @click="changPageNumber(1)" class="page-1">1</a></li>
+            <li><a @click="changPageNumber(2)" class="page-2">2</a></li>
+            <li><a @click="changPageNumber(3)" class="page-3">3</a></li>
+            <li><a @click="changPageNumber(0)" class="Next-page">Next</a></li>
+          </div>
         </div>
       </div>
     </div>
@@ -189,11 +195,11 @@
 <script>
 import "/src/css/Admin/main.css";
 import axios from "axios";
-import TheSidebar from "../TheSidebar.vue";
+// import TheSidebar from "../TheSidebar.vue";
 export default {
   name: "Service",
   components: {
-    TheSidebar,
+    // TheSidebar,
   },
   data() {
     return {
@@ -206,12 +212,29 @@ export default {
       price: "",
       deleteFlag: false,
       ID: 0,
+      currentPage: 1,
+      searchText: "",
     };
   },
   methods: {
+    changPageNumber(page) {
+      if (page == 1) {
+        this.currentPage = 1;
+      } else if (page == 2) {
+        this.currentPage = 2;
+      } else if (page == 3) {
+        this.currentPage = 3;
+      } else {
+        this.currentPage++;
+      }
+      this.fetchServices();
+    },
     async fetchServices() {
+      let apiURL = "https://localhost:7034/api/Service/list";
+      console.log(this.currentPage);
+      apiURL = "https://localhost:7034/api/Service/list?pageNumber="+this.currentPage;
       axios
-        .get("https://localhost:7034/api/Service/list")
+        .get(apiURL)
         .then((response) => {
           this.services = response.data;
         })
@@ -282,6 +305,24 @@ export default {
           this.message = "Lỗi xóa service.";
         });
     },
+    filterResults() {
+      console.log(this.searchText);
+      if (this.searchText) {
+        this.services = this.services.filter((service) =>
+          Object.values(service).some((value) =>
+            value
+              .toString()
+              .toLowerCase()
+              .includes(this.searchText.toLowerCase())
+          )
+        );
+      } else {
+        this.fetchServices();
+      }
+    },
+    handleNavigation(view) {
+      this.currentView = view;
+    },
   },
   mounted: function () {
     this.fetchServices();
@@ -303,7 +344,7 @@ export default {
   height: 50%;
   word-wrap: break-word;
 }
-.form-control{
+.form-control {
   margin-bottom: 10%;
 }
 .btn-primary {

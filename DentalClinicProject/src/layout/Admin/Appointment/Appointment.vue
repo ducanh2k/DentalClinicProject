@@ -7,9 +7,11 @@
           <div class="title__toggle"></div>
           <div class="title__company">Nha khoa Dentistry</div>
           <div class="exit__button"></div>
+          <!-- <i class="fa-solid fa-arrow-right-from-bracket "></i> -->
         </div>
       </div>
       <div class="main-body">
+        <!-- <AddEButton></AddEButton> -->
         <div class="search-container">
           <input
             type="text"
@@ -35,36 +37,37 @@
             <thead>
               <tr>
                 <th scope="col">#</th>
-                <th scope="col">Name</th>
-                <th scope="col">DateCreated</th>
-                <th scope="col">Phone</th>
-                <th scope="col">Email</th>
-                <th scope="col">Img</th>
-                <th scope="col">Description</th>
+                <th scope="col">employeeId</th>
+                <th scope="col">patientId</th>
+                <th scope="col">datetime</th>
+                <th scope="col">note</th>
+                <th scope="col">status</th>
+                <th scope="col">employee</th>
                 <th scope="col">Salary</th>
-                <th scope="col">Role</th>
+                <th scope="col">patient</th>
                 <th scope="col">Password</th>
               </tr>
             </thead>
             <tbody>
-              <tr v-for="(user, index) in users" :key="user.userId">
+              <tr
+                v-for="(appointment, index) in appointments"
+                :key="appointment.appointmentId"
+              >
                 <th scope="row">{{ index + 1 }}</th>
-                <td class="data-from-db">{{ user.name }}</td>
-                <td class="data-from-db">{{ user.dateCreated }}</td>
-                <td class="data-from-db">{{ user.phone }}</td>
-                <td class="data-from-db">{{ user.email }}</td>
-                <td class="data-from-db">{{ user.img }}</td>
-                <td class="data-from-db">{{ user.description }}</td>
-                <td class="data-from-db">{{ user.salary }}</td>
-                <td class="data-from-db">{{ user.roleName }}</td>
-                <td class="data-from-db">{{ user.password }}</td>
+                <td class="data-from-db">{{ appointment.employeeId }}</td>
+                <td class="data-from-db">{{ appointment.patientId }}</td>
+                <td class="data-from-db">{{ appointment.datetime }}</td>
+                <td class="data-from-db">{{ appointment.note }}</td>
+                <td class="data-from-db">{{ appointment.status }}</td>
+                <td class="data-from-db">{{ appointment.employee }}</td>
+                <td class="data-from-db">{{ appointment.patient }}</td>
                 <td>
                   <button
                     type="button"
                     class="btn btn-light mr-1"
                     data-bs-toggle="modal"
                     data-bs-target="#exampleModal"
-                    @click="editClick(user)"
+                    @click="editClick(appointment)"
                   >
                     <svg
                       xmlns="http://www.w3.org/2000/svg"
@@ -87,7 +90,7 @@
                 <td>
                   <button
                     type="button"
-                    @click="deleteClick(user.userId)"
+                    @click="deleteClick(appointment.appointmentId)"
                     class="btn btn-light mr-1"
                   >
                     <svg
@@ -109,7 +112,7 @@
           </table>
         </div>
         <div class="under-table">
-          <div class="sum__staff">Tổng số User: <strong>14</strong></div>
+          <div class="sum__staff">Tổng số Appoitment: <strong>14</strong></div>
           <div class="pagination">
             <li><a @click="changPageNumber(1)" class="page-1">1</a></li>
             <li><a @click="changPageNumber(2)" class="page-2">2</a></li>
@@ -144,7 +147,7 @@
           <div class="modal-body">
             <div class="input-group md-3">
               <div>
-                <span class="input-group-text">userId</span>
+                <span class="input-group-text">appointmentId</span>
                 <input
                   type="text"
                   class="form-control"
@@ -153,53 +156,24 @@
                 />
               </div>
               <div>
-                <span class="input-group-text">Name</span>
-                <input type="text" class="form-control" v-model="name" />
+                <span class="input-group-text">employeeId</span>
+                <input type="text" class="form-control" v-model="employeeId" />
               </div>
               <div>
-                <span class="input-group-text">Phone</span>
-                <input type="text" class="form-control" v-model="phone" />
+                <span class="input-group-text">patientId</span>
+                <input type="text" class="form-control" v-model="patientId" />
               </div>
               <div>
-                <span class="input-group-text">Email</span>
-                <input type="text" class="form-control" v-model="email" />
+                <span class="input-group-text">datetime</span>
+                <input type="text" class="form-control" v-model="datetime" />
               </div>
               <div>
-                <span class="input-group-text">Img</span>
-                <input type="text" class="form-control" v-model="img" />
+                <span class="input-group-text">note</span>
+                <input type="text" class="form-control" v-model="note" />
               </div>
               <div>
-                <span class="input-group-text">Password</span>
-                <input type="text" class="form-control" v-model="password" />
-              </div>
-
-              <div>
-                <span class="input-group-text">Salary</span>
-                <input type="text" class="form-control" v-model="salary" />
-              </div>
-              <div>
-                <span class="input-group-text">RoleID</span>
-                <input type="number" class="form-control" v-model="roleId" />
-              </div>
-              <div>
-                <span class="input-group-text">RoleName</span>
-                <input type="text" class="form-control" v-model="role" />
-              </div>
-              <div>
-                <span class="input-group-text">Delete Flag</span>
-                <input type="text" class="form-control" v-model="deleteFlag" />
-              </div>
-              <div>
-                <span class="input-group-text">Description</span>
-                <textarea
-                  type="text"
-                  class="form-control form-Des"
-                  v-model="description"
-                  name=""
-                  id=""
-                  cols="30"
-                  rows="10"
-                ></textarea>
+                <span class="input-group-text">status</span>
+                <input type="text" class="form-control" v-model="status" />
               </div>
             </div>
             <div>
@@ -209,7 +183,7 @@
                 v-if="ID === 0"
                 class="btn btn-primary"
               >
-                Create User
+                Create Appointment
               </button>
 
               <button
@@ -218,7 +192,7 @@
                 v-if="ID != 0"
                 class="btn btn-primary"
               >
-                Update User
+                Update Appointment
               </button>
             </div>
           </div>
@@ -233,7 +207,7 @@ import "/src/css/Admin/main.css";
 import axios from "axios";
 // import TheSidebar from "../TheSidebar.vue";
 export default {
-  name: "Account",
+  name: "Appointment",
   components: {
     // TheSidebar,
   },
@@ -241,23 +215,15 @@ export default {
     return {
       users: [], // Data property to store the servicers data
       modalTitle: "",
-      userId: 0,
-      name: "",
-      dateCreated: "",
-      phone: "",
-      email: "",
-      img: "",
-      description: "",
-      salary: 0,
-      roleId: 0,
-      role: "",
-      deleteFlag: false,
-      password: "",
+      appointmentId: 0,
+      employeeId: 0,
+      patientId: 0,
+      datetime: "",
+      note: "",
+      status: false,
       ID: 0,
       currentPage: 1,
       pageSize: 10,
-      totalItems: 0,
-      totalPages: 0,
       searchText: "",
     };
   },
@@ -282,16 +248,18 @@ export default {
       } else {
         this.currentPage++;
       }
-      this.fetchUsers();
+      this.fetchAppointments();
     },
-    async fetchUsers() {
-      let apiURL = "https://localhost:7034/api/User/list";
+    async fetchAppointments() {
+      let apiURL = "https://localhost:7034/api/Appointment/list";
       console.log(this.currentPage);
-      apiURL = "https://localhost:7034/api/User/list?pageNumber="+this.currentPage;
+      apiURL =
+        "https://localhost:7034/api/Appointment/list?pageNumber=" +
+        this.currentPage;
       axios
         .get(apiURL)
         .then((response) => {
-          this.users = response.data;
+          this.appointments = response.data;
         })
         .catch((error) => {
           console.error("There has been a problem");
@@ -300,71 +268,48 @@ export default {
     addClick() {
       this.modalTitle = "Thêm người dùng";
       this.ID = 0;
-      this.name = "";
-      this.dateCreated = "";
-      this.phone = "";
-      this.email = "";
-      this.img = "";
-      this.description = "";
-      this.salary = "";
-      this.roleId = 1;
-      this.role = "";
-      this.deleteFlag = false;
-      this.password = "";
+      this.employeeId = 0;
+      this.patientId = 0;
+      this.datetime = "";
+      this.note = "";
+      this.status = false;
     },
     editClick(u) {
       this.modalTitle = "Sửa thông tin người dùng";
-      this.ID = u.userId;
-      this.name = u.name;
-      this.dateCreated = u.dateCreated;
-      this.phone = u.phone;
-      this.email = u.email;
-      this.img = u.img;
-      this.description = u.description;
-      this.salary = u.salary;
-      this.roleId = u.roleId;
-      this.role = u.roleName;
-      this.deleteFlag = u.deleteFlag;
-      this.password = u.password;
+      this.ID = u.appointmentId;
+      this.employeeId = u.employeeId;
+      this.patientId = u.patientId;
+      this.datetime = u.datetime;
+      this.note = u.note;
+      this.status = u.status;
     },
     createClick() {
       axios
-        .post("https://localhost:7034/api/User", {
-          name: this.name,
-          phone: this.phone,
-          email: this.email,
-          img: this.img,
-          description: this.description,
-          salary: this.salary,
-          roleId: this.roleId,
-          roleName: this.role,
-          deleteFlag: false,
-          password: this.password,
+        .post("https://localhost:7034/api/Appointment", {
+          employeeId: this.employeeId,
+          patientId: this.patientId,
+          datetime: this.datetime,
+          note: this.note,
+          status: this.status,
         })
         .then((response) => {
           alert(response.data);
-          this.fetchUsers();
+          this.fetchAppointments();
         });
     },
     updateClick() {
       axios
-        .put("https://localhost:7034/api/User/" + this.ID, {
+        .put("https://localhost:7034/api/Appointment/" + this.ID, {
           // userId: this.userId,
-          name: this.name,
-          dateCreated: this.dateCreated,
-          phone: this.phone,
-          email: this.email,
-          img: this.img,
-          description: this.description,
-          salary: this.salary,
-          roleId: this.roleId,
-          roleName: this.role,
-          deleteFlag: this.deleteFlag,
-          password: this.password,
+          employeeId: this.employeeId,
+          patientId: this.patientId,
+          datetime: this.datetime,
+          note: this.note,
+          status: this.status,
         })
         .then((response) => {
           alert("Update thành công!");
-          this.fetchUsers();
+          this.fetchAppointments();
         });
     },
     deleteClick(id) {
@@ -372,9 +317,9 @@ export default {
         return;
       }
       axios
-        .delete("https://localhost:7034/api/User/" + id)
+        .delete("https://localhost:7034/api/Appointment/" + id)
         .then((response) => {
-          this.fetchUsers();
+          this.fetchAppointment();
           alert("Xóa thành công!");
         })
         .catch((error) => {
@@ -386,8 +331,8 @@ export default {
     filterResults() {
       console.log(this.searchText);
       if (this.searchText) {
-        this.users = this.users.filter((user) =>
-          Object.values(user).some((value) =>
+        this.appointments = this.appointments.filter((appointment) =>
+          Object.values(appointment).some((value) =>
             value
               .toString()
               .toLowerCase()
@@ -395,7 +340,7 @@ export default {
           )
         );
       } else {
-        this.fetchUsers();
+        this.fetchAppointment();
       }
     },
   },
@@ -405,7 +350,7 @@ export default {
   //   },
   // },
   mounted: function () {
-    this.fetchUsers();
+    this.fetchAppointment();
   },
 };
 </script>
