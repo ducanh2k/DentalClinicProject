@@ -1,6 +1,5 @@
 <template>
   <div class="container-Admin">
-    <!-- <TheSidebar></TheSidebar> -->
     <div class="main">
       <div class="main-header">
         <div class="title">
@@ -14,7 +13,6 @@
         </div>
       </div>
       <div class="main-body">
-        <!-- <AddEButton></AddEButton> -->
         <div class="search-container">
           <input
             type="text"
@@ -31,7 +29,7 @@
               data-bs-target="#exampleModal"
               @click="addClick()"
             >
-              Thêm mới thuốc
+              Thêm mới tin tức
             </button>
           </div>
         </div>
@@ -40,36 +38,32 @@
             <thead>
               <tr>
                 <th scope="col">#</th>
-                <th scope="col">Tên thuốc</th>
-                <th scope="col">Đơn vị</th>
-                <th scope="col">Ngày hết hạn</th>
-                <th scope="col">Ngày sản xuất</th>
-                <th scope="col">Giá</th>
-                <th scope="col">Số lượng hiện tại</th>
-                <th scope="col">Liều lượng</th>
+                <th scope="col">Tin tức</th>
+                <th scope="col">Thông tin ngắn</th>
                 <th scope="col">Mô tả</th>
+                <th scope="col">Tên tác giả</th>
+                <th scope="col">Tạo ngày</th>
+                <th scope="col">Feature</th>
                 <th scope="col"></th>
                 <th scope="col"></th>
               </tr>
             </thead>
             <tbody>
-              <tr v-for="(medicine, index) in medicines" :key="medicine.id">
+              <tr v-for="(News, index) in Newss" :key="News.id">
                 <th scope="row">{{ index + 1 }}</th>
-                <td class="data-from-db">{{ medicine.name }}</td>
-                <td class="data-from-db">{{ medicine.manufacturer }}</td>
-                <td class="data-from-db">{{ medicine.expiryDate }}</td>
-                <td class="data-from-db">{{ medicine.inputDay }}</td>
-                <td class="data-from-db">{{ medicine.price }}</td>
-                <td class="data-from-db">{{ medicine.quantityInStock }}</td>
-                <td class="data-from-db">{{ medicine.dosage }}</td>
-                <td class="data-from-db">{{ medicine.description }}</td>
+                <td>{{ News.tittle }}</td>
+                <td>{{ News.briefInfo }}</td>
+                <td>{{ News.description }}</td>
+                <td>{{ News.authorName }}</td>
+                <td>{{ News.createdAt }}</td>
+                <td>{{ News.featured }}</td>
                 <td>
                   <button
                     type="button"
                     class="btn btn-light mr-1"
                     data-bs-toggle="modal"
                     data-bs-target="#exampleModal"
-                    @click="editClick(medicine)"
+                    @click="editClick(News)"
                   >
                     <svg
                       xmlns="http://www.w3.org/2000/svg"
@@ -92,7 +86,7 @@
                 <td>
                   <button
                     type="button"
-                    @click="deleteClick(medicine.id)"
+                    @click="deleteClick(News.id)"
                     class="btn btn-light mr-1"
                   >
                     <svg
@@ -114,9 +108,7 @@
           </table>
         </div>
         <div class="under-table">
-          <div class="sum__staff">
-            Tổng số thuốc: <strong>{{ this.medicines.length }}</strong>
-          </div>
+          <div class="sum__staff">Tổng số dịch vụ: <strong>10</strong></div>
           <div class="pagination">
             <li><a @click="changPageNumber(1)" class="page-1">1</a></li>
             <li><a @click="changPageNumber(2)" class="page-2">2</a></li>
@@ -145,71 +137,49 @@
           <div class="modal-body">
             <div class="input-group md-3">
               <div>
-                <span class="input-group-text"><strong>Tên thuốc</strong></span>
+                <span class="input-group-text"><strong>Tiêu đề</strong></span>
                 <input
                   type="text"
                   class="form-control"
-                  v-model="name"
-                  placeholder="Nhập tên thuốc"
+                  v-model="tittle"
+                  placeholder="Nhập tiêu đề"
                 />
               </div>
               <div>
-                <span class="input-group-text"><strong>Đơn vị sản xuất</strong></span>
+                <span class="input-group-text"
+                  ><strong>Thông tin ngắn</strong></span
+                >
                 <input
                   type="text"
                   class="form-control"
-                  v-model="manufacturer"
-                  placeholder="Nhập đơn vị sản xuất"
+                  v-model="briefInfo"
+                  placeholder="Nhập tiểu sử ngắn"
                 />
               </div>
               <div>
-                <span class="input-group-text"><strong>Ngày hết hạn</strong></span>
+                <span class="input-group-text"
+                  ><strong>Mã tác giả</strong></span
+                >
                 <input
-                  type="text"
+                  type="number"
                   class="form-control"
-                  v-model="expiryDate"
-                  placeholder="Nhập ngày hết hạn"
+                  v-model="author"
+                  placeholder="Nhập mã tác giả"
                 />
               </div>
               <div>
-                <span class="input-group-text"><strong>ngày sản xuất</strong></span>
+                <span class="input-group-text"><strong>Feature</strong></span>
                 <input
                   type="text"
                   class="form-control"
-                  v-model="inputDay"
-                  placeholder="Nhập ngày sản xuất"
-                />
-              </div>
-              <div>
-                <span class="input-group-text"><strong>Giá thành</strong></span>
-                <input
-                  type="text"
-                  class="form-control"
-                  v-model="price"
-                  placeholder="Nhập giá thành"
-                />
-              </div>
-
-              <div>
-                <span class="input-group-text"><strong>Số lượng</strong></span>
-                <input
-                  type="text"
-                  class="form-control"
-                  v-model="quantityInStock"
-                  placeholder="Nhập số lượng"
-                />
-              </div>
-              <div>
-                <span class="input-group-text"><strong>Liều lượng</strong></span>
-                <input
-                  type="text"
-                  class="form-control"
-                  v-model="dosage"
-                  placeholder="Nhập liều lượng"
+                  v-model="feature"
+                  placeholder="Nhập feature"
                 />
               </div>
               <div v-if="ID != 0">
-                <span class="input-group-text"><strong>Delete Flag</strong></span>
+                <span class="input-group-text"
+                  ><strong>Delete Flag</strong></span
+                >
                 <input type="text" class="form-control" v-model="deleteFlag" />
               </div>
               <div>
@@ -226,6 +196,7 @@
                 ></textarea>
               </div>
             </div>
+
             <div>
               <button
                 type="button"
@@ -265,22 +236,19 @@
 import "/src/css/Admin/main.css";
 import axios from "axios";
 export default {
-  name: "Account",
+  name: "News",
   components: {},
   data() {
     return {
-      medicines: [], // Data property to store the servicers data
+      Newss: [],
       modalTitle: "",
-      id: 0,
-      name: "",
-      manufacturer: "",
-      expiryDate: "",
-      inputDay: "",
-      price: 0,
-      quantityInStock: 0,
-      dosage: "",
+      tittle: "",
+      briefInfo: "",
       description: "",
+      author: 0,
+      createdAt: "",
       deleteFlag: false,
+      feature: true,
       ID: 0,
       currentPage: 1,
       searchText: "",
@@ -297,85 +265,73 @@ export default {
       } else {
         this.currentPage++;
       }
-      this.fetchMedicines();
+      this.fetchNewss();
     },
-    async fetchMedicines() {
-      let apiURL = "https://localhost:7034/api/Medicine/list";
-      console.log(this.currentPage);
+    async fetchNewss() {
+      let apiURL = "https://localhost:7034/api/News/list";
       apiURL =
-        "https://localhost:7034/api/Medicine/list?pageNumber=" +
-        this.currentPage;
+        "https://localhost:7034/api/News/list?pageNumber=" + this.currentPage;
       axios
         .get(apiURL)
         .then((response) => {
-          this.medicines = response.data;
+          this.Newss = response.data;
         })
         .catch((error) => {
           console.error("There has been a problem");
         });
     },
     addClick() {
-      this.modalTitle = "Thêm thuốc mới";
+      this.modalTitle = "Thêm tin tức";
       this.ID = 0;
-      this.name = "";
-      this.manufacturer = "";
-      this.expiryDate = "";
-      this.inputDay = "";
-      this.price = "";
-      this.quantityInStock = "";
-      this.dosage = "";
+      this.tittle = "";
+      this.briefInfo = "";
       this.description = "";
+      this.author = "";
+      this.createdAt = "";
       this.deleteFlag = false;
+      this.featured = true;
     },
     editClick(u) {
-      this.modalTitle = "Sửa thông tin thuốc";
+      this.modalTitle = "Sửa tin tức";
       this.ID = u.id;
-      this.name = u.name;
-      this.manufacturer = u.manufacturer;
-      this.expiryDate = u.expiryDate;
-      this.inputDay = u.inputDay;
-      this.price = u.price;
-      this.quantityInStock = u.quantityInStock;
-      this.dosage = u.dosage;
+      this.tittle = u.tittle;
+      this.briefInfo = u.briefInfo;
       this.description = u.description;
+      this.author = u.author;
+      this.createdAt = u.createdAt;
       this.deleteFlag = u.deleteFlag;
-      console.log(this.name);
+      this.featured = u.featured;
     },
     createClick() {
       axios
-        .post("https://localhost:7034/api/Medicine", {
-          name: this.name,
-          manufacturer: this.manufacturer,
-          expiryDate: this.expiryDate,
-          inputDay: this.inputDay,
-          price: this.price,
-          quantityInStock: this.quantityInStock,
-          dosage: this.dosage,
+        .post("https://localhost:7034/api/News", {
+          tittle: this.tittle,
+          briefInfo: this.briefInfo,
           description: this.description,
+          author: this.author,
+          createdAt: this.createdAt,
           deleteFlag: false,
+          featured: this.featured,
         })
         .then((response) => {
           alert(response.data);
-          this.fetchMedicines();
+          this.fetchNewss();
         });
     },
     updateClick() {
       axios
-        .put("https://localhost:7034/api/Medicine/" + this.ID, {
-          // userId: this.userId,
-          name: this.name,
-          manufacturer: this.manufacturer,
-          expiryDate: this.expiryDate,
-          inputDay: this.inputDay,
-          price: this.price,
-          quantityInStock: this.quantityInStock,
-          dosage: this.dosage,
+        .put("https://localhost:7034/api/News/" + this.ID, {
+          tittle: this.tittle,
+          briefInfo: this.briefInfo,
           description: this.description,
-          deleteFlag: false,
+          author: this.author,
+          createdAt: this.createdAt,
+          deleteFlag: this.deleteFlag,
+          featured: this.featured,
         })
         .then((response) => {
           alert("Update thành công!");
-          this.fetchMedicines();
+          this.fetchNewss();
         });
     },
     deleteClick(id) {
@@ -383,22 +339,20 @@ export default {
         return;
       }
       axios
-        .delete("https://localhost:7034/api/Medicine/" + id)
+        .delete("https://localhost:7034/api/News/" + id)
         .then((response) => {
-          this.fetchMedicines();
+          this.fetchNewss();
           alert("Xóa thành công!");
         })
         .catch((error) => {
-          // Handle errors
           console.error("Error:", error);
-          this.message = "Lỗi xóa người dùng.";
+          this.message = "Lỗi xóa tin tức.";
         });
     },
     filterResults() {
-      console.log(this.searchText);
       if (this.searchText) {
-        this.medicines = this.medicines.filter((medicine) =>
-          Object.values(medicine).some((value) =>
+        this.Newss = this.Newss.filter((News) =>
+          Object.values(News).some((value) =>
             value
               .toString()
               .toLowerCase()
@@ -406,12 +360,15 @@ export default {
           )
         );
       } else {
-        this.fetchMedicines();
+        this.fetchNewss();
       }
+    },
+    handleNavigation(view) {
+      this.currentView = view;
     },
   },
   mounted: function () {
-    this.fetchMedicines();
+    this.fetchNewss();
   },
 };
 </script>
@@ -433,11 +390,6 @@ export default {
 .btn-primary {
   margin-top: 3%;
 }
-.table th,
-.table td {
-  min-width: 120px; /* Hoặc một giá trị phù hợp với nội dung của bạn */
-  word-wrap: break-word;
-}
 .input-group-text {
   margin-top: 20px;
   width: 200px;
@@ -452,11 +404,11 @@ export default {
 .modal-body {
   width: 1000px;
 }
+.modal-body {
+  height: auto;
+}
 .btn-primary {
   width: 150px;
   margin-right: 20px;
-}
-.modal-body {
-  height: auto;
 }
 </style>

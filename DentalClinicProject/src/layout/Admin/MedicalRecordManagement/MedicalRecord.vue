@@ -1,104 +1,521 @@
 <template>
-    <div class="container-Admin">
-      <TheSidebar></TheSidebar>
-      <div class="main">
-        <div class="main-header">
-          <div class="title">
-            <div class="title__toggle"></div>
-            <div class="title__company">Nha khoa Dentistry</div>
-            <div class="exit__button"></div>
-            <!-- <i class="fa-solid fa-arrow-right-from-bracket "></i> -->
+  <div class="container-Admin">
+    <TheSidebar></TheSidebar>
+    <div class="main">
+      <div class="main-header">
+        <div class="title">
+          <div class="title__toggle">
+            <i class="fa-solid fa-bars fa-xl"></i>
+          </div>
+          <div class="title__company">Nha khoa Dentistry</div>
+          <div class="exit__button">
+            <i class="fa-solid fa-right-from-bracket fa-xl"></i>
           </div>
         </div>
-        <div class="main-body">
-          <!-- <AddEButton></AddEButton> -->
-          <div class="search-container">
-            <input type="text" placeholder="Nhập từ khóa" class="search-box" />
-            <button class="search-button">Tìm kiếm</button>
-            <div class="addnew">
-              <button class="button-create">Thêm mới</button>
+      </div>
+      <div class="main-body">
+        <div class="search-container">
+          <input
+            type="text"
+            placeholder="Nhập từ khóa"
+            class="search-box"
+            v-model="searchText"
+            @input="filterResults"
+          />
+          <button class="search-button" @click="filterResults">Tìm kiếm</button>
+          <div class="addnew">
+            <!-- <button
+              class="button-create"
+              data-bs-toggle="modal"
+              data-bs-target="#exampleModal"
+              @click="addClick()"
+            >
+              Thêm mới hồ sơ
+            </button> -->
+          </div>
+        </div>
+        <div class="range">
+          <table class="table table-striped table-hover" style="height: 30%">
+            <thead>
+              <tr>
+                <th scope="col">#</th>
+                <th scope="col">Tên bệnh nhân</th>
+                <th scope="col"></th>
+                <th scope="col"></th>
+                <th scope="col"></th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr v-for="mRecord in mRecords" :key="mRecord.medicalRecordId">
+                <th scope="row">{{ mRecord.medicalRecordId }}</th>
+                <td class="data-from-db">{{ mRecord.patientName }}</td>
+                <td>
+                  <button
+                    type="button"
+                    class="btn btn-light mr-1"
+                    data-bs-toggle="modal"
+                    data-bs-target="#exampleModal"
+                    @click="editClick(mRecord)"
+                  >
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      width="16"
+                      height="16"
+                      fill="currentColor"
+                      class="bi bi-pencil-square"
+                      viewBox="0 0 16 16"
+                    >
+                      <path
+                        d="M15.502 1.94a.5.5 0 0 1 0 .706L14.459 3.69l-2-2L13.502.646a.5.5 0 0 1 .707 0l1.293 1.293zm-1.75 2.456-2-2L4.939 9.21a.5.5 0 0 0-.121.196l-.805 2.414a.25.25 0 0 0 .316.316l2.414-.805a.5.5 0 0 0 .196-.12l6.813-6.814z"
+                      />
+                      <path
+                        fill-rule="evenodd"
+                        d="M1 13.5A1.5 1.5 0 0 0 2.5 15h11a1.5 1.5 0 0 0 1.5-1.5v-6a.5.5 0 0 0-1 0v6a.5.5 0 0 1-.5.5h-11a.5.5 0 0 1-.5-.5v-11a.5.5 0 0 1 .5-.5H9a.5.5 0 0 0 0-1H2.5A1.5 1.5 0 0 0 1 2.5z"
+                      />
+                    </svg>
+                  </button>
+                </td>
+                <td>
+                  <button
+                    type="button"
+                    @click="deleteClick(mRecord.medicalRecordId)"
+                    class="btn btn-light mr-1"
+                  >
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      width="16"
+                      height="16"
+                      fill="currentColor"
+                      class="bi bi-trash-fill"
+                      viewBox="0 0 16 16"
+                    >
+                      <path
+                        d="M2.5 1a1 1 0 0 0-1 1v1a1 1 0 0 0 1 1H3v9a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2V4h.5a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1H10a1 1 0 0 0-1-1H7a1 1 0 0 0-1 1zm3 4a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-1 0v-7a.5.5 0 0 1 .5-.5M8 5a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-1 0v-7A.5.5 0 0 1 8 5m3 .5v7a.5.5 0 0 1-1 0v-7a.5.5 0 0 1 1 0"
+                      />
+                    </svg>
+                  </button>
+                </td>
+                <td>
+                  <button
+                    type="button"
+                    class="btn btn-light mr-1"
+                    data-bs-toggle="modal"
+                    data-bs-target="#exampleModal1"
+                    @click="ViewDetail(mRecord)"
+                  >
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      width="16"
+                      height="16"
+                      fill="currentColor"
+                      class="bi bi-card-text"
+                      viewBox="0 0 16 16"
+                    >
+                      <path
+                        d="M14.5 3a.5.5 0 0 1 .5.5v9a.5.5 0 0 1-.5.5h-13a.5.5 0 0 1-.5-.5v-9a.5.5 0 0 1 .5-.5zm-13-1A1.5 1.5 0 0 0 0 3.5v9A1.5 1.5 0 0 0 1.5 14h13a1.5 1.5 0 0 0 1.5-1.5v-9A1.5 1.5 0 0 0 14.5 2z"
+                      />
+                      <path
+                        d="M3 5.5a.5.5 0 0 1 .5-.5h9a.5.5 0 0 1 0 1h-9a.5.5 0 0 1-.5-.5M3 8a.5.5 0 0 1 .5-.5h9a.5.5 0 0 1 0 1h-9A.5.5 0 0 1 3 8m0 2.5a.5.5 0 0 1 .5-.5h6a.5.5 0 0 1 0 1h-6a.5.5 0 0 1-.5-.5"
+                      />
+                    </svg>
+                  </button>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="under-table">
+          <div class="sum__staff">Tổng số bệnh nhân: <strong>10</strong></div>
+          <div class="pagination">
+            <li><a @click="changPageNumber(1)" class="page-1">1</a></li>
+            <li><a @click="changPageNumber(2)" class="page-2">2</a></li>
+            <li><a @click="changPageNumber(3)" class="page-3">3</a></li>
+            <li><a @click="changPageNumber(0)" class="Next-page">Next</a></li>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div
+      class="modal fade"
+      id="exampleModal"
+      tabindex="-1"
+      aria-labelledby="exampleModalLabel"
+      aria-hidden="true"
+    >
+      <div class="modal-dialog modal-lg modal-dialog-centered">
+        <div class="modal-content">
+          <div class="modal-header">
+            <div class="modal-header1">
+              <h5 class="modal-title" id="exampleModalLabel">
+                <strong>{{ modalTitle }}</strong>
+              </h5>
             </div>
           </div>
-          <div class="range">
-            <table class="table table-striped table-hover" style="height: 30%">
-              <thead>
-                <tr>
-      <th scope="col">Mã hồ sơ</th>
-      <th scope="col">Họ tên</th>
-      <th scope="col">Tuổi</th>
-      <th scope="col">Giới tính</th>
-      <th scope="col">Điện thoại</th>
-      <th scope="col">Địa chỉ</th>
-      <th scope="col">Ghi chú</th>
-      <th scope="col">Ngày nhập</th>
-      <th scope="col">Lý do khám bệnh</th>
-      <th scope="col"></th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-        <td>1</td>
-      <td>Nguyễn Việt Hoàn</td>
-      <td>24</td>
-      <td>Nam</td>
-      <td>0366658911</td>
-      <td>Hà Nội</td>
-      <td>Dạ dày</td>
-      <td>07/12/2023</td>
-      <td>Đau răng hàm</td>
-      <td><i class="fa-solid fa-pen"></i>&emsp;<i class="fa-solid fa-trash"></i></td>
-    </tr>
-    <tr>
-        <td>1</td>
-      <td>Nguyễn Việt Hoàn</td>
-      <td>24</td>
-      <td>Nam</td>
-      <td>0366658911</td>
-      <td>Hà Nội</td>
-      <td>Dạ dày</td>
-      <td>07/12/2023</td>
-      <td>Đau răng hàm</td>
-      <td><i class="fa-solid fa-pen"></i>&emsp;<i class="fa-solid fa-trash"></i></td>
-    </tr>
-    <tr>
-        <td>1</td>
-      <td>Nguyễn Việt Hoàn</td>
-      <td>24</td>
-      <td>Nam</td>
-      <td>0366658911</td>
-      <td>Hà Nội</td>
-      <td>Dạ dày</td>
-      <td>07/12/2023</td>
-      <td>Đau răng hàm</td>
-      <td><i class="fa-solid fa-pen"></i>&emsp;<i class="fa-solid fa-trash"></i></td>
-    </tr>
-              </tbody>
-            </table>
-          </div>
-          <div class="under-table">
-            <div class="sum__staff">Tổng số nhân viên: <strong>14</strong></div>
-            <div class="pagination">
-              <li><a href="#" class="page-1">1</a></li>
-              <li><a href="#" class="page-2">2</a></li>
-              <li><a href="#" class="page-3">3</a></li>
-              <li><a href="#" class="Next-page">Next ></a></li>
+          <div class="modal-body">
+            <div class="input-group md-3">
+              <div>
+                <span class="input-group-text"
+                  ><strong>Mã bệnh nhân</strong></span
+                >
+                <input
+                  type="text"
+                  class="form-control"
+                  v-model="patientId"
+                  placeholder="Nhập mã bệnh nhân"
+                />
+              </div>
+              <div v-if="ID != 0">
+                <span class="input-group-text"
+                  ><strong>Delete Flag</strong></span
+                >
+                <input type="text" class="form-control" v-model="deleteFlag" />
+              </div>
+            </div>
+            <div>
+              <button
+                type="button"
+                @click="createClick()"
+                v-if="ID === 0"
+                class="btn btn-primary"
+              >
+                Lưu
+              </button>
+
+              <button
+                type="button"
+                @click="updateClick()"
+                v-if="ID != 0"
+                class="btn btn-primary"
+              >
+                Lưu
+              </button>
+              <button
+                type="button"
+                class="btn btn-primary"
+                data-bs-dismiss="modal"
+                aria-label="Close"
+                style="background-color: rgb(77, 75, 75)"
+              >
+                Hủy
+              </button>
             </div>
           </div>
         </div>
       </div>
     </div>
-  </template>
-  
-  <script>
-  import "/src/css/Admin/main.css";
-  import TheSidebar from "../TheSidebar.vue";
-  export default {
-    name: "MedicalRecord",
-    components: {
-      TheSidebar,
+    <div
+      class="modal fade"
+      id="exampleModal1"
+      tabindex="-1"
+      aria-labelledby="exampleModalLabel"
+      aria-hidden="true"
+    >
+      <div class="modal-dialog modal-lg modal-dialog-centered">
+        <div class="modal-content">
+          <div class="modal-header">
+            <div class="modal-header1">
+              <h5 class="modal-title" id="exampleModalLabel">
+                <strong>Thông tin chi tiết</strong>
+              </h5>
+            </div>
+          </div>
+          <div class="modal-body">
+            <div class="input-group md-3">
+              <div class="range">
+                <table
+                  class="table table-striped table-hover"
+                  style="height: 30%"
+                >
+                  <thead>
+                    <tr>
+                      <th scope="col">#</th>
+                      <th scope="col">Mã hồ sơ</th>
+                      <th scope="col">Mã lịch hẹn</th>
+                      <th scope="col">Dịch vụ</th>
+                      <th scope="col">Mã đơn thuốc</th>
+                      <th scope="col">Chẩn đoán</th>
+                      <!-- <th scope="col"></th>
+                <th scope="col"></th> -->
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr v-for="(a, index) in mrDetails" :key="a.mrDetailId">
+                      <th scope="row">{{ index + 1 }}</th>
+                      <td class="data-from-db">{{ a.medicalRecordId }}</td>
+                      <td class="data-from-db">{{ a.appointmentIds }}</td>
+                      <td class="data-from-db">{{ a.serviceName }}</td>
+                      <td class="data-from-db">{{ a.prescriptionId }}</td>
+                      <td class="data-from-db">{{ a.diagnosis }}</td>
+                      <!-- <td>
+                  <button
+                    type="button"
+                    class="btn btn-light mr-1"
+                    data-bs-toggle="modal"
+                    data-bs-target="#exampleModal"
+                    @click="editDetailClick(mrDetail)"
+                  >
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      width="16"
+                      height="16"
+                      fill="currentColor"
+                      class="bi bi-pencil-square"
+                      viewBox="0 0 16 16"
+                    >
+                      <path
+                        d="M15.502 1.94a.5.5 0 0 1 0 .706L14.459 3.69l-2-2L13.502.646a.5.5 0 0 1 .707 0l1.293 1.293zm-1.75 2.456-2-2L4.939 9.21a.5.5 0 0 0-.121.196l-.805 2.414a.25.25 0 0 0 .316.316l2.414-.805a.5.5 0 0 0 .196-.12l6.813-6.814z"
+                      />
+                      <path
+                        fill-rule="evenodd"
+                        d="M1 13.5A1.5 1.5 0 0 0 2.5 15h11a1.5 1.5 0 0 0 1.5-1.5v-6a.5.5 0 0 0-1 0v6a.5.5 0 0 1-.5.5h-11a.5.5 0 0 1-.5-.5v-11a.5.5 0 0 1 .5-.5H9a.5.5 0 0 0 0-1H2.5A1.5 1.5 0 0 0 1 2.5z"
+                      />
+                    </svg>
+                  </button>
+                </td>
+                <td>
+                  <button
+                    type="button"
+                    @click="deleteDetailClick(mrDetail.mrDetailId)"
+                    class="btn btn-light mr-1"
+                  >
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      width="16"
+                      height="16"
+                      fill="currentColor"
+                      class="bi bi-trash-fill"
+                      viewBox="0 0 16 16"
+                    >
+                      <path
+                        d="M2.5 1a1 1 0 0 0-1 1v1a1 1 0 0 0 1 1H3v9a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2V4h.5a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1H10a1 1 0 0 0-1-1H7a1 1 0 0 0-1 1zm3 4a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-1 0v-7a.5.5 0 0 1 .5-.5M8 5a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-1 0v-7A.5.5 0 0 1 8 5m3 .5v7a.5.5 0 0 1-1 0v-7a.5.5 0 0 1 1 0"
+                      />
+                    </svg>
+                  </button>
+                </td> -->
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</template>
+
+<script>
+import "/src/css/Admin/main.css";
+import axios from "axios";
+export default {
+  name: "MedicalRecord",
+  components: {},
+  data() {
+    return {
+      mRecords: [],
+      mrDetails: [],
+      modalTitle: "",
+      medicalRecordId: 0,
+      patientId: 0,
+      deleteFlag: false,
+      ID: 0,
+      currentPage: 1,
+      pageSize: 10,
+      totalItems: 0,
+      totalPages: 0,
+      searchText: "",
+    };
+  },
+  computed: {
+    totalPage() {
+      return Math.cell(this.mRecords.length / this.pageSize);
     },
-  };
-  </script>
-  
-  <style scoped></style>
-  
+    paginatedUsers() {
+      const start = (this.currentPage - 1) * this.pageSize;
+      const end = start + this.pageSize;
+      return this.mRecords.slice(start, end);
+    },
+  },
+  methods: {
+    ViewDetail(mRecord) {
+      let apiURL =
+        "https://localhost:7034/api/MedicalRecord/" + mRecord.medicalRecordId;
+      axios
+        .get(apiURL)
+        .then((response) => {
+          // this.mrDetails = response.data[0].medicalRecordDetails;
+
+          this.mrDetails = response.data[0].medicalRecordDetails.map(
+            (detail) => {
+              const appointmentIds = detail.appointments.map(
+                (appointment) => appointment.appointmentId
+              );
+              return {
+                ...detail,
+                appointmentIds,
+              };
+            }
+          );
+        })
+        .catch((error) => {
+          console.error("There has been a problem");
+        });
+    },
+    changPageNumber(page) {
+      if (page == 1) {
+        this.currentPage = 1;
+      } else if (page == 2) {
+        this.currentPage = 2;
+      } else if (page == 3) {
+        this.currentPage = 3;
+      } else {
+        this.currentPage++;
+      }
+      this.fetchMRecords();
+    },
+    async fetchMRecords() {
+      let apiURL = "https://localhost:7034/api/MedicalRecord/list";
+      apiURL =
+        "https://localhost:7034/api/MedicalRecord/list?pageNumber=" +
+        this.currentPage;
+      axios
+        .get(apiURL)
+        .then((response) => {
+          this.mRecords = response.data;
+        })
+        .catch((error) => {
+          console.error("There has been a problem");
+        });
+    },
+    addClick() {
+      this.modalTitle = "Thêm mới hồ sơ bệnh án";
+      this.ID = 0;
+      this.patientId = "";
+      this.deleteFlag = false;
+    },
+    editClick(u) {
+      this.modalTitle = "Sửa thông tin hồ sơ";
+      this.ID = u.medicalRecordId;
+      this.patientId = u.patientId;
+      this.deleteFlag = u.deleteFlag;
+    },
+    createClick() {
+      axios
+        .post("https://localhost:7034/api/MedicalRecord", {
+          patientId: this.patientId,
+          deleteFlag: false,
+        })
+        .then((response) => {
+          alert(response.data);
+          this.fetchMRecords();
+        });
+    },
+    updateClick() {
+      axios
+        .put("https://localhost:7034/api/MedicalRecord/" + this.ID, {
+          patientId: this.patientId,
+          deleteFlag: this.deleteFlag,
+        })
+        .then((response) => {
+          alert("Update thành công!");
+          this.fetchMRecords();
+        });
+    },
+    deleteClick(id) {
+      if (!confirm("Bạn có chắc không ?")) {
+        return;
+      }
+      axios
+        .delete("https://localhost:7034/api/MedicalRecord/" + id)
+        .then((response) => {
+          this.fetchMRecords();
+          alert("Xóa thành công!");
+        })
+        .catch((error) => {
+          // Handle errors
+          console.error("Error:", error);
+          this.message = "Lỗi xóa người dùng.";
+        });
+    },
+    filterResults() {
+      if (this.searchText) {
+        this.mRecords = this.mRecords.filter((mRecord) =>
+          Object.values(mRecord).some((value) =>
+            value
+              .toString()
+              .toLowerCase()
+              .includes(this.searchText.toLowerCase())
+          )
+        );
+      } else {
+        this.fetchMRecords();
+      }
+    },
+  },
+  mounted: function () {
+    this.fetchMRecords();
+  },
+};
+</script>
+
+<style scoped>
+.input-group-text {
+  background-color: rgb(255, 255, 255);
+  margin-right: 20%;
+}
+.form-control {
+  margin-right: 30%;
+  width: 80%;
+}
+.form-Des {
+  width: 80%;
+  height: 50%;
+  word-wrap: break-word;
+}
+.btn-primary {
+  margin-top: 3%;
+}
+.table th,
+.table td {
+  min-width: 120px; /* Hoặc một giá trị phù hợp với nội dung của bạn */
+  word-wrap: break-word;
+}
+.detailUser {
+  margin-right: 40px;
+  margin-bottom: 3px;
+}
+.input-group-text {
+  margin-top: 20px;
+  width: 200px;
+  margin-right: 100px;
+}
+.input-group-text {
+  border: none;
+}
+.form-control {
+  width: 400px;
+  margin-right: 80px;
+}
+.modal-content {
+  width: 1000px;
+}
+.modal-body {
+  width: 1000px;
+}
+.btnRole-container {
+  margin-right: 120px;
+}
+.btn-primary {
+  width: 150px;
+  margin-right: 20px;
+}
+.modal-body {
+  height: auto;
+}
+.detailUser::before {
+  content: "•";
+  padding-right: 8px;
+  color: black;
+  font-size: large;
+}
+</style>

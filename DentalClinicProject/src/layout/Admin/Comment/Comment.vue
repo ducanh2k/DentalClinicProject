@@ -1,6 +1,5 @@
 <template>
   <div class="container-Admin">
-    <!-- <TheSidebar></TheSidebar> -->
     <div class="main">
       <div class="main-header">
         <div class="title">
@@ -14,7 +13,6 @@
         </div>
       </div>
       <div class="main-body">
-        <!-- <AddEButton></AddEButton> -->
         <div class="search-container">
           <input
             type="text"
@@ -31,7 +29,7 @@
               data-bs-target="#exampleModal"
               @click="addClick()"
             >
-              Thêm mới thuốc
+              Thêm mới bình luận
             </button>
           </div>
         </div>
@@ -40,36 +38,26 @@
             <thead>
               <tr>
                 <th scope="col">#</th>
-                <th scope="col">Tên thuốc</th>
-                <th scope="col">Đơn vị</th>
-                <th scope="col">Ngày hết hạn</th>
-                <th scope="col">Ngày sản xuất</th>
-                <th scope="col">Giá</th>
-                <th scope="col">Số lượng hiện tại</th>
-                <th scope="col">Liều lượng</th>
-                <th scope="col">Mô tả</th>
+                <th scope="col">Tên người dùng</th>
+                <th scope="col">Nội dung</th>
+                <th scope="col">Tạo ngày</th>
                 <th scope="col"></th>
                 <th scope="col"></th>
               </tr>
             </thead>
             <tbody>
-              <tr v-for="(medicine, index) in medicines" :key="medicine.id">
-                <th scope="row">{{ index + 1 }}</th>
-                <td class="data-from-db">{{ medicine.name }}</td>
-                <td class="data-from-db">{{ medicine.manufacturer }}</td>
-                <td class="data-from-db">{{ medicine.expiryDate }}</td>
-                <td class="data-from-db">{{ medicine.inputDay }}</td>
-                <td class="data-from-db">{{ medicine.price }}</td>
-                <td class="data-from-db">{{ medicine.quantityInStock }}</td>
-                <td class="data-from-db">{{ medicine.dosage }}</td>
-                <td class="data-from-db">{{ medicine.description }}</td>
+              <tr v-for="p in comments" :key="p.id">
+                <th scope="row">{{ p.id }}</th>
+                <td class="data-from-db">{{ p.patientName }}</td>
+                <td class="data-from-db">{{ p.commentDetail }}</td>
+                <td class="data-from-db">{{ p.createdAt }}</td>
                 <td>
                   <button
                     type="button"
                     class="btn btn-light mr-1"
                     data-bs-toggle="modal"
                     data-bs-target="#exampleModal"
-                    @click="editClick(medicine)"
+                    @click="editClick(p)"
                   >
                     <svg
                       xmlns="http://www.w3.org/2000/svg"
@@ -92,7 +80,7 @@
                 <td>
                   <button
                     type="button"
-                    @click="deleteClick(medicine.id)"
+                    @click="deleteClick(p.id)"
                     class="btn btn-light mr-1"
                   >
                     <svg
@@ -114,9 +102,7 @@
           </table>
         </div>
         <div class="under-table">
-          <div class="sum__staff">
-            Tổng số thuốc: <strong>{{ this.medicines.length }}</strong>
-          </div>
+          <div class="sum__staff">Tổng số bình luận: <strong>10</strong></div>
           <div class="pagination">
             <li><a @click="changPageNumber(1)" class="page-1">1</a></li>
             <li><a @click="changPageNumber(2)" class="page-2">2</a></li>
@@ -145,85 +131,28 @@
           <div class="modal-body">
             <div class="input-group md-3">
               <div>
-                <span class="input-group-text"><strong>Tên thuốc</strong></span>
+                <span class="input-group-text"><strong>Mã người dùng</strong></span>
                 <input
-                  type="text"
+                  type="number"
                   class="form-control"
-                  v-model="name"
-                  placeholder="Nhập tên thuốc"
+                  v-model="patientId"
+                  placeholder="Nhập mã người dùng"
                 />
               </div>
               <div>
-                <span class="input-group-text"><strong>Đơn vị sản xuất</strong></span>
+                <span class="input-group-text"><strong>Nội dung</strong></span>
                 <input
                   type="text"
                   class="form-control"
-                  v-model="manufacturer"
-                  placeholder="Nhập đơn vị sản xuất"
-                />
-              </div>
-              <div>
-                <span class="input-group-text"><strong>Ngày hết hạn</strong></span>
-                <input
-                  type="text"
-                  class="form-control"
-                  v-model="expiryDate"
-                  placeholder="Nhập ngày hết hạn"
-                />
-              </div>
-              <div>
-                <span class="input-group-text"><strong>ngày sản xuất</strong></span>
-                <input
-                  type="text"
-                  class="form-control"
-                  v-model="inputDay"
-                  placeholder="Nhập ngày sản xuất"
-                />
-              </div>
-              <div>
-                <span class="input-group-text"><strong>Giá thành</strong></span>
-                <input
-                  type="text"
-                  class="form-control"
-                  v-model="price"
-                  placeholder="Nhập giá thành"
-                />
-              </div>
-
-              <div>
-                <span class="input-group-text"><strong>Số lượng</strong></span>
-                <input
-                  type="text"
-                  class="form-control"
-                  v-model="quantityInStock"
-                  placeholder="Nhập số lượng"
-                />
-              </div>
-              <div>
-                <span class="input-group-text"><strong>Liều lượng</strong></span>
-                <input
-                  type="text"
-                  class="form-control"
-                  v-model="dosage"
-                  placeholder="Nhập liều lượng"
+                  v-model="commentDetail"
+                  placeholder="Nhập nội dung"
                 />
               </div>
               <div v-if="ID != 0">
-                <span class="input-group-text"><strong>Delete Flag</strong></span>
+                <span class="input-group-text"
+                  ><strong>Delete Flag</strong></span
+                >
                 <input type="text" class="form-control" v-model="deleteFlag" />
-              </div>
-              <div>
-                <span class="input-group-text"><strong>Mô tả</strong></span>
-                <textarea
-                  type="text"
-                  class="form-control form-Des"
-                  v-model="description"
-                  name=""
-                  id=""
-                  cols="30"
-                  rows="10"
-                  placeholder="Mô tả ngắn gọn"
-                ></textarea>
               </div>
             </div>
             <div>
@@ -265,26 +194,41 @@
 import "/src/css/Admin/main.css";
 import axios from "axios";
 export default {
-  name: "Account",
+  name: "Comment",
   components: {},
   data() {
     return {
-      medicines: [], // Data property to store the servicers data
+      comments: [],
       modalTitle: "",
       id: 0,
-      name: "",
-      manufacturer: "",
-      expiryDate: "",
-      inputDay: "",
-      price: 0,
-      quantityInStock: 0,
-      dosage: "",
-      description: "",
+      patientId: 0,
+      commentDetail: "",
       deleteFlag: false,
       ID: 0,
       currentPage: 1,
+      pageSize: 10,
+      totalItems: 0,
+      totalPages: 0,
       searchText: "",
     };
+  },
+  computed: {
+    totalPage() {
+      return Math.cell(this.users.length / this.pageSize);
+    },
+    paginatedUsers() {
+      const start = (this.currentPage - 1) * this.pageSize;
+      const end = start + this.pageSize;
+      return this.users.slice(start, end);
+    },
+    degreesArray: {
+      get() {
+        return this.degrees.join("\n");
+      },
+      set(value) {
+        this.degrees = value.split("\n");
+      },
+    },
   },
   methods: {
     changPageNumber(page) {
@@ -297,85 +241,59 @@ export default {
       } else {
         this.currentPage++;
       }
-      this.fetchMedicines();
+      this.fetchUsers();
     },
-    async fetchMedicines() {
-      let apiURL = "https://localhost:7034/api/Medicine/list";
-      console.log(this.currentPage);
+    async fetchUsers() {
+      let apiURL = "https://localhost:7034/api/Comment/list";
       apiURL =
-        "https://localhost:7034/api/Medicine/list?pageNumber=" +
+        "https://localhost:7034/api/Comment/list?pageNumber=" +
         this.currentPage;
       axios
         .get(apiURL)
         .then((response) => {
-          this.medicines = response.data;
+          this.comments = response.data;
         })
         .catch((error) => {
           console.error("There has been a problem");
         });
     },
     addClick() {
-      this.modalTitle = "Thêm thuốc mới";
+      this.modalTitle = "Thêm mới bình luận";
       this.ID = 0;
-      this.name = "";
-      this.manufacturer = "";
-      this.expiryDate = "";
-      this.inputDay = "";
-      this.price = "";
-      this.quantityInStock = "";
-      this.dosage = "";
-      this.description = "";
+      this.patientId = 1;
+      this.commentDetail = "";
       this.deleteFlag = false;
     },
     editClick(u) {
-      this.modalTitle = "Sửa thông tin thuốc";
+      this.modalTitle = "Sửa thông tin người dùng";
       this.ID = u.id;
-      this.name = u.name;
-      this.manufacturer = u.manufacturer;
-      this.expiryDate = u.expiryDate;
-      this.inputDay = u.inputDay;
-      this.price = u.price;
-      this.quantityInStock = u.quantityInStock;
-      this.dosage = u.dosage;
-      this.description = u.description;
+      this.patientId = u.patientId;
+      this.commentDetail = u.commentDetail;
       this.deleteFlag = u.deleteFlag;
-      console.log(this.name);
     },
     createClick() {
       axios
-        .post("https://localhost:7034/api/Medicine", {
-          name: this.name,
-          manufacturer: this.manufacturer,
-          expiryDate: this.expiryDate,
-          inputDay: this.inputDay,
-          price: this.price,
-          quantityInStock: this.quantityInStock,
-          dosage: this.dosage,
-          description: this.description,
+        .post("https://localhost:7034/api/Comment", {
+          patientId: this.patientId,
+          commentDetail: this.commentDetail,
           deleteFlag: false,
         })
         .then((response) => {
           alert(response.data);
-          this.fetchMedicines();
+          this.fetchUsers();
         });
     },
     updateClick() {
+     
       axios
-        .put("https://localhost:7034/api/Medicine/" + this.ID, {
-          // userId: this.userId,
-          name: this.name,
-          manufacturer: this.manufacturer,
-          expiryDate: this.expiryDate,
-          inputDay: this.inputDay,
-          price: this.price,
-          quantityInStock: this.quantityInStock,
-          dosage: this.dosage,
-          description: this.description,
-          deleteFlag: false,
+        .put("https://localhost:7034/api/Comment/" + this.ID, {
+          patientId: this.patientId,
+          commentDetail: this.commentDetail,
+          deleteFlag: this.deleteFlag,
         })
         .then((response) => {
           alert("Update thành công!");
-          this.fetchMedicines();
+          this.fetchUsers();
         });
     },
     deleteClick(id) {
@@ -383,22 +301,22 @@ export default {
         return;
       }
       axios
-        .delete("https://localhost:7034/api/Medicine/" + id)
+        .delete("https://localhost:7034/api/Comment/" + id)
         .then((response) => {
-          this.fetchMedicines();
+          this.fetchUsers();
           alert("Xóa thành công!");
         })
         .catch((error) => {
           // Handle errors
           console.error("Error:", error);
-          this.message = "Lỗi xóa người dùng.";
+          this.message = "Lỗi xóa bình luận.";
         });
     },
     filterResults() {
       console.log(this.searchText);
       if (this.searchText) {
-        this.medicines = this.medicines.filter((medicine) =>
-          Object.values(medicine).some((value) =>
+        this.comments = this.comments.filter((user) =>
+          Object.values(user).some((value) =>
             value
               .toString()
               .toLowerCase()
@@ -406,12 +324,12 @@ export default {
           )
         );
       } else {
-        this.fetchMedicines();
+        this.fetchUsers();
       }
     },
   },
   mounted: function () {
-    this.fetchMedicines();
+    this.fetchUsers();
   },
 };
 </script>
@@ -438,6 +356,10 @@ export default {
   min-width: 120px; /* Hoặc một giá trị phù hợp với nội dung của bạn */
   word-wrap: break-word;
 }
+.detailUser {
+  margin-right: 40px;
+  margin-bottom: 3px;
+}
 .input-group-text {
   margin-top: 20px;
   width: 200px;
@@ -446,11 +368,18 @@ export default {
 .input-group-text {
   border: none;
 }
+.form-control {
+  width: 400px;
+  margin-right: 80px;
+}
 .modal-content {
   width: 1000px;
 }
 .modal-body {
   width: 1000px;
+}
+.btnRole-container {
+  margin-right: 120px;
 }
 .btn-primary {
   width: 150px;
@@ -458,5 +387,11 @@ export default {
 }
 .modal-body {
   height: auto;
+}
+.detailUser::before {
+  content: "•";
+  padding-right: 8px;
+  color: black;
+  font-size: large;
 }
 </style>

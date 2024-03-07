@@ -1,12 +1,15 @@
 <template>
   <div class="container-Admin">
-    <!-- <TheSidebar></TheSidebar> -->
     <div class="main">
       <div class="main-header">
         <div class="title">
-          <div class="title__toggle"></div>
+          <div class="title__toggle">
+            <i class="fa-solid fa-bars fa-xl"></i>
+          </div>
           <div class="title__company">Nha khoa Dentistry</div>
-          <div class="exit__button"></div>
+          <div class="exit__button">
+            <i class="fa-solid fa-right-from-bracket fa-xl"></i>
+          </div>
         </div>
       </div>
       <div class="main-body">
@@ -26,7 +29,7 @@
               data-bs-target="#exampleModal"
               @click="addClick()"
             >
-              Thêm mới user
+              Thêm mới người dùng
             </button>
           </div>
         </div>
@@ -35,20 +38,23 @@
             <thead>
               <tr>
                 <th scope="col">#</th>
-                <th scope="col">Name</th>
-                <th scope="col">DateCreated</th>
-                <th scope="col">Phone</th>
+                <th scope="col">Tên người dùng</th>
+                <th scope="col">Ngày tạo</th>
+                <th scope="col">Số điện thoại</th>
                 <th scope="col">Email</th>
-                <th scope="col">Img</th>
-                <th scope="col">Description</th>
-                <th scope="col">Salary</th>
-                <th scope="col">Role</th>
-                <th scope="col">Password</th>
+                <th scope="col">Ảnh</th>
+                <th scope="col">Mô tả</th>
+                <th scope="col">Lương</th>
+                <th scope="col">Vai trò</th>
+                <th scope="col">Mật khẩu</th>
+                <th scope="col"></th>
+                <th scope="col"></th>
+                <th scope="col"></th>
               </tr>
             </thead>
             <tbody>
-              <tr v-for="(user, index) in users" :key="user.userId">
-                <th scope="row">{{ index + 1 }}</th>
+              <tr v-for="user in users" :key="user.userId">
+                <th scope="row">{{ user.userId }}</th>
                 <td class="data-from-db">{{ user.name }}</td>
                 <td class="data-from-db">{{ user.dateCreated }}</td>
                 <td class="data-from-db">{{ user.phone }}</td>
@@ -104,12 +110,37 @@
                     </svg>
                   </button>
                 </td>
+                <td>
+                  <button
+                    type="button"
+                    class="btn btn-light mr-1"
+                    data-bs-toggle="modal"
+                    data-bs-target="#exampleModal1"
+                    @click="ViewDetail(user)"
+                  >
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      width="16"
+                      height="16"
+                      fill="currentColor"
+                      class="bi bi-card-text"
+                      viewBox="0 0 16 16"
+                    >
+                      <path
+                        d="M14.5 3a.5.5 0 0 1 .5.5v9a.5.5 0 0 1-.5.5h-13a.5.5 0 0 1-.5-.5v-9a.5.5 0 0 1 .5-.5zm-13-1A1.5 1.5 0 0 0 0 3.5v9A1.5 1.5 0 0 0 1.5 14h13a1.5 1.5 0 0 0 1.5-1.5v-9A1.5 1.5 0 0 0 14.5 2z"
+                      />
+                      <path
+                        d="M3 5.5a.5.5 0 0 1 .5-.5h9a.5.5 0 0 1 0 1h-9a.5.5 0 0 1-.5-.5M3 8a.5.5 0 0 1 .5-.5h9a.5.5 0 0 1 0 1h-9A.5.5 0 0 1 3 8m0 2.5a.5.5 0 0 1 .5-.5h6a.5.5 0 0 1 0 1h-6a.5.5 0 0 1-.5-.5"
+                      />
+                    </svg>
+                  </button>
+                </td>
               </tr>
             </tbody>
           </table>
         </div>
         <div class="under-table">
-          <div class="sum__staff">Tổng số User: <strong>14</strong></div>
+          <div class="sum__staff">Tổng số User: <strong>10</strong></div>
           <div class="pagination">
             <li><a @click="changPageNumber(1)" class="page-1">1</a></li>
             <li><a @click="changPageNumber(2)" class="page-2">2</a></li>
@@ -129,69 +160,108 @@
       <div class="modal-dialog modal-lg modal-dialog-centered">
         <div class="modal-content">
           <div class="modal-header">
-            <div class="modal-header">
+            <div class="modal-header1">
               <h5 class="modal-title" id="exampleModalLabel">
-                {{ modalTitle }}
+                <strong>{{ modalTitle }}</strong>
               </h5>
-              <button
-                type="button"
-                class="btn-close"
-                data-bs-dismiss="modal"
-                aria-label="Close"
-              ></button>
             </div>
           </div>
           <div class="modal-body">
             <div class="input-group md-3">
               <div>
-                <span class="input-group-text">userId</span>
+                <span class="input-group-text"><strong>Họ và Tên</strong></span>
                 <input
                   type="text"
                   class="form-control"
-                  v-model="userId"
-                  readonly
+                  v-model="name"
+                  placeholder="Nhập họ và tên người dùng"
                 />
               </div>
               <div>
-                <span class="input-group-text">Name</span>
-                <input type="text" class="form-control" v-model="name" />
+                <span class="input-group-text"
+                  ><strong>Số điện thoại</strong></span
+                >
+                <input
+                  type="text"
+                  class="form-control"
+                  v-model="phone"
+                  placeholder="Nhập số điện thoại"
+                />
               </div>
               <div>
-                <span class="input-group-text">Phone</span>
-                <input type="text" class="form-control" v-model="phone" />
+                <span class="input-group-text"><strong>Email</strong></span>
+                <input
+                  type="text"
+                  class="form-control"
+                  placeholder="Nhập địa chỉ email"
+                  v-model="email"
+                />
               </div>
               <div>
-                <span class="input-group-text">Email</span>
-                <input type="text" class="form-control" v-model="email" />
+                <span class="input-group-text"
+                  ><strong>Ảnh đại diện</strong></span
+                >
+                <input
+                  type="text"
+                  class="form-control"
+                  placeholder="Ảnh của người dùng"
+                  v-model="img"
+                />
               </div>
               <div>
-                <span class="input-group-text">Img</span>
-                <input type="text" class="form-control" v-model="img" />
-              </div>
-              <div>
-                <span class="input-group-text">Password</span>
-                <input type="text" class="form-control" v-model="password" />
+                <span class="input-group-text"><strong>Mật khẩu</strong></span>
+                <input
+                  type="text"
+                  class="form-control"
+                  placeholder="Nhập mật khẩu"
+                  v-model="password"
+                />
               </div>
 
               <div>
-                <span class="input-group-text">Salary</span>
-                <input type="text" class="form-control" v-model="salary" />
+                <span class="input-group-text"><strong>Lương</strong></span>
+                <input
+                  type="text"
+                  class="form-control"
+                  placeholder="Nhập lương"
+                  v-model="salary"
+                />
               </div>
               <div>
-                <span class="input-group-text">RoleID</span>
-                <input type="number" class="form-control" v-model="roleId" />
+                <span class="input-group-text"><strong>Chức vụ</strong></span>
+                <div class="btnRole-container">
+                  <input
+                    type="radio"
+                    class="btn-role"
+                    v-model="role"
+                    value="doctor"
+                  />&nbsp; Bác sĩ
+                  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                  <input
+                    type="radio"
+                    class="btn-role"
+                    v-model="role"
+                    value="staff"
+                  />&nbsp; Nhân viên
+                  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                  <input
+                    type="radio"
+                    class="btn-role"
+                    v-model="role"
+                    value="patient"
+                  />&nbsp; Bệnh nhân
+                </div>
               </div>
-              <div>
-                <span class="input-group-text">RoleName</span>
-                <input type="text" class="form-control" v-model="role" />
-              </div>
-              <div>
-                <span class="input-group-text">Delete Flag</span>
+              <div v-if="ID != 0">
+                <span class="input-group-text"
+                  ><strong>Delete Flag</strong></span
+                >
                 <input type="text" class="form-control" v-model="deleteFlag" />
               </div>
               <div>
-                <span class="input-group-text">Description</span>
+                <span class="input-group-text"><strong>Mô tả</strong></span>
                 <textarea
+                  placeholder="mô tả sơ lược"
                   type="text"
                   class="form-control form-Des"
                   v-model="description"
@@ -209,7 +279,7 @@
                 v-if="ID === 0"
                 class="btn btn-primary"
               >
-                Create User
+                Lưu
               </button>
 
               <button
@@ -218,8 +288,74 @@
                 v-if="ID != 0"
                 class="btn btn-primary"
               >
-                Update User
+                Lưu
               </button>
+              <button
+                type="button"
+                class="btn btn-primary"
+                data-bs-dismiss="modal"
+                aria-label="Close"
+                style="background-color: rgb(77, 75, 75)"
+              >
+                Hủy
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div
+      class="modal fade"
+      id="exampleModal1"
+      tabindex="-1"
+      aria-labelledby="exampleModalLabel"
+      aria-hidden="true"
+    >
+      <div class="modal-dialog modal-lg modal-dialog-centered">
+        <div class="modal-content">
+          <div class="modal-header">
+            <div class="modal-header1">
+              <h5 class="modal-title" id="exampleModalLabel">
+                <strong>Thông tin chi tiết</strong>
+              </h5>
+            </div>
+          </div>
+          <div class="modal-body">
+            <div class="input-group md-3">
+              <div class="detail-container">
+                <span class="input-group-text"><strong>Chứng Chỉ</strong></span>
+                <div class="detailUser" v-for="d in degrees" :key="d.id">
+                  {{ d.detail }}
+                </div>
+              </div>
+              <div>
+                <span class="input-group-text"><strong>Kinh nghiệm công việc</strong></span>
+                <div class="detail-container">
+                  <div
+                    class="detailUser"
+                    v-for="d in trainingCourse"
+                    :key="d.id"
+                  >
+                    {{ d.detail }}
+                  </div>
+                </div>
+              </div>
+              <div>
+                <span class="input-group-text"><strong>Lĩnh vực chuyên môn</strong></span>
+                <div class="detail-container">
+                  <div class="detailUser" v-for="d in experties" :key="d.id">
+                    {{ d.detail }}
+                  </div>
+                </div>
+              </div>
+              <div>
+                <span class="input-group-text"><strong>Ngôn ngữ</strong></span>
+                <div class="detail-container">
+                  <div class="detailUser" v-for="d in language" :key="d.id">
+                    {{ d.detail }}
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
         </div>
@@ -231,15 +367,12 @@
 <script>
 import "/src/css/Admin/main.css";
 import axios from "axios";
-// import TheSidebar from "../TheSidebar.vue";
 export default {
   name: "Account",
-  components: {
-    // TheSidebar,
-  },
+  components: {},
   data() {
     return {
-      users: [], // Data property to store the servicers data
+      users: [],
       modalTitle: "",
       userId: 0,
       name: "",
@@ -259,6 +392,10 @@ export default {
       totalItems: 0,
       totalPages: 0,
       searchText: "",
+      degrees: [],
+      trainingCourse: [],
+      experties: [],
+      language: [],
     };
   },
   computed: {
@@ -270,8 +407,62 @@ export default {
       const end = start + this.pageSize;
       return this.users.slice(start, end);
     },
+    degreesArray: {
+      get() {
+        return this.degrees.join("\n");
+      },
+      set(value) {
+        this.degrees = value.split("\n");
+      },
+    },
   },
   methods: {
+    ViewDetail(user) {
+      console.log(user.userId);
+      let apiURL =
+        "https://localhost:7034/api/User/degree?userId=" + user.userId;
+      axios
+        .get(apiURL)
+        .then((response) => {
+          this.degrees = response.data;
+        })
+        .catch((error) => {
+          console.error("There has been a problem");
+        });
+      apiURL =
+        "https://localhost:7034/api/User/AreasOfExpertise?userId=" +
+        user.userId;
+      axios
+        .get(apiURL)
+        .then((response) => {
+          this.experties = response.data;
+        })
+        .catch((error) => {
+          console.error("There has been a problem");
+        });
+      apiURL =
+        "https://localhost:7034/api/User/ForeignLanguages?userId=" +
+        user.userId;
+      axios
+        .get(apiURL)
+        .then((response) => {
+          this.language = response.data;
+        })
+        .catch((error) => {
+          console.error("There has been a problem");
+        });
+      apiURL =
+        "https://localhost:7034/api/User/ParticipatingTrainingCourse?userId=" +
+        user.userId;
+      axios
+        .get(apiURL)
+        .then((response) => {
+          this.trainingCourse = response.data;
+        })
+        .catch((error) => {
+          console.error("There has been a problem");
+        });
+    },
     changPageNumber(page) {
       if (page == 1) {
         this.currentPage = 1;
@@ -287,7 +478,8 @@ export default {
     async fetchUsers() {
       let apiURL = "https://localhost:7034/api/User/list";
       console.log(this.currentPage);
-      apiURL = "https://localhost:7034/api/User/list?pageNumber="+this.currentPage;
+      apiURL =
+        "https://localhost:7034/api/User/list?pageNumber=" + this.currentPage;
       axios
         .get(apiURL)
         .then((response) => {
@@ -298,7 +490,7 @@ export default {
         });
     },
     addClick() {
-      this.modalTitle = "Thêm người dùng";
+      this.modalTitle = "Thêm mới người dùng";
       this.ID = 0;
       this.name = "";
       this.dateCreated = "";
@@ -327,7 +519,14 @@ export default {
       this.deleteFlag = u.deleteFlag;
       this.password = u.password;
     },
-    createClick() {
+      createClick() {
+      if (this.role == "doctor") {
+        this.roleId = 3;
+      } else if (this.role == "staff") {
+        this.roleId = 2;
+      } else {
+        this.roleId = 4;
+      }
       axios
         .post("https://localhost:7034/api/User", {
           name: this.name,
@@ -347,6 +546,13 @@ export default {
         });
     },
     updateClick() {
+      if (this.role == "doctor") {
+        this.roleId = 3;
+      } else if (this.role == "staff") {
+        this.roleId = 2;
+      } else {
+        this.roleId = 4;
+      }
       axios
         .put("https://localhost:7034/api/User/" + this.ID, {
           // userId: this.userId,
@@ -399,11 +605,6 @@ export default {
       }
     },
   },
-  // watch: {
-  //   searchText(newValue) {
-  //     this.filterResults();
-  //   },
-  // },
   mounted: function () {
     this.fetchUsers();
   },
@@ -412,7 +613,7 @@ export default {
 
 <style scoped>
 .input-group-text {
-  background-color: rgb(215, 223, 230);
+  background-color: rgb(255, 255, 255);
   margin-right: 20%;
 }
 .form-control {
@@ -432,7 +633,42 @@ export default {
   min-width: 120px; /* Hoặc một giá trị phù hợp với nội dung của bạn */
   word-wrap: break-word;
 }
+.detailUser {
+  margin-right: 40px;
+  margin-bottom: 3px;
+}
+.input-group-text {
+  margin-top: 20px;
+  width: 200px;
+  margin-right: 100px;
+}
+.input-group-text {
+  border: none;
+}
 .form-control {
-  margin-bottom: 10%;
+  width: 400px;
+  margin-right: 80px;
+}
+.modal-content {
+  width: 1000px;
+}
+.modal-body {
+  width: 1000px;
+}
+.btnRole-container {
+  margin-right: 120px;
+}
+.btn-primary {
+  width: 150px;
+  margin-right: 20px;
+}
+.modal-body {
+  height: auto;
+}
+.detailUser::before{
+content: '•';
+padding-right: 8px;
+color: black;
+font-size: large;
 }
 </style>

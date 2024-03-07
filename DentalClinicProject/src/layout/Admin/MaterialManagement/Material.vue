@@ -4,10 +4,13 @@
     <div class="main">
       <div class="main-header">
         <div class="title">
-          <div class="title__toggle"></div>
+          <div class="title__toggle">
+            <i class="fa-solid fa-bars fa-xl"></i>
+          </div>
           <div class="title__company">Nha khoa Dentistry</div>
-          <div class="exit__button"></div>
-          <!-- <i class="fa-solid fa-arrow-right-from-bracket "></i> -->
+          <div class="exit__button">
+            <i class="fa-solid fa-right-from-bracket fa-xl"></i>
+          </div>
         </div>
       </div>
       <div class="main-body">
@@ -37,11 +40,13 @@
             <thead>
               <tr>
                 <th scope="col">#</th>
-                <th scope="col">Name</th>
-                <th scope="col">supplier</th>
-                <th scope="col">unitPrice</th>
-                <th scope="col">quantity In Stock</th>
-                <th scope="col">type</th>
+                <th scope="col">Tên</th>
+                <th scope="col">Nguồn cung</th>
+                <th scope="col">Giá cả</th>
+                <th scope="col">Số lượng</th>
+                <th scope="col">Kiểu</th>
+                <th scope="col"></th>
+                <th scope="col"></th>
               </tr>
             </thead>
             <tbody>
@@ -106,7 +111,7 @@
           </table>
         </div>
         <div class="under-table">
-          <div class="sum__staff">Tổng số nguyên liệu: <strong>14</strong></div>
+          <div class="sum__staff">Tổng số nguyên liệu: <strong>10</strong></div>
           <div class="pagination">
             <li><a @click="changPageNumber(1)" class="page-1">1</a></li>
             <li><a @click="changPageNumber(2)" class="page-2">2</a></li>
@@ -126,51 +131,54 @@
       <div class="modal-dialog modal-lg modal-dialog-centered">
         <div class="modal-content">
           <div class="modal-header">
-            <div class="modal-header">
+            <div class="modal-header1">
               <h5 class="modal-title" id="exampleModalLabel">
-                {{ modalTitle }}
+                <strong>{{ modalTitle }}</strong>
               </h5>
-              <button
-                type="button"
-                class="btn-close"
-                data-bs-dismiss="modal"
-                aria-label="Close"
-              ></button>
             </div>
           </div>
           <div class="modal-body">
             <div class="input-group md-3">
               <div>
-                <span class="input-group-text">materialId</span>
-                <input
-                  type="text"
-                  class="form-control"
-                  v-model="materialId"
-                  readonly
-                />
-              </div>
-              <div>
-                <span class="input-group-text">Name</span>
+                <span class="input-group-text"
+                  ><strong>Tên vật liệu</strong></span
+                >
                 <input
                   type="text"
                   class="form-control"
                   v-model="materialName"
+                  placeholder="Nhập tên vật liệu"
                 />
               </div>
               <div>
-                <span class="input-group-text">supplier</span>
-                <input type="text" class="form-control" v-model="supplier" />
+                <span class="input-group-text"
+                  ><strong>Nhà cung ứng</strong></span
+                >
+                <input
+                  type="text"
+                  class="form-control"
+                  v-model="supplier"
+                  placeholder="Nhập tên nhà cung ứng"
+                />
               </div>
               <div>
-                <span class="input-group-text">unitPrice</span>
-                <input type="text" class="form-control" v-model="unitPrice" />
+                <span class="input-group-text"><strong>Giá thành</strong></span>
+                <input
+                  type="text"
+                  class="form-control"
+                  v-model="unitPrice"
+                  placeholder="Nhập giá thành"
+                />
               </div>
               <div>
-                <span class="input-group-text">quantityInStock</span>
+                <span class="input-group-text"
+                  ><strong>Số lượng còn lại</strong></span
+                >
                 <input
                   type="text"
                   class="form-control"
                   v-model="quantityInStock"
+                  placeholder="Nhập số lượng"
                 />
               </div>
               <div>
@@ -185,7 +193,7 @@
                 v-if="ID === 0"
                 class="btn btn-primary"
               >
-                Create Material
+                Lưu
               </button>
 
               <button
@@ -194,7 +202,16 @@
                 v-if="ID != 0"
                 class="btn btn-primary"
               >
-                Update Material
+                Lưu
+              </button>
+              <button
+                type="button"
+                class="btn btn-primary"
+                data-bs-dismiss="modal"
+                aria-label="Close"
+                style="background-color: rgb(77, 75, 75)"
+              >
+                Hủy
               </button>
             </div>
           </div>
@@ -269,7 +286,7 @@ export default {
     },
     editClick(u) {
       this.modalTitle = "Sửa thông tin người dùng";
-      this.materialId = u.materialId;
+      this.ID = u.materialId;
       this.materialName = u.materialName;
       this.supplier = u.supplier;
       this.unitPrice = u.unitPrice;
@@ -295,6 +312,7 @@ export default {
     updateClick() {
       axios
         .put("https://localhost:7034/api/Material/" + this.ID, {
+          materialId: this.ID,
           materialName: this.materialName,
           supplier: this.supplier,
           unitPrice: this.unitPrice,
@@ -347,7 +365,7 @@ export default {
 
 <style scoped>
 .input-group-text {
-  background-color: rgb(215, 223, 230);
+  background-color: rgb(255, 255, 255);
   margin-right: 20%;
 }
 .form-control {
@@ -364,10 +382,28 @@ export default {
 }
 .table th,
 .table td {
-  min-width: 120px; /* Hoặc một giá trị phù hợp với nội dung của bạn */
+  min-width: 120px;
   word-wrap: break-word;
 }
-.form-control {
-  margin-bottom: 10%;
+.input-group-text {
+  margin-top: 20px;
+  width: 200px;
+  margin-right: 100px;
+}
+.input-group-text {
+  border: none;
+}
+.modal-content {
+  width: 1000px;
+}
+.modal-body {
+  width: 1000px;
+}
+.modal-body {
+  height: auto;
+}
+.btn-primary {
+  width: 150px;
+  margin-right: 20px;
 }
 </style>

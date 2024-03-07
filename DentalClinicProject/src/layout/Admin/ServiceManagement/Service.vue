@@ -1,17 +1,18 @@
 <template>
   <div class="container-Admin">
-    <!-- <TheSidebar @navigate="handleNavigation"></TheSidebar> -->
     <div class="main">
       <div class="main-header">
         <div class="title">
-          <div class="title__toggle"></div>
+          <div class="title__toggle">
+            <i class="fa-solid fa-bars fa-xl"></i>
+          </div>
           <div class="title__company">Nha khoa Dentistry</div>
-          <div class="exit__button"></div>
-          <!-- <i class="fa-solid fa-arrow-right-from-bracket "></i> -->
+          <div class="exit__button">
+            <i class="fa-solid fa-right-from-bracket fa-xl"></i>
+          </div>
         </div>
       </div>
       <div class="main-body">
-        <!-- <AddEButton></AddEButton> -->
         <div class="search-container">
           <input
             type="text"
@@ -37,10 +38,12 @@
             <thead>
               <tr>
                 <th scope="col">#</th>
-                <th scope="col">ServiceName</th>
-                <th scope="col">BriefInfo</th>
-                <th scope="col">Description</th>
-                <th scope="col">Price</th>
+                <th scope="col">Tên dịch vụ</th>
+                <th scope="col">Thông tin ngắn</th>
+                <th scope="col">Mô tả</th>
+                <th scope="col">Giá cả</th>
+                <th scope="col"></th>
+                <th scope="col"></th>
               </tr>
             </thead>
             <tbody>
@@ -101,7 +104,7 @@
           </table>
         </div>
         <div class="under-table">
-          <div class="sum__staff">Tổng số dịch vụ: <strong>14</strong></div>
+          <div class="sum__staff">Tổng số dịch vụ: <strong>10</strong></div>
           <div class="pagination">
             <li><a @click="changPageNumber(1)" class="page-1">1</a></li>
             <li><a @click="changPageNumber(2)" class="page-2">2</a></li>
@@ -121,39 +124,54 @@
       <div class="modal-dialog modal-lg modal-dialog-centered">
         <div class="modal-content">
           <div class="modal-header">
-            <div class="modal-header">
+            <div class="modal-header1">
               <h5 class="modal-title" id="exampleModalLabel">
-                {{ modalTitle }}
+                <strong>{{ modalTitle }}</strong>
               </h5>
-              <button
-                type="button"
-                class="btn-close"
-                data-bs-dismiss="modal"
-                aria-label="Close"
-              ></button>
             </div>
           </div>
           <div class="modal-body">
             <div class="input-group md-3">
               <div>
-                <span class="input-group-text">ServiceName</span>
-                <input type="text" class="form-control" v-model="serviceName" />
+                <span class="input-group-text"
+                  ><strong>Tên dịch vụ</strong></span
+                >
+                <input
+                  type="text"
+                  class="form-control"
+                  v-model="serviceName"
+                  placeholder="Nhập tên dịch vụ"
+                />
               </div>
               <div>
-                <span class="input-group-text">BriefInfo</span>
-                <input type="text" class="form-control" v-model="briefInfo" />
+                <span class="input-group-text"
+                  ><strong>Thông tin ngắn</strong></span
+                >
+                <input
+                  type="text"
+                  class="form-control"
+                  v-model="briefInfo"
+                  placeholder="Nhập tiểu sử ngắn"
+                />
               </div>
 
               <div>
-                <span class="input-group-text">Price</span>
-                <input type="text" class="form-control" v-model="price" />
+                <span class="input-group-text"><strong>Giá thành</strong></span>
+                <input
+                  type="text"
+                  class="form-control"
+                  v-model="price"
+                  placeholder="Nhập giá thành"
+                />
               </div>
               <div>
-                <span class="input-group-text">Delete Flag</span>
+                <span class="input-group-text"
+                  ><strong>Delete Flag</strong></span
+                >
                 <input type="text" class="form-control" v-model="deleteFlag" />
               </div>
               <div>
-                <span class="input-group-text">Description</span>
+                <span class="input-group-text"><strong>Mô tả</strong></span>
                 <textarea
                   type="text"
                   class="form-control form-Des"
@@ -162,6 +180,7 @@
                   id=""
                   cols="30"
                   rows="10"
+                  placeholder="Mô tả ngắn gọn"
                 ></textarea>
               </div>
             </div>
@@ -173,7 +192,7 @@
                 v-if="ID === 0"
                 class="btn btn-primary"
               >
-                Create Service
+                Lưu
               </button>
 
               <button
@@ -182,7 +201,16 @@
                 v-if="ID != 0"
                 class="btn btn-primary"
               >
-                Update Service
+                Lưu
+              </button>
+              <button
+                type="button"
+                class="btn btn-primary"
+                data-bs-dismiss="modal"
+                aria-label="Close"
+                style="background-color: rgb(77, 75, 75)"
+              >
+                Hủy
               </button>
             </div>
           </div>
@@ -195,15 +223,12 @@
 <script>
 import "/src/css/Admin/main.css";
 import axios from "axios";
-// import TheSidebar from "../TheSidebar.vue";
 export default {
   name: "Service",
-  components: {
-    // TheSidebar,
-  },
+  components: {},
   data() {
     return {
-      services: [], // Data property to store the servicers data
+      services: [],
       modalTitle: "",
       serviceId: 0,
       serviceName: "",
@@ -231,8 +256,9 @@ export default {
     },
     async fetchServices() {
       let apiURL = "https://localhost:7034/api/Service/list";
-      console.log(this.currentPage);
-      apiURL = "https://localhost:7034/api/Service/list?pageNumber="+this.currentPage;
+      apiURL =
+        "https://localhost:7034/api/Service/list?pageNumber=" +
+        this.currentPage;
       axios
         .get(apiURL)
         .then((response) => {
@@ -277,7 +303,6 @@ export default {
     updateClick() {
       axios
         .put("https://localhost:7034/api/Service/" + this.ID, {
-          // ServiceId: this.ID,
           serviceName: this.serviceName,
           briefInfo: this.briefInfo,
           description: this.description,
@@ -306,7 +331,6 @@ export default {
         });
     },
     filterResults() {
-      console.log(this.searchText);
       if (this.searchText) {
         this.services = this.services.filter((service) =>
           Object.values(service).some((value) =>
@@ -332,7 +356,7 @@ export default {
 
 <style scoped>
 .input-group-text {
-  background-color: rgb(215, 223, 230);
+  background-color: rgb(255, 255, 255);
   margin-right: 20%;
 }
 .form-control {
@@ -344,10 +368,28 @@ export default {
   height: 50%;
   word-wrap: break-word;
 }
-.form-control {
-  margin-bottom: 10%;
-}
 .btn-primary {
   margin-top: 3%;
+}
+.input-group-text {
+  margin-top: 20px;
+  width: 200px;
+  margin-right: 100px;
+}
+.input-group-text {
+  border: none;
+}
+.modal-content {
+  width: 1000px;
+}
+.modal-body {
+  width: 1000px;
+}
+.modal-body {
+  height: auto;
+}
+.btn-primary {
+  width: 150px;
+  margin-right: 20px;
 }
 </style>

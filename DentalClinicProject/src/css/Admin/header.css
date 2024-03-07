@@ -14,21 +14,15 @@
   font-weight: bold;
   width: 20%;
   height: 4vh;
-  margin-top: -3.5vh;
+  margin-top: -5vh;
   margin-left: 3%;
   float: left;
   font-size: 3vh;
   align-items: center;
 }
 
-@media (max-width: 768px) {
-  .title__company {
-    font-size: 10px;
-  }
-}
-
 .title__toggle {
-  margin-top: 0.25%;
+  margin-top: 1%;
   width: 2%;
   height: 4vh;
   background-image: url(../imgs/menu.png);
@@ -41,8 +35,24 @@
   height: 3vh;
   width: 1.7%;
   margin-right: 2vw;
-  margin-top: -3.3vh;
+  margin-top: -4vh;
   background-image: url(../imgs/arrow-right-from-bracket-solid.svg);
   background-repeat: no-repeat;
   cursor: pointer;
+}
+@media (max-width: 1300px) {
+  .title {
+    padding: 15px;
+  }
+  .title__company {
+    margin-left: 40px;
+    margin-top: -25px;
+  }
+  .title__toggle {
+    margin-left: -20px;
+    margin-top: -0.85%;
+  }
+  .exit__button {
+    margin-top: -25px;
+  }
 }

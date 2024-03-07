@@ -18,14 +18,23 @@
       <div class="item1" tabindex="4" @click="$emit('navigate', 'Revenue')">
         <div class="item1__content">Doanh thu</div>
       </div>
-      <div class="item1" tabindex="5">
+      <div class="item1" tabindex="5" @click="$emit('navigate', 'Appointment')">
         <div class="item1__content">Lịch hẹn</div>
       </div>
-      <div class="item1" tabindex="6" @click="$emit('navigate', 'Appointment')">
+      <div class="item1" tabindex="6" @click="$emit('navigate', 'MedicalRecord')">
         <div class="item1__content">Hồ sơ bệnh án</div>
       </div>
       <div class="item1" tabindex="7" @click="$emit('navigate', 'Medicine')">
         <div class="item1__content">Thuốc</div>
+      </div>
+      <div class="item1" tabindex="7" @click="$emit('navigate', 'News')">
+        <div class="item1__content">Tin tức</div>
+      </div>
+      <div class="item1" tabindex="7" @click="$emit('navigate', 'Prescription')">
+        <div class="item1__content">Đơn thuốc</div>
+      </div>
+      <div class="item1" tabindex="7" @click="$emit('navigate', 'Comment')">
+        <div class="item1__content">Bình luận</div>
       </div>
     </div>
   </div>
