@@ -1,0 +1,57 @@
+.site-footer {
+  height: 600px;
+  background-color: #f8f9fa;
+  padding: 20px 0;
+  font-family: Arial, sans-serif;
+}
+
+.footer-container {
+  width: 100%;
+  display: flex;
+  justify-content: space-around;
+  max-width: 1200px;
+  margin: auto;
+  margin-left: 14%;
+  bottom: 0;
+}
+
+.footer-block {
+  width: 20%;
+}
+
+.footer-logo {
+  width: 100px;
+  margin-bottom: 10px;
+}
+
+.footer-list {
+  list-style: none;
+  padding: 0;
+}
+
+.footer-list li {
+  justify-content: left;
+  padding: 5px 0;
+}
+
+footer address {
+  font-style: normal;
+  line-height: 1.6;
+}
+.pic {
+  width: 120%;
+  height: 25%;
+  background-image: url("../../imgs/logoSaleNoti.png");
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center;
+}
+@media (max-width: 1500px) {
+  .footer-container {
+    margin-left: 4%;
+    font-size: 1rem;
+  }
+  .pic {
+    width: 115%;
+  }
+}

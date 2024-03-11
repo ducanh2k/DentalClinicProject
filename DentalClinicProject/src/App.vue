@@ -1,12 +1,14 @@
 <template>
-  <div class="container-Admin">
+  <!-- <div class="container-Admin">
     <TheSidebar @navigate="handleNavigation"></TheSidebar>
     <component :is="currentView"></component>
-  </div>
+  </div> -->
   <!-- <HomePage></HomePage> -->
+  <TeamDoctorContainerVue></TeamDoctorContainerVue>
 </template>
 
 <script>
+import SidebarBoostrap from "./layout/User/Sidebar-boostrap.vue";
 import Appointment from "./layout/Admin/Appointment/Appointment.vue";
 import "@fortawesome/fontawesome-free/css/all.css";
 import TheSidebar from "./layout/Admin/TheSidebar.vue";
@@ -21,6 +23,8 @@ import Comment from "./layout/Admin/Comment/Comment.vue";
 import Prescription from "./layout/Admin/Prescription/Prescription.vue";
 import News from "./layout/Admin/NewsManagement/News.vue";
 import Revenue from "./layout/Admin/RevenueManagement/Revenue.vue";
+import TeamDoctorContainerVue from "./layout/User/TeamDoctor/TeamDoctor-container.vue";
+import TeamDoctorListVue from "./layout/User/TeamDoctor/TeamDoctorList.vue";
 export default {
   name: "App",
   components: {
@@ -37,6 +41,9 @@ export default {
     Prescription,
     News,
     Revenue,
+    TeamDoctorContainerVue,
+    TeamDoctorListVue,
+    SidebarBoostrap,
   },
   data() {
     return {

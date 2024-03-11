@@ -17,7 +17,7 @@
           <div class="dropdown-year">
             <select v-model="selectedYear">
               <option v-for="year in years" :key="year" :value="year">
-                {{ year }}
+                năm {{ year }}
               </option>
             </select>
           </div>
@@ -25,17 +25,17 @@
             <div class="revenue">
               <h5>Tổng thu</h5>
               <h1>{{ revenue }} Triệu</h1>
-              <h5 style="color: rgb(58,197,8);">↑ 25%</h5>
+              <h5 style="color: rgb(58, 197, 8)">↑ 25%</h5>
             </div>
             <div class="expenses">
               <h5>Tổng chi</h5>
               <h1>{{ expenses }} Triệu</h1>
-              <h5 style="color: rgb(255,64,64)">↓ 30%</h5>
+              <h5 style="color: rgb(255, 64, 64)">↓ 30%</h5>
             </div>
             <div class="profit">
               <h5>Lãi/lỗ so với năm ngoái</h5>
               <h1>{{ profit }} Triệu</h1>
-              <h5 style="color: rgb(58,197,8);">↑ 25%</h5>
+              <h5 style="color: rgb(58, 197, 8)">↑ 25%</h5>
             </div>
           </div>
         </div>
@@ -309,17 +309,17 @@ export default {
 .dropdown-year {
   margin-left: 240px;
   margin-top: 50px;
-  width: 10%;
+  width: 13%;
   height: 30%;
 }
 .dropdown-year select {
   border: 1px solid rgb(190, 190, 190);
-  border-radius:6px ;
-  width: 100%; 
+  border-radius: 6px;
+  width: 100%;
   height: 100%;
-  box-sizing: border-box; 
-  padding: 0.5em; 
-  margin: 0; 
+  box-sizing: border-box;
+  padding: 0.5em;
+  margin: 0;
 }
 .charts {
   flex-wrap: wrap;
@@ -365,6 +365,17 @@ export default {
   .main-body {
     height: 550px;
     overflow-y: auto;
+  }
+  .dropdown-year {
+    width: 20%;
+    margin-left: -10px;
+    margin-top: 75px;
+
+  }
+  .overview {
+    width: 150%;
+    margin-left: -450px;
+    margin-top: 20px;
   }
 }
 </style>
