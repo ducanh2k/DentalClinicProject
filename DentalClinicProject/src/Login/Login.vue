@@ -1,18 +1,18 @@
 <template class="login">
-    <div class="main">
-        <div class="container">
-        <div class="left_container">
+    <div class="mainLogin">
+        <div class="containerLogin">
+        <div class="left_containerLogin">
 
         </div>
-        <div class="rigt_container">
+        <div class="rigt_containerLogin">
             <h2 class="lbLogin">Đăng nhập</h2>
-            <img class="logo" src="../imgs/logo.jpg" alt="">
+            <img class="logoLogin" src="../imgs/logo.jpg" alt="">
             <br>
-            <label for="uname"><b class="lbTitle">Tên đăng nhập</b><b class="lbSt">*</b></label><br>
-            <input class="form" type="text" placeholder="Nhập tên tài khoản" name="uname" required>
+            <label for="email"><b class="lbTitle">Tên đăng nhập</b><b class="lbSt">*</b></label><br>
+            <input class="formLogin" type="text" placeholder="Nhập email" name="email" required>
             <br>
             <br><label for="pass"><b class="lbTitle">Mật khẩu</b><b class="lbSt">*</b></label><br>
-            <input class="form" type="text" placeholder="Nhập mật khẩu" name="pass" required>
+            <input class="formLogin" type="text" placeholder="Nhập mật khẩu" name="pass" required>
             <br>
             <br><button class="btnLogin" type="submit">Đăng nhập</button>
             <br>
