@@ -1,10 +1,9 @@
 <template>
-  <!-- <div class="container-Admin">
-    <TheSidebar @navigate="handleNavigation"></TheSidebar>
-    <component :is="currentView"></component>
-  </div> -->
-  <!-- <HomePage></HomePage> -->
-  <TeamDoctorContainerVue></TeamDoctorContainerVue>
+  <div>
+    <LoginVue v-if="!isLoggedIn" @login-success="handleLoginSuccess"></LoginVue>
+    <router-view v-if="isLoggedIn" />
+    <!-- <HomePage></HomePage> -->
+  </div>
 </template>
 
 <script>
@@ -25,6 +24,8 @@ import News from "./layout/Admin/NewsManagement/News.vue";
 import Revenue from "./layout/Admin/RevenueManagement/Revenue.vue";
 import TeamDoctorContainerVue from "./layout/User/TeamDoctor/TeamDoctor-container.vue";
 import TeamDoctorListVue from "./layout/User/TeamDoctor/TeamDoctorList.vue";
+import LoginVue from "./Login/Login.vue";
+import Invoice from "./layout/Admin/Invoice/Invoice.vue";
 export default {
   name: "App",
   components: {
@@ -44,15 +45,19 @@ export default {
     TeamDoctorContainerVue,
     TeamDoctorListVue,
     SidebarBoostrap,
+    LoginVue,
+    Invoice,
   },
   data() {
     return {
-      currentView: "Revenue",
+      isLoggedIn: false,
+      role: null,
     };
   },
   methods: {
-    handleNavigation(view) {
-      this.currentView = view;
+    handleLoginSuccess(role) {
+      this.isLoggedIn = true;
+      this.role = role;
     },
   },
 };

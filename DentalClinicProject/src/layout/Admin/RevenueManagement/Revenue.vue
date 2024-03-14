@@ -1,5 +1,6 @@
 <template>
   <div class="container-Admin">
+    <TheSidebar></TheSidebar>
     <div class="main">
       <div class="main-header">
         <div class="title">
@@ -66,13 +67,14 @@
   </div>
 </template>
 <script>
+import TheSidebar from "../TheSidebar.vue";
 import "https://cdn.jsdelivr.net/npm/chart.js";
 import Chart from "chart.js";
 import "/src/css/Admin/main.css";
 import axios from "axios";
 export default {
   name: "Revenue",
-  components: {},
+  components: { TheSidebar },
   data() {
     return {
       Revenues: [],
@@ -370,7 +372,6 @@ export default {
     width: 20%;
     margin-left: -10px;
     margin-top: 75px;
-
   }
   .overview {
     width: 150%;

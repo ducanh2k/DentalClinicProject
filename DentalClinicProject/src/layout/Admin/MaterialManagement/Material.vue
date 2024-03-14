@@ -1,6 +1,6 @@
 <template>
   <div class="container-Admin">
-    <!-- <TheSidebar></TheSidebar> -->
+    <TheSidebar></TheSidebar>
     <div class="main">
       <div class="main-header">
         <div class="title">
@@ -24,7 +24,7 @@
             @input="filterResults"
           />
           <button class="search-button" @click="filterResults">Tìm kiếm</button>
-          <div class="addnew">
+          <div class="addnew" v-if="role === 'Admin'">
             <button
               class="button-create"
               data-bs-toggle="modal"
@@ -45,8 +45,8 @@
                 <th scope="col">Giá cả</th>
                 <th scope="col">Số lượng</th>
                 <th scope="col">Kiểu</th>
-                <th scope="col"></th>
-                <th scope="col"></th>
+                <th scope="col" v-if="role === 'Admin'"></th>
+                <th scope="col" v-if="role === 'Admin'"></th>
               </tr>
             </thead>
             <tbody>
@@ -60,7 +60,7 @@
                 <td class="data-from-db">{{ material.unitPrice }}</td>
                 <td class="data-from-db">{{ material.quantityInStock }}</td>
                 <td class="data-from-db">{{ material.type }}</td>
-                <td>
+                <td v-if="role === 'Admin'">
                   <button
                     type="button"
                     class="btn btn-light mr-1"
@@ -86,7 +86,7 @@
                     </svg>
                   </button>
                 </td>
-                <td>
+                <td v-if="role === 'Admin'">
                   <button
                     type="button"
                     @click="deleteClick(material.materialId)"
@@ -224,11 +224,11 @@
 <script>
 import "/src/css/Admin/main.css";
 import axios from "axios";
-// import TheSidebar from "../TheSidebar.vue";
+import TheSidebar from "../TheSidebar.vue";
 export default {
   name: "Material",
   components: {
-    // TheSidebar,
+    TheSidebar,
   },
   data() {
     return {
@@ -244,9 +244,14 @@ export default {
       ID: 0,
       currentPage: 1,
       searchText: "",
+      role: "",
+
     };
   },
   methods: {
+    CheckRole() {
+      this.role = localStorage.getItem("userRole");
+    },
     changPageNumber(page) {
       if (page == 1) {
         this.currentPage = 1;
@@ -359,6 +364,8 @@ export default {
   },
   mounted: function () {
     this.fetchMaterial();
+    this.CheckRole();
+
   },
 };
 </script>

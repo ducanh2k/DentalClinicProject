@@ -1,5 +1,6 @@
 <template>
   <div class="container-Admin">
+    <TheSidebar></TheSidebar>
     <div class="main">
       <div class="main-header">
         <div class="title">
@@ -39,14 +40,12 @@
               <tr>
                 <th scope="col">#</th>
                 <th scope="col">Tên người dùng</th>
-                <th scope="col">Ngày tạo</th>
                 <th scope="col">Số điện thoại</th>
                 <th scope="col">Email</th>
                 <th scope="col">Ảnh</th>
                 <th scope="col">Mô tả</th>
                 <th scope="col">Lương</th>
                 <th scope="col">Vai trò</th>
-                <th scope="col">Mật khẩu</th>
                 <th scope="col"></th>
                 <th scope="col"></th>
                 <th scope="col"></th>
@@ -56,14 +55,12 @@
               <tr v-for="user in users" :key="user.userId">
                 <th scope="row">{{ user.userId }}</th>
                 <td class="data-from-db">{{ user.name }}</td>
-                <td class="data-from-db">{{ user.dateCreated }}</td>
                 <td class="data-from-db">{{ user.phone }}</td>
                 <td class="data-from-db">{{ user.email }}</td>
                 <td class="data-from-db">{{ user.img }}</td>
                 <td class="data-from-db">{{ user.description }}</td>
                 <td class="data-from-db">{{ user.salary }}</td>
                 <td class="data-from-db">{{ user.roleName }}</td>
-                <td class="data-from-db">{{ user.password }}</td>
                 <td>
                   <button
                     type="button"
@@ -323,36 +320,323 @@
           <div class="modal-body">
             <div class="input-group md-3">
               <div class="detail-container">
-                <span class="input-group-text"><strong>Chứng Chỉ</strong></span>
+                <span class="input-group-text"
+                  ><strong>Chứng Chỉ</strong>
+                  <div class="new-detail">
+                    <button
+                      type="button"
+                      @click="deleteClick(user.userId)"
+                      class="btn btn-light mr-1"
+                    >
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        width="16"
+                        height="16"
+                        fill="currentColor"
+                        class="bi bi-plus-square"
+                        viewBox="0 0 16 16"
+                      >
+                        <path
+                          d="M14 1a1 1 0 0 1 1 1v12a1 1 0 0 1-1 1H2a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1zM2 0a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2z"
+                        />
+                        <path
+                          d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4"
+                        />
+                      </svg>
+                    </button></div
+                ></span>
+                <!-- 
+                    <button
+                      class="button-create"
+                      data-bs-toggle="modal"
+                      data-bs-target="#exampleModal"
+                      @click="addClick()"
+                    >
+                      Thêm mới người dùng
+                    </button> -->
                 <div class="detailUser" v-for="d in degrees" :key="d.id">
                   {{ d.detail }}
-                </div>
-              </div>
-              <div>
-                <span class="input-group-text"><strong>Kinh nghiệm công việc</strong></span>
-                <div class="detail-container">
-                  <div
-                    class="detailUser"
-                    v-for="d in trainingCourse"
-                    :key="d.id"
-                  >
-                    {{ d.detail }}
+                  <div class="edit-detail">
+                    <button
+                      type="button"
+                      class="btn btn-light mr-1"
+                      data-bs-toggle="modal"
+                      data-bs-target="#exampleModal"
+                      @click="editClick(user)"
+                    >
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        width="16"
+                        height="16"
+                        fill="currentColor"
+                        class="bi bi-pencil-square"
+                        viewBox="0 0 16 16"
+                      >
+                        <path
+                          d="M15.502 1.94a.5.5 0 0 1 0 .706L14.459 3.69l-2-2L13.502.646a.5.5 0 0 1 .707 0l1.293 1.293zm-1.75 2.456-2-2L4.939 9.21a.5.5 0 0 0-.121.196l-.805 2.414a.25.25 0 0 0 .316.316l2.414-.805a.5.5 0 0 0 .196-.12l6.813-6.814z"
+                        />
+                        <path
+                          fill-rule="evenodd"
+                          d="M1 13.5A1.5 1.5 0 0 0 2.5 15h11a1.5 1.5 0 0 0 1.5-1.5v-6a.5.5 0 0 0-1 0v6a.5.5 0 0 1-.5.5h-11a.5.5 0 0 1-.5-.5v-11a.5.5 0 0 1 .5-.5H9a.5.5 0 0 0 0-1H2.5A1.5 1.5 0 0 0 1 2.5z"
+                        />
+                      </svg>
+                    </button>
+                  </div>
+                  <div class="edit-detail">
+                    <button
+                      type="button"
+                      @click="deleteClick(user.userId)"
+                      class="btn btn-light mr-1"
+                    >
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        width="16"
+                        height="16"
+                        fill="currentColor"
+                        class="bi bi-trash-fill"
+                        viewBox="0 0 16 16"
+                      >
+                        <path
+                          d="M2.5 1a1 1 0 0 0-1 1v1a1 1 0 0 0 1 1H3v9a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2V4h.5a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1H10a1 1 0 0 0-1-1H7a1 1 0 0 0-1 1zm3 4a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-1 0v-7a.5.5 0 0 1 .5-.5M8 5a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-1 0v-7A.5.5 0 0 1 8 5m3 .5v7a.5.5 0 0 1-1 0v-7a.5.5 0 0 1 1 0"
+                        />
+                      </svg>
+                    </button>
                   </div>
                 </div>
               </div>
-              <div>
-                <span class="input-group-text"><strong>Lĩnh vực chuyên môn</strong></span>
-                <div class="detail-container">
-                  <div class="detailUser" v-for="d in experties" :key="d.id">
-                    {{ d.detail }}
+              <div class="detail-container">
+                <span class="input-group-text"
+                  ><strong>Kinh nghiệm công việc</strong>
+                  <div class="new-detail">
+                    <button
+                      type="button"
+                      @click="deleteClick(user.userId)"
+                      class="btn btn-light mr-1"
+                    >
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        width="16"
+                        height="16"
+                        fill="currentColor"
+                        class="bi bi-plus-square"
+                        viewBox="0 0 16 16"
+                      >
+                        <path
+                          d="M14 1a1 1 0 0 1 1 1v12a1 1 0 0 1-1 1H2a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1zM2 0a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2z"
+                        />
+                        <path
+                          d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4"
+                        />
+                      </svg>
+                    </button></div
+                ></span>
+                <div class="detailUser" v-for="d in trainingCourse" :key="d.id">
+                  {{ d.detail }}
+                  <div class="edit-detail">
+                    <button
+                      type="button"
+                      class="btn btn-light mr-1"
+                      data-bs-toggle="modal"
+                      data-bs-target="#exampleModal"
+                      @click="editClick(user)"
+                    >
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        width="16"
+                        height="16"
+                        fill="currentColor"
+                        class="bi bi-pencil-square"
+                        viewBox="0 0 16 16"
+                      >
+                        <path
+                          d="M15.502 1.94a.5.5 0 0 1 0 .706L14.459 3.69l-2-2L13.502.646a.5.5 0 0 1 .707 0l1.293 1.293zm-1.75 2.456-2-2L4.939 9.21a.5.5 0 0 0-.121.196l-.805 2.414a.25.25 0 0 0 .316.316l2.414-.805a.5.5 0 0 0 .196-.12l6.813-6.814z"
+                        />
+                        <path
+                          fill-rule="evenodd"
+                          d="M1 13.5A1.5 1.5 0 0 0 2.5 15h11a1.5 1.5 0 0 0 1.5-1.5v-6a.5.5 0 0 0-1 0v6a.5.5 0 0 1-.5.5h-11a.5.5 0 0 1-.5-.5v-11a.5.5 0 0 1 .5-.5H9a.5.5 0 0 0 0-1H2.5A1.5 1.5 0 0 0 1 2.5z"
+                        />
+                      </svg>
+                    </button>
+                  </div>
+                  <div class="edit-detail">
+                    <button
+                      type="button"
+                      @click="deleteClick(user.userId)"
+                      class="btn btn-light mr-1"
+                    >
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        width="16"
+                        height="16"
+                        fill="currentColor"
+                        class="bi bi-trash-fill"
+                        viewBox="0 0 16 16"
+                      >
+                        <path
+                          d="M2.5 1a1 1 0 0 0-1 1v1a1 1 0 0 0 1 1H3v9a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2V4h.5a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1H10a1 1 0 0 0-1-1H7a1 1 0 0 0-1 1zm3 4a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-1 0v-7a.5.5 0 0 1 .5-.5M8 5a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-1 0v-7A.5.5 0 0 1 8 5m3 .5v7a.5.5 0 0 1-1 0v-7a.5.5 0 0 1 1 0"
+                        />
+                      </svg>
+                    </button>
                   </div>
                 </div>
               </div>
-              <div>
-                <span class="input-group-text"><strong>Ngôn ngữ</strong></span>
-                <div class="detail-container">
-                  <div class="detailUser" v-for="d in language" :key="d.id">
-                    {{ d.detail }}
+              <div class="detail-container">
+                <div>
+                  <span class="input-group-text"
+                    ><strong>Lĩnh vực chuyên môn</strong>
+                    <div class="new-detail">
+                      <button
+                        type="button"
+                        @click="deleteClick(user.userId)"
+                        class="btn btn-light mr-1"
+                      >
+                        <svg
+                          xmlns="http://www.w3.org/2000/svg"
+                          width="16"
+                          height="16"
+                          fill="currentColor"
+                          class="bi bi-plus-square"
+                          viewBox="0 0 16 16"
+                        >
+                          <path
+                            d="M14 1a1 1 0 0 1 1 1v12a1 1 0 0 1-1 1H2a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1zM2 0a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2z"
+                          />
+                          <path
+                            d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4"
+                          />
+                        </svg>
+                      </button></div
+                  ></span>
+                  <div class="detail-container">
+                    <div class="detailUser" v-for="d in experties" :key="d.id">
+                      {{ d.detail }}
+                      <div class="edit-detail">
+                        <button
+                          type="button"
+                          class="btn btn-light mr-1"
+                          data-bs-toggle="modal"
+                          data-bs-target="#exampleModal"
+                          @click="editClick(user)"
+                        >
+                          <svg
+                            xmlns="http://www.w3.org/2000/svg"
+                            width="16"
+                            height="16"
+                            fill="currentColor"
+                            class="bi bi-pencil-square"
+                            viewBox="0 0 16 16"
+                          >
+                            <path
+                              d="M15.502 1.94a.5.5 0 0 1 0 .706L14.459 3.69l-2-2L13.502.646a.5.5 0 0 1 .707 0l1.293 1.293zm-1.75 2.456-2-2L4.939 9.21a.5.5 0 0 0-.121.196l-.805 2.414a.25.25 0 0 0 .316.316l2.414-.805a.5.5 0 0 0 .196-.12l6.813-6.814z"
+                            />
+                            <path
+                              fill-rule="evenodd"
+                              d="M1 13.5A1.5 1.5 0 0 0 2.5 15h11a1.5 1.5 0 0 0 1.5-1.5v-6a.5.5 0 0 0-1 0v6a.5.5 0 0 1-.5.5h-11a.5.5 0 0 1-.5-.5v-11a.5.5 0 0 1 .5-.5H9a.5.5 0 0 0 0-1H2.5A1.5 1.5 0 0 0 1 2.5z"
+                            />
+                          </svg>
+                        </button>
+                      </div>
+                      <div class="edit-detail">
+                        <button
+                          type="button"
+                          @click="deleteClick(user.userId)"
+                          class="btn btn-light mr-1"
+                        >
+                          <svg
+                            xmlns="http://www.w3.org/2000/svg"
+                            width="16"
+                            height="16"
+                            fill="currentColor"
+                            class="bi bi-trash-fill"
+                            viewBox="0 0 16 16"
+                          >
+                            <path
+                              d="M2.5 1a1 1 0 0 0-1 1v1a1 1 0 0 0 1 1H3v9a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2V4h.5a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1H10a1 1 0 0 0-1-1H7a1 1 0 0 0-1 1zm3 4a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-1 0v-7a.5.5 0 0 1 .5-.5M8 5a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-1 0v-7A.5.5 0 0 1 8 5m3 .5v7a.5.5 0 0 1-1 0v-7a.5.5 0 0 1 1 0"
+                            />
+                          </svg>
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="detail-container">
+                <div>
+                  <span class="input-group-text"
+                    ><strong>Ngôn ngữ</strong>
+                    <div class="new-detail">
+                      <button
+                        type="button"
+                        @click="deleteClick(user.userId)"
+                        class="btn btn-light mr-1"
+                      >
+                        <svg
+                          xmlns="http://www.w3.org/2000/svg"
+                          width="16"
+                          height="16"
+                          fill="currentColor"
+                          class="bi bi-plus-square"
+                          viewBox="0 0 16 16"
+                        >
+                          <path
+                            d="M14 1a1 1 0 0 1 1 1v12a1 1 0 0 1-1 1H2a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1zM2 0a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2z"
+                          />
+                          <path
+                            d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4"
+                          />
+                        </svg>
+                      </button></div
+                  ></span>
+                  <div class="detail-container">
+                    <div class="detailUser" v-for="d in language" :key="d.id">
+                      {{ d.detail }}
+                      <div class="edit-detail">
+                        <button
+                          type="button"
+                          class="btn btn-light mr-1"
+                          data-bs-toggle="modal"
+                          data-bs-target="#exampleModal"
+                          @click="editClick(user)"
+                        >
+                          <svg
+                            xmlns="http://www.w3.org/2000/svg"
+                            width="16"
+                            height="16"
+                            fill="currentColor"
+                            class="bi bi-pencil-square"
+                            viewBox="0 0 16 16"
+                          >
+                            <path
+                              d="M15.502 1.94a.5.5 0 0 1 0 .706L14.459 3.69l-2-2L13.502.646a.5.5 0 0 1 .707 0l1.293 1.293zm-1.75 2.456-2-2L4.939 9.21a.5.5 0 0 0-.121.196l-.805 2.414a.25.25 0 0 0 .316.316l2.414-.805a.5.5 0 0 0 .196-.12l6.813-6.814z"
+                            />
+                            <path
+                              fill-rule="evenodd"
+                              d="M1 13.5A1.5 1.5 0 0 0 2.5 15h11a1.5 1.5 0 0 0 1.5-1.5v-6a.5.5 0 0 0-1 0v6a.5.5 0 0 1-.5.5h-11a.5.5 0 0 1-.5-.5v-11a.5.5 0 0 1 .5-.5H9a.5.5 0 0 0 0-1H2.5A1.5 1.5 0 0 0 1 2.5z"
+                            />
+                          </svg>
+                        </button>
+                      </div>
+                      <div class="edit-detail">
+                        <button
+                          type="button"
+                          @click="deleteClick(user.userId)"
+                          class="btn btn-light mr-1"
+                        >
+                          <svg
+                            xmlns="http://www.w3.org/2000/svg"
+                            width="16"
+                            height="16"
+                            fill="currentColor"
+                            class="bi bi-trash-fill"
+                            viewBox="0 0 16 16"
+                          >
+                            <path
+                              d="M2.5 1a1 1 0 0 0-1 1v1a1 1 0 0 0 1 1H3v9a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2V4h.5a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1H10a1 1 0 0 0-1-1H7a1 1 0 0 0-1 1zm3 4a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-1 0v-7a.5.5 0 0 1 .5-.5M8 5a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-1 0v-7A.5.5 0 0 1 8 5m3 .5v7a.5.5 0 0 1-1 0v-7a.5.5 0 0 1 1 0"
+                            />
+                          </svg>
+                        </button>
+                      </div>
+                    </div>
                   </div>
                 </div>
               </div>
@@ -366,10 +650,13 @@
 
 <script>
 import "/src/css/Admin/main.css";
+import TheSidebar from "../TheSidebar.vue";
 import axios from "axios";
 export default {
   name: "Account",
-  components: {},
+  components: {
+    TheSidebar,
+  },
   data() {
     return {
       users: [],
@@ -396,6 +683,7 @@ export default {
       trainingCourse: [],
       experties: [],
       language: [],
+      detail:"",
     };
   },
   computed: {
@@ -417,8 +705,38 @@ export default {
     },
   },
   methods: {
+    NewCerti() {
+      axios
+        .post("https://localhost:7034/api/User", {
+          name: this.name,
+          phone: this.phone,
+          email: this.email,
+          img: this.img,
+          description: this.description,
+          salary: this.salary,
+          roleId: this.roleId,
+          roleName: this.role,
+          deleteFlag: false,
+          password: this.password,
+        })
+        .then((response) => {
+          alert(response.data);
+          this.fetchUsers();
+        });
+    },
+    EditCerti() {},
+    DeleteCerti() {},
+    NewExperties() {},
+    EditExperties() {},
+    DeleteExperties() {},
+    NewLang() {},
+    EditLang() {},
+    DeleteLang() {},
+    NewTrainingCourses() {},
+    EditTrainingCourses() {},
+    DeleteTrainingCourses() {},
     ViewDetail(user) {
-      console.log(user.userId);
+      this.ID = user.userId;
       let apiURL =
         "https://localhost:7034/api/User/degree?userId=" + user.userId;
       axios
@@ -519,7 +837,7 @@ export default {
       this.deleteFlag = u.deleteFlag;
       this.password = u.password;
     },
-      createClick() {
+    createClick() {
       if (this.role == "doctor") {
         this.roleId = 3;
       } else if (this.role == "staff") {
@@ -634,8 +952,9 @@ export default {
   word-wrap: break-word;
 }
 .detailUser {
+  display: flex;
   margin-right: 40px;
-  margin-bottom: 3px;
+  margin-bottom: 10px;
 }
 .input-group-text {
   margin-top: 20px;
@@ -650,10 +969,14 @@ export default {
   margin-right: 80px;
 }
 .modal-content {
-  width: 1000px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-left: -130px;
+  width: 1100px;
 }
 .modal-body {
-  width: 1000px;
+  width: 1100px;
 }
 .btnRole-container {
   margin-right: 120px;
@@ -665,10 +988,18 @@ export default {
 .modal-body {
   height: auto;
 }
-.detailUser::before{
-content: '•';
-padding-right: 8px;
-color: black;
-font-size: large;
+.detailUser::before {
+  content: "•";
+  padding-right: 8px;
+  color: black;
+  font-size: large;
+}
+.edit-detail {
+  float: right;
+  margin-top: -10px;
+  margin-bottom: 5px;
+}
+.detail-container {
+  /* display: flex; */
 }
 </style>

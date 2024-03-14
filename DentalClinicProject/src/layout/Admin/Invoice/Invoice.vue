@@ -23,14 +23,14 @@
             @input="filterResults"
           />
           <button class="search-button" @click="filterResults">Tìm kiếm</button>
-          <div class="addnew" v-if="role === 'Admin' || role === 'Staff'">
+          <div class="addnew">
             <button
               class="button-create"
               data-bs-toggle="modal"
               data-bs-target="#exampleModal"
               @click="addClick()"
             >
-              Thêm mới lịch hẹn
+              Thêm mới hóa đơn
             </button>
           </div>
         </div>
@@ -39,32 +39,34 @@
             <thead>
               <tr>
                 <th scope="col">#</th>
-                <th scope="col">Nhân viên</th>
-                <th scope="col">Bệnh nhân</th>
-                <th scope="col">Bác sĩ</th>
-                <th scope="col">Ngày tiếp nhận</th>
-                <th scope="col">Ghi chú</th>
+                <th scope="col">Tên khách hàng</th>
+                <th scope="col">Tên nhân viên</th>
+                <th scope="col">Ngày xuất</th>
+                <th scope="col">Khuyến mãi</th>
                 <th scope="col">Trạng thái</th>
-                <th scope="col" v-if="role === 'Admin' || role === 'Staff'"></th>
-                <th scope="col" v-if="role === 'Admin'"></th>
+                <th scope="col">Ghi chú</th>
+                <th scope="col">Phương thức thanh toán</th>
+                <th scope="col"></th>
+                <th scope="col"></th>
               </tr>
             </thead>
             <tbody>
-              <tr v-for="(a, index) in appointments" :key="a.appointmentId">
+              <tr v-for="(invoice, index) in invoices" :key="invoice.invoiceId">
                 <th scope="row">{{ index + 1 }}</th>
-                <td class="data-from-db">{{ a.employeeName }}</td>
-                <td class="data-from-db">{{ a.patientName }}</td>
-                <td class="data-from-db">{{ a.doctorName }}</td>
-                <td class="data-from-db">{{ a.datetime }}</td>
-                <td class="data-from-db">{{ a.note }}</td>
-                <td class="data-from-db">{{ a.status }}</td>
-                <td v-if="role === 'Admin' || role === 'Staff'">
+                <td>{{ invoice.customerName }}</td>
+                <td>{{ invoice.staffName }}</td>
+                <td>{{ invoice.date }}</td>
+                <td>{{ invoice.discount }}</td>
+                <td>{{ invoice.status }}</td>
+                <td>{{ invoice.comment }}</td>
+                <td>{{ invoice.paymentType }}</td>
+                <td>
                   <button
                     type="button"
                     class="btn btn-light mr-1"
                     data-bs-toggle="modal"
                     data-bs-target="#exampleModal"
-                    @click="editClick(a)"
+                    @click="editClick(invoice)"
                   >
                     <svg
                       xmlns="http://www.w3.org/2000/svg"
@@ -84,10 +86,10 @@
                     </svg>
                   </button>
                 </td>
-                <td v-if="role === 'Admin'">
+                <td>
                   <button
                     type="button"
-                    @click="deleteClick(a.appointmentId)"
+                    @click="deleteClick(invoice.invoiceId)"
                     class="btn btn-light mr-1"
                   >
                     <svg
@@ -109,7 +111,7 @@
           </table>
         </div>
         <div class="under-table">
-          <div class="sum__staff">Tổng số Appoitment: <strong>10</strong></div>
+          <div class="sum__staff">Tổng số hóa đơn: <strong>10</strong></div>
           <div class="pagination">
             <li><a @click="changPageNumber(1)" class="page-1">1</a></li>
             <li><a @click="changPageNumber(2)" class="page-2">2</a></li>
@@ -139,56 +141,35 @@
             <div class="input-group md-3">
               <div>
                 <span class="input-group-text"
+                  ><strong>Mã khách hàng</strong></span
+                >
+                <input
+                  type="text"
+                  class="form-control"
+                  v-model="customerId"
+                  placeholder="Nhập mã khách hàng"
+                />
+              </div>
+              <div>
+                <span class="input-group-text"
                   ><strong>Mã nhân viên</strong></span
                 >
                 <input
                   type="text"
                   class="form-control"
-                  v-model="employeeId"
+                  v-model="staffId"
                   placeholder="Nhập mã nhân viên"
                 />
               </div>
-
               <div>
                 <span class="input-group-text"
-                  ><strong>Mã bệnh nhân</strong></span
+                  ><strong>Khuyến mãi</strong></span
                 >
                 <input
                   type="text"
                   class="form-control"
-                  v-model="patientId"
-                  placeholder="Nhập mã bệnh nhân"
-                />
-              </div>
-
-              <div>
-                <span class="input-group-text"><strong>Mã bác sĩ</strong></span>
-                <input
-                  type="text"
-                  class="form-control"
-                  v-model="doctorId"
-                  placeholder="Nhập mã bệnh nhân"
-                />
-              </div>
-
-              <div>
-                <span class="input-group-text"
-                  ><strong>Ngày tiếp nhận</strong></span
-                >
-                <input
-                  type="text"
-                  class="form-control"
-                  v-model="datetime"
-                  placeholder="Nhập ngày tiếp nhận"
-                />
-              </div>
-              <div>
-                <span class="input-group-text"><strong>Ghi chú</strong></span>
-                <input
-                  type="text"
-                  class="form-control"
-                  v-model="note"
-                  placeholder="Nhập ghi chú"
+                  v-model="discount"
+                  placeholder="Nhập khuyến mãi"
                 />
               </div>
               <div>
@@ -204,11 +185,36 @@
               </div>
               <div>
                 <span class="input-group-text"
+                  ><strong>Mã phương thức thanh toán</strong></span
+                >
+                <input
+                  type="text"
+                  class="form-control"
+                  v-model="paymentId"
+                  placeholder="Nhập mã"
+                />
+              </div>
+              <div v-if="ID === 0">
+                <span class="input-group-text"
                   ><strong>Delete Flag</strong></span
                 >
                 <input type="text" class="form-control" v-model="deleteFlag" />
               </div>
+              <div>
+                <span class="input-group-text"><strong>Ghi chú</strong></span>
+                <textarea
+                  type="text"
+                  class="form-control form-Des"
+                  v-model="comment"
+                  name=""
+                  id=""
+                  cols="30"
+                  rows="10"
+                  placeholder="ghi chú ngắn gọn"
+                ></textarea>
+              </div>
             </div>
+
             <div>
               <button
                 type="button"
@@ -249,45 +255,27 @@ import "/src/css/Admin/main.css";
 import axios from "axios";
 import TheSidebar from "../TheSidebar.vue";
 export default {
-  name: "Appointment",
-  components: { 
-    TheSidebar
-  },
+  name: "Service",
+  components: { TheSidebar },
   data() {
     return {
-      role:"",
-      appointments: [], // Data property to store the servicers data
+      invoices: [],
       modalTitle: "",
-      appointmentId: 0,
-      employeeId: 0,
-      patientId: 0,
-      doctorId: 0,
-      datetime: "",
-      note: "",
-      status: "",
+      invoiceId: 0,
+      customerId: 0,
+      staffId: 0,
+      date: "",
+      discount: 0,
+      status: 0,
+      comment: "",
+      paymentId: 0,
+      deleteFlag: false,
       ID: 0,
       currentPage: 1,
-      deleteFlag: false,
-      pageSize: 10,
-      totalItems: 0,
-      totalPages: 0,
       searchText: "",
     };
   },
-  computed: {
-    totalPage() {
-      return Math.cell(this.users.length / this.pageSize);
-    },
-    paginatedUsers() {
-      const start = (this.currentPage - 1) * this.pageSize;
-      const end = start + this.pageSize;
-      return this.appointments.slice(start, end);
-    },
-  },
   methods: {
-    CheckRole() {
-      this.role = localStorage.getItem("userRole");
-    },
     changPageNumber(page) {
       if (page == 1) {
         this.currentPage = 1;
@@ -298,73 +286,75 @@ export default {
       } else {
         this.currentPage++;
       }
-      this.fetchAppointment();
+      this.fetchInvoices();
     },
-    async fetchAppointment() {
-      let apiURL = "https://localhost:7034/api/Appointment/list";
+    async fetchInvoices() {
+      let apiURL = "https://localhost:7034/api/Invoice/list";
       apiURL =
-        "https://localhost:7034/api/Appointment/list?pageNumber=" +
+        "https://localhost:7034/api/Invoice/list?pageNumber=" +
         this.currentPage;
       axios
         .get(apiURL)
         .then((response) => {
-          this.appointments = response.data;
+          this.invoices = response.data;
         })
         .catch((error) => {
           console.error("There has been a problem");
         });
     },
     addClick() {
-      this.modalTitle = "Thêm người dùng";
+      this.modalTitle = "Thêm hóa đơn";
       this.ID = 0;
-      this.employeeId = 0;
-      this.patientId = 0;
-      (this.doctorId = 0), (this.datetime = "");
-      this.note = "";
-      this.status = "";
+      this.invoiceId = 0;
+      this.customerId = 0;
+      this.staffId = 0;
+      this.discount = 0;
+      this.status = 0;
+      this.comment = 0;
+      this.paymentId = 0;
       this.deleteFlag = false;
     },
     editClick(u) {
-      this.modalTitle = "Sửa thông tin người dùng";
-      this.ID = u.appointmentId;
-      this.employeeId = u.employeeId;
-      this.patientId = u.patientId;
-      (this.doctorId = u.doctorId), (this.datetime = u.datetime);
-      this.note = u.note;
+      this.modalTitle = "Sửa hóa đơn";
+      this.ID = u.invoiceId;
+      this.customerId = u.customerId;
+      this.staffId = u.staffId;
+      this.discount = u.discount;
       this.status = u.status;
+      this.comment = u.comment;
+      this.paymentId = u.paymentId;
       this.deleteFlag = u.deleteFlag;
     },
     createClick() {
       axios
-        .post("https://localhost:7034/api/Appointment", {
-          employeeId: this.employeeId,
-          patientId: this.patientId,
-          doctorId: this.doctorId,
-          datetime: this.datetime,
-          note: this.note,
+        .post("https://localhost:7034/api/Invoice", {
+          customerId: this.customerId,
+          staffId: this.staffId,
+          discount: this.discount,
           status: this.status,
+          comment: this.comment,
+          paymentId: this.paymentId,
           deleteFlag: false,
         })
         .then((response) => {
           alert(response.data);
-          this.fetchAppointment();
+          this.fetchInvoices();
         });
     },
     updateClick() {
       axios
-        .put("https://localhost:7034/api/Appointment/" + this.ID, {
-          // userId: this.userId,
-          employeeId: this.employeeId,
-          patientId: this.patientId,
-          doctorId: this.doctorId,
-          datetime: this.datetime,
-          note: this.note,
+        .put("https://localhost:7034/api/Invoice/" + this.ID, {
+          customerId: this.customerId,
+          staffId: this.staffId,
+          discount: this.discount,
           status: this.status,
+          comment: this.comment,
+          paymentId: this.paymentId,
           deleteFlag: this.deleteFlag,
         })
         .then((response) => {
           alert("Update thành công!");
-          this.fetchAppointment();
+          this.fetchInvoices();
         });
     },
     deleteClick(id) {
@@ -372,22 +362,21 @@ export default {
         return;
       }
       axios
-        .delete("https://localhost:7034/api/Appointment/" + id)
+        .delete("https://localhost:7034/api/Invoice/" + id)
         .then((response) => {
-          this.fetchAppointment();
+          this.fetchInvoices();
           alert("Xóa thành công!");
         })
         .catch((error) => {
           // Handle errors
           console.error("Error:", error);
-          this.message = "Lỗi xóa lịch hẹn.";
+          this.message = "Lỗi xóa hóa đơn.";
         });
     },
     filterResults() {
-      console.log(this.appointments);
       if (this.searchText) {
-        this.appointments = this.appointments.filter((a) =>
-          Object.values(a).some((value) =>
+        this.invoices = this.invoices.filter((invoice) =>
+          Object.values(invoice).some((value) =>
             value
               .toString()
               .toLowerCase()
@@ -395,13 +384,15 @@ export default {
           )
         );
       } else {
-        this.fetchAppointment();
+        this.fetchInvoices();
       }
+    },
+    handleNavigation(view) {
+      this.currentView = view;
     },
   },
   mounted: function () {
-    this.fetchAppointment();
-    this.CheckRole();
+    this.fetchInvoices();
   },
 };
 </script>
@@ -422,11 +413,6 @@ export default {
 }
 .btn-primary {
   margin-top: 3%;
-}
-.table th,
-.table td {
-  min-width: 120px; /* Hoặc một giá trị phù hợp với nội dung của bạn */
-  word-wrap: break-word;
 }
 .input-group-text {
   margin-top: 20px;

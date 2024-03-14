@@ -1,5 +1,6 @@
 <template>
   <div class="container-Admin">
+    <TheSidebar></TheSidebar>
     <div class="main">
       <div class="main-header">
         <div class="title">
@@ -22,7 +23,7 @@
             @input="filterResults"
           />
           <button class="search-button" @click="filterResults">Tìm kiếm</button>
-          <div class="addnew">
+          <!-- <div class="addnew">
             <button
               class="button-create"
               data-bs-toggle="modal"
@@ -31,7 +32,7 @@
             >
               Thêm mới bình luận
             </button>
-          </div>
+          </div> -->
         </div>
         <div class="range">
           <table class="table table-striped table-hover" style="height: 30%">
@@ -41,7 +42,7 @@
                 <th scope="col">Tên người dùng</th>
                 <th scope="col">Nội dung</th>
                 <th scope="col">Tạo ngày</th>
-                <th scope="col"></th>
+                <!-- <th scope="col"></th> -->
                 <th scope="col"></th>
               </tr>
             </thead>
@@ -51,7 +52,7 @@
                 <td class="data-from-db">{{ p.patientName }}</td>
                 <td class="data-from-db">{{ p.commentDetail }}</td>
                 <td class="data-from-db">{{ p.createdAt }}</td>
-                <td>
+                <!-- <td>
                   <button
                     type="button"
                     class="btn btn-light mr-1"
@@ -76,7 +77,7 @@
                       />
                     </svg>
                   </button>
-                </td>
+                </td> -->
                 <td>
                   <button
                     type="button"
@@ -131,7 +132,9 @@
           <div class="modal-body">
             <div class="input-group md-3">
               <div>
-                <span class="input-group-text"><strong>Mã người dùng</strong></span>
+                <span class="input-group-text"
+                  ><strong>Mã người dùng</strong></span
+                >
                 <input
                   type="number"
                   class="form-control"
@@ -191,11 +194,12 @@
 </template>
 
 <script>
+import TheSidebar from "../TheSidebar.vue";
 import "/src/css/Admin/main.css";
 import axios from "axios";
 export default {
   name: "Comment",
-  components: {},
+  components: { TheSidebar },
   data() {
     return {
       comments: [],
@@ -284,7 +288,6 @@ export default {
         });
     },
     updateClick() {
-     
       axios
         .put("https://localhost:7034/api/Comment/" + this.ID, {
           patientId: this.patientId,

@@ -1,5 +1,6 @@
 <template>
   <div class="container-Admin">
+    <TheSidebar></TheSidebar>
     <div class="main">
       <div class="main-header">
         <div class="title">
@@ -319,9 +320,10 @@
 <script>
 import "/src/css/Admin/main.css";
 import axios from "axios";
+import TheSidebar from "../TheSidebar.vue";
 export default {
   name: "Prescription",
-  components: {},
+  components: { TheSidebar },
   data() {
     return {
       prescriptions: [],

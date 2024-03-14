@@ -1,6 +1,6 @@
 <template>
     <div class="container-Admin">
-      <!-- <TheSidebar @navigate="handleNavigation"></TheSidebar> -->
+      <TheSidebar></TheSidebar>
       <div class="main">
         <div class="main-header">
           <div class="title">
@@ -197,11 +197,11 @@
   <script>
   import "/src/css/Admin/main.css";
   import axios from "axios";
-  // import TheSidebar from "../TheSidebar.vue";
+  import TheSidebar from "../TheSidebar.vue";
   export default {
     name: "Service",
     components: {
-      // TheSidebar,
+      TheSidebar,
     },
     data() {
       return {

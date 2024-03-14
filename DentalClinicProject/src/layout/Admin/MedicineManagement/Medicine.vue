@@ -1,6 +1,6 @@
 <template>
   <div class="container-Admin">
-    <!-- <TheSidebar></TheSidebar> -->
+    <TheSidebar></TheSidebar>
     <div class="main">
       <div class="main-header">
         <div class="title">
@@ -24,7 +24,7 @@
             @input="filterResults"
           />
           <button class="search-button" @click="filterResults">Tìm kiếm</button>
-          <div class="addnew">
+          <div class="addnew" v-if="role === 'Admin'">
             <button
               class="button-create"
               data-bs-toggle="modal"
@@ -48,8 +48,8 @@
                 <th scope="col">Số lượng hiện tại</th>
                 <th scope="col">Liều lượng</th>
                 <th scope="col">Mô tả</th>
-                <th scope="col"></th>
-                <th scope="col"></th>
+                <th scope="col" v-if="role === 'Admin'"></th>
+                <th scope="col" v-if="role === 'Admin'"></th>
               </tr>
             </thead>
             <tbody>
@@ -63,7 +63,7 @@
                 <td class="data-from-db">{{ medicine.quantityInStock }}</td>
                 <td class="data-from-db">{{ medicine.dosage }}</td>
                 <td class="data-from-db">{{ medicine.description }}</td>
-                <td>
+                <td v-if="role === 'Admin'">
                   <button
                     type="button"
                     class="btn btn-light mr-1"
@@ -89,7 +89,7 @@
                     </svg>
                   </button>
                 </td>
-                <td>
+                <td v-if="role === 'Admin'">
                   <button
                     type="button"
                     @click="deleteClick(medicine.id)"
@@ -154,7 +154,9 @@
                 />
               </div>
               <div>
-                <span class="input-group-text"><strong>Đơn vị sản xuất</strong></span>
+                <span class="input-group-text"
+                  ><strong>Đơn vị sản xuất</strong></span
+                >
                 <input
                   type="text"
                   class="form-control"
@@ -163,7 +165,9 @@
                 />
               </div>
               <div>
-                <span class="input-group-text"><strong>Ngày hết hạn</strong></span>
+                <span class="input-group-text"
+                  ><strong>Ngày hết hạn</strong></span
+                >
                 <input
                   type="text"
                   class="form-control"
@@ -172,7 +176,9 @@
                 />
               </div>
               <div>
-                <span class="input-group-text"><strong>ngày sản xuất</strong></span>
+                <span class="input-group-text"
+                  ><strong>ngày sản xuất</strong></span
+                >
                 <input
                   type="text"
                   class="form-control"
@@ -200,7 +206,9 @@
                 />
               </div>
               <div>
-                <span class="input-group-text"><strong>Liều lượng</strong></span>
+                <span class="input-group-text"
+                  ><strong>Liều lượng</strong></span
+                >
                 <input
                   type="text"
                   class="form-control"
@@ -209,7 +217,9 @@
                 />
               </div>
               <div v-if="ID != 0">
-                <span class="input-group-text"><strong>Delete Flag</strong></span>
+                <span class="input-group-text"
+                  ><strong>Delete Flag</strong></span
+                >
                 <input type="text" class="form-control" v-model="deleteFlag" />
               </div>
               <div>
@@ -263,10 +273,11 @@
 
 <script>
 import "/src/css/Admin/main.css";
+import TheSidebar from "../TheSidebar.vue";
 import axios from "axios";
 export default {
   name: "Account",
-  components: {},
+  components: { TheSidebar },
   data() {
     return {
       medicines: [], // Data property to store the servicers data
@@ -284,9 +295,13 @@ export default {
       ID: 0,
       currentPage: 1,
       searchText: "",
+      role: "",
     };
   },
   methods: {
+    CheckRole() {
+      this.role = localStorage.getItem("userRole");
+    },
     changPageNumber(page) {
       if (page == 1) {
         this.currentPage = 1;
@@ -412,6 +427,8 @@ export default {
   },
   mounted: function () {
     this.fetchMedicines();
+    this.CheckRole();
+
   },
 };
 </script>

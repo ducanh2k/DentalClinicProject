@@ -1,5 +1,6 @@
 <template>
   <div class="container-Admin">
+    <TheSidebar></TheSidebar>
     <div class="main">
       <div class="main-header">
         <div class="title">
@@ -22,7 +23,7 @@
             @input="filterResults"
           />
           <button class="search-button" @click="filterResults">Tìm kiếm</button>
-          <div class="addnew">
+          <div class="addnew" v-if="role === 'Admin'">
             <button
               class="button-create"
               data-bs-toggle="modal"
@@ -44,8 +45,8 @@
                 <th scope="col">Tên tác giả</th>
                 <th scope="col">Tạo ngày</th>
                 <th scope="col">Feature</th>
-                <th scope="col"></th>
-                <th scope="col"></th>
+                <th scope="col" v-if="role === 'Admin'"></th>
+                <th scope="col" v-if="role === 'Admin'"></th>
               </tr>
             </thead>
             <tbody>
@@ -57,7 +58,7 @@
                 <td>{{ News.authorName }}</td>
                 <td>{{ News.createdAt }}</td>
                 <td>{{ News.featured }}</td>
-                <td>
+                <td v-if="role === 'Admin'">
                   <button
                     type="button"
                     class="btn btn-light mr-1"
@@ -83,7 +84,7 @@
                     </svg>
                   </button>
                 </td>
-                <td>
+                <td v-if="role === 'Admin'">
                   <button
                     type="button"
                     @click="deleteClick(News.id)"
@@ -235,11 +236,13 @@
 <script>
 import "/src/css/Admin/main.css";
 import axios from "axios";
+import TheSidebar from "../TheSidebar.vue";
 export default {
   name: "News",
-  components: {},
+  components: { TheSidebar },
   data() {
     return {
+      role: "",
       Newss: [],
       modalTitle: "",
       tittle: "",
@@ -255,6 +258,9 @@ export default {
     };
   },
   methods: {
+    CheckRole() {
+      this.role = localStorage.getItem("userRole");
+    },
     changPageNumber(page) {
       if (page == 1) {
         this.currentPage = 1;
@@ -368,6 +374,7 @@ export default {
     },
   },
   mounted: function () {
+    this.CheckRole();
     this.fetchNewss();
   },
 };
