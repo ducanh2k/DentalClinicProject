@@ -11,7 +11,7 @@
           <div class="item1-inner">Quản lý dịch vụ</div>
         </router-link>
       </div>
-      <div class="item1" tabindex="2" >
+      <div class="item1" tabindex="2" v-if="role === 'Admin'">
         <router-link to="/user" class="item1__content">
           <div class="item1-inner">Quản lý người dùng</div>
         </router-link>

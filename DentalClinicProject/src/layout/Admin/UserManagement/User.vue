@@ -325,8 +325,10 @@
                   <div class="new-detail">
                     <button
                       type="button"
-                      @click="deleteClick(user.userId)"
+                      @click="CheckActivation('-newCerti')"
                       class="btn btn-light mr-1"
+                      data-bs-toggle="modal"
+                      data-bs-target="#exampleModal2"
                     >
                       <svg
                         xmlns="http://www.w3.org/2000/svg"
@@ -345,15 +347,6 @@
                       </svg>
                     </button></div
                 ></span>
-                <!-- 
-                    <button
-                      class="button-create"
-                      data-bs-toggle="modal"
-                      data-bs-target="#exampleModal"
-                      @click="addClick()"
-                    >
-                      Thêm mới người dùng
-                    </button> -->
                 <div class="detailUser" v-for="d in degrees" :key="d.id">
                   {{ d.detail }}
                   <div class="edit-detail">
@@ -361,8 +354,8 @@
                       type="button"
                       class="btn btn-light mr-1"
                       data-bs-toggle="modal"
-                      data-bs-target="#exampleModal"
-                      @click="editClick(user)"
+                      data-bs-target="#exampleModal2"
+                      @click="CheckActivation(d.id + '-editCerti')"
                     >
                       <svg
                         xmlns="http://www.w3.org/2000/svg"
@@ -385,7 +378,7 @@
                   <div class="edit-detail">
                     <button
                       type="button"
-                      @click="deleteClick(user.userId)"
+                      @click="CheckActivation(d.id + '-deleteCerti')"
                       class="btn btn-light mr-1"
                     >
                       <svg
@@ -410,8 +403,10 @@
                   <div class="new-detail">
                     <button
                       type="button"
-                      @click="deleteClick(user.userId)"
+                      @click="CheckActivation('-newEx')"
                       class="btn btn-light mr-1"
+                      data-bs-toggle="modal"
+                      data-bs-target="#exampleModal2"
                     >
                       <svg
                         xmlns="http://www.w3.org/2000/svg"
@@ -437,8 +432,8 @@
                       type="button"
                       class="btn btn-light mr-1"
                       data-bs-toggle="modal"
-                      data-bs-target="#exampleModal"
-                      @click="editClick(user)"
+                      data-bs-target="#exampleModal2"
+                      @click="CheckActivation(d.id + '-editEx')"
                     >
                       <svg
                         xmlns="http://www.w3.org/2000/svg"
@@ -461,7 +456,7 @@
                   <div class="edit-detail">
                     <button
                       type="button"
-                      @click="deleteClick(user.userId)"
+                      @click="CheckActivation(d.id + '-deleteEx')"
                       class="btn btn-light mr-1"
                     >
                       <svg
@@ -487,8 +482,10 @@
                     <div class="new-detail">
                       <button
                         type="button"
-                        @click="deleteClick(user.userId)"
+                        @click="CheckActivation('newExp')"
                         class="btn btn-light mr-1"
+                        data-bs-toggle="modal"
+                        data-bs-target="#exampleModal2"
                       >
                         <svg
                           xmlns="http://www.w3.org/2000/svg"
@@ -515,8 +512,8 @@
                           type="button"
                           class="btn btn-light mr-1"
                           data-bs-toggle="modal"
-                          data-bs-target="#exampleModal"
-                          @click="editClick(user)"
+                          data-bs-target="#exampleModal2"
+                          @click="CheckActivation(d.id + '-editExp')"
                         >
                           <svg
                             xmlns="http://www.w3.org/2000/svg"
@@ -539,7 +536,7 @@
                       <div class="edit-detail">
                         <button
                           type="button"
-                          @click="deleteClick(user.userId)"
+                          @click="CheckActivation(d.id + '-deleteExp')"
                           class="btn btn-light mr-1"
                         >
                           <svg
@@ -567,8 +564,10 @@
                     <div class="new-detail">
                       <button
                         type="button"
-                        @click="deleteClick(user.userId)"
+                        @click="CheckActivation('-newLang')"
                         class="btn btn-light mr-1"
+                        data-bs-toggle="modal"
+                        data-bs-target="#exampleModal2"
                       >
                         <svg
                           xmlns="http://www.w3.org/2000/svg"
@@ -595,8 +594,8 @@
                           type="button"
                           class="btn btn-light mr-1"
                           data-bs-toggle="modal"
-                          data-bs-target="#exampleModal"
-                          @click="editClick(user)"
+                          data-bs-target="#exampleModal2"
+                          @click="CheckActivation(d.id + '-editLang')"
                         >
                           <svg
                             xmlns="http://www.w3.org/2000/svg"
@@ -619,7 +618,7 @@
                       <div class="edit-detail">
                         <button
                           type="button"
-                          @click="deleteClick(user.userId)"
+                          @click="CheckActivation(d.id + '-deleteLang')"
                           class="btn btn-light mr-1"
                         >
                           <svg
@@ -640,6 +639,71 @@
                   </div>
                 </div>
               </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div
+      class="modal fade"
+      id="exampleModal2"
+      tabindex="-1"
+      aria-labelledby="exampleModalLabel"
+      aria-hidden="true"
+    >
+      <div class="modal-dialog modal-lg modal-dialog-centered">
+        <div class="modal-content">
+          <div class="modal-header">
+            <div class="modal-header1">
+              <h5 class="modal-title" id="exampleModalLabel">
+                <strong>{{ modalTitle }}</strong>
+              </h5>
+            </div>
+          </div>
+          <div class="modal-body">
+            <div class="input-group md-3">
+           
+              <div>
+                <span class="input-group-text"><strong>Mô tả</strong></span>
+                <textarea
+                  placeholder="mô tả sơ lược"
+                  type="text"
+                  class="form-control form-Des"
+                  v-model="detail"
+                  name=""
+                  id=""
+                  cols="30"
+                  rows="10"
+                ></textarea>
+              </div>
+            </div>
+            <div>
+              <button
+                type="button"
+                @click="NewDetailUser()"
+                v-if="status === 0"
+                class="btn btn-primary"
+              >
+                Lưu
+              </button>
+
+              <button
+                type="button"
+                @click="EditDetailUser()"
+                v-if="status != 0"
+                class="btn btn-primary"
+              >
+                Lưu
+              </button>
+              <button
+                type="button"
+                class="btn btn-primary"
+                data-bs-dismiss="modal"
+                aria-label="Close"
+                style="background-color: rgb(77, 75, 75)"
+              >
+                Hủy
+              </button>
             </div>
           </div>
         </div>
@@ -683,7 +747,10 @@ export default {
       trainingCourse: [],
       experties: [],
       language: [],
-      detail:"",
+      detail: "",
+      action: "",
+      empId: 0,
+      status: 0,
     };
   },
   computed: {
@@ -705,37 +772,127 @@ export default {
     },
   },
   methods: {
-    NewCerti() {
+    CheckActivation(actionId) {
+      this.detail = "";
+      let arr = actionId.split("-");
+      this.ID = arr[0];
+      this.action = arr[1];
+      this.status = 1;
+      if (this.action === "newCerti") {
+        this.modalTitle = "Thêm mới";
+        this.status = 0;
+      }
+      if (this.action === "editCerti") {
+        this.modalTitle = "Sửa thông tin";
+      }
+      if (this.action === "newEx") {
+        this.modalTitle = "Thêm mới";
+        this.status = 0;
+      }
+      if (this.action === "editEx") {
+        this.modalTitle = "Sửa thông tin";
+      }
+      if (this.action === "newExp") {
+        this.modalTitle = "Thêm mới";
+        this.status = 0;
+      }
+      if (this.action === "editExp") {
+        this.modalTitle = "Sửa thông tin";
+      }
+      if (this.action === "newLang") {
+        this.modalTitle = "Thêm mới";
+        this.status = 0;
+      }
+      if (this.action === "editLang") {
+        this.modalTitle = "Sửa thông tin";
+      }
+      if (
+        this.action === "deleteCerti" ||
+        this.action === "deleteEx" ||
+        this.action === "deleteExp" ||
+        this.action === "deleteLang"
+      ) {
+        this.DeleteDetailUser(this.ID);
+      }
+    },
+    NewDetailUser() {
+      let apiUrl = "";
+      if (this.action === "newCerti") {
+        apiUrl = "https://localhost:7034/api/User/degree";
+      }
+      if (this.action === "newExp") {
+        apiUrl = "https://localhost:7034/api/User/AreasOfExpertise";
+      }
+      if (this.action === "newEx") {
+        apiUrl = "https://localhost:7034/api/User/ParticipatingTrainingCourses";
+      }
+      if (this.action === "newLang") {
+        apiUrl = "https://localhost:7034/api/User/ForeignLanguages";
+      }
+      console.log(apiUrl);
       axios
-        .post("https://localhost:7034/api/User", {
-          name: this.name,
-          phone: this.phone,
-          email: this.email,
-          img: this.img,
-          description: this.description,
-          salary: this.salary,
-          roleId: this.roleId,
-          roleName: this.role,
-          deleteFlag: false,
-          password: this.password,
+        .post(apiUrl, {
+          employeeId: this.empId,
+          detail: this.detail,
         })
         .then((response) => {
-          alert(response.data);
-          this.fetchUsers();
+          alert("Thêm mới thành công!");
         });
     },
-    EditCerti() {},
-    DeleteCerti() {},
-    NewExperties() {},
-    EditExperties() {},
-    DeleteExperties() {},
-    NewLang() {},
-    EditLang() {},
-    DeleteLang() {},
-    NewTrainingCourses() {},
-    EditTrainingCourses() {},
-    DeleteTrainingCourses() {},
+    EditDetailUser() {
+      let apiUrl = "";
+      if (this.action === "editCerti") {
+        apiUrl = "https://localhost:7034/api/User/degree/";
+      }
+      if (this.action === "editEx") {
+        apiUrl = "https://localhost:7034/api/User/AreasOfExpertise/";
+      }
+      if (this.action === "editExp") {
+        apiUrl =
+          "https://localhost:7034/api/User/ParticipatingTrainingCourses/";
+      }
+      if (this.action === "editLang") {
+        apiUrl = "https://localhost:7034/api/User/ForeignLanguages/";
+      }
+      axios
+        .put(apiUrl + this.ID, {
+          employeeId: this.empId,
+          detail: this.detail,
+        })
+        .then((response) => {
+          alert("Sửa thành công!");
+        });
+    },
+    DeleteDetailUser(id) {
+      let apiUrl = "";
+      if (this.action === "deleteCerti") {
+        apiUrl = "https://localhost:7034/api/User/degree/";
+      }
+      if (this.action === "deleteExp") {
+        apiUrl = "https://localhost:7034/api/User/AreasOfExpertise/";
+      }
+      if (this.action === "deleteEx") {
+        apiUrl =
+          "https://localhost:7034/api/User/ParticipatingTrainingCourses/";
+      }
+      if (this.action === "deleteLang") {
+        apiUrl = "https://localhost:7034/api/User/ForeignLanguages/";
+      }
+      if (!confirm("Bạn có chắc không ?")) {
+        return;
+      }
+      console.log(apiUrl + id);
+      axios
+        .delete(apiUrl + id)
+        .then((response) => {
+          alert("Xóa thành công!");
+        })
+        .catch((error) => {
+          this.message = "Lỗi không xóa được.";
+        });
+    },
     ViewDetail(user) {
+      this.empId = user.userId;
       this.ID = user.userId;
       let apiURL =
         "https://localhost:7034/api/User/degree?userId=" + user.userId;
@@ -873,7 +1030,6 @@ export default {
       }
       axios
         .put("https://localhost:7034/api/User/" + this.ID, {
-          // userId: this.userId,
           name: this.name,
           dateCreated: this.dateCreated,
           phone: this.phone,

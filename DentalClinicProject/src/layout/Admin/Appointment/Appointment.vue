@@ -315,7 +315,7 @@ export default {
         });
     },
     addClick() {
-      this.modalTitle = "Thêm người dùng";
+      this.modalTitle = "Thêm lịch hẹn";
       this.ID = 0;
       this.employeeId = 0;
       this.patientId = 0;
@@ -325,7 +325,7 @@ export default {
       this.deleteFlag = false;
     },
     editClick(u) {
-      this.modalTitle = "Sửa thông tin người dùng";
+      this.modalTitle = "Sửa thông tin lich hẹn";
       this.ID = u.appointmentId;
       this.employeeId = u.employeeId;
       this.patientId = u.patientId;
@@ -353,7 +353,6 @@ export default {
     updateClick() {
       axios
         .put("https://localhost:7034/api/Appointment/" + this.ID, {
-          // userId: this.userId,
           employeeId: this.employeeId,
           patientId: this.patientId,
           doctorId: this.doctorId,
@@ -438,6 +437,7 @@ export default {
 }
 .modal-content {
   width: 1000px;
+  margin-left: -80px;
 }
 .modal-body {
   width: 1000px;
