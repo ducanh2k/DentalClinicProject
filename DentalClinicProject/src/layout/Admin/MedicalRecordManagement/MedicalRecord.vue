@@ -9,7 +9,7 @@
           </div>
           <div class="title__company">Nha khoa Dentistry</div>
           <div class="exit__button">
-            <i class="fa-solid fa-right-from-bracket fa-xl"></i>
+            <i class="fa-solid fa-right-from-bracket fa-xl" @click="logOut()"></i>
           </div>
         </div>
       </div>
@@ -24,14 +24,6 @@
           />
           <button class="search-button" @click="filterResults">Tìm kiếm</button>
           <div class="addnew">
-            <!-- <button
-              class="button-create"
-              data-bs-toggle="modal"
-              data-bs-target="#exampleModal"
-              @click="addClick()"
-            >
-              Thêm mới hồ sơ
-            </button> -->
           </div>
         </div>
         <div class="range">
@@ -40,8 +32,14 @@
               <tr>
                 <th scope="col">#</th>
                 <th scope="col">Tên bệnh nhân</th>
-                <th scope="col" v-if="role === 'Admin' || role === 'Doctor'"></th>
-                <th scope="col" v-if="role === 'Admin' || role === 'Doctor'"></th>
+                <th
+                  scope="col"
+                  v-if="role === 'Admin' || role === 'Doctor'"
+                ></th>
+                <th
+                  scope="col"
+                  v-if="role === 'Admin' || role === 'Doctor'"
+                ></th>
                 <th scope="col"></th>
               </tr>
             </thead>
@@ -300,8 +298,6 @@ export default {
       axios
         .get(apiURL)
         .then((response) => {
-          // this.mrDetails = response.data[0].medicalRecordDetails;
-
           this.mrDetails = response.data[0].medicalRecordDetails.map(
             (detail) => {
               const appointmentIds = detail.appointments.map(
@@ -408,11 +404,14 @@ export default {
         this.fetchMRecords();
       }
     },
+    logOut() {
+      this.$router.push({ name: "Login" });
+      localStorage.removeItem("userRole");
+    },
   },
   mounted: function () {
     this.fetchMRecords();
     this.CheckRole();
-
   },
 };
 </script>

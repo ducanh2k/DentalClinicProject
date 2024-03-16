@@ -9,14 +9,17 @@
           </div>
           <div class="title__company">Nha khoa Dentistry</div>
           <div class="exit__button">
-            <i class="fa-solid fa-right-from-bracket fa-xl"></i>
+            <i
+              class="fa-solid fa-right-from-bracket fa-xl"
+              @click="logOut()"
+            ></i>
           </div>
         </div>
       </div>
       <div class="main-body">
         <div id="dashboard">
           <div class="dropdown-year">
-            <select v-model="selectedYear">
+            <select v-model="selectedYear" @change="onYearChange">
               <option v-for="year in years" :key="year" :value="year">
                 năm {{ year }}
               </option>
@@ -25,39 +28,41 @@
           <div class="overview">
             <div class="revenue">
               <h5>Tổng thu</h5>
-              <h1>{{ revenue }} Triệu</h1>
-              <h5 style="color: rgb(58, 197, 8)">↑ 25%</h5>
+              <h1>{{ totalRevenue }} Triệu</h1>
+              <!-- <h5 style="color: rgb(58, 197, 8)">↑ 25%</h5> -->
             </div>
             <div class="expenses">
               <h5>Tổng chi</h5>
-              <h1>{{ expenses }} Triệu</h1>
-              <h5 style="color: rgb(255, 64, 64)">↓ 30%</h5>
+              <h1>{{ totalExpenses }} Triệu</h1>
+              <!-- <h5 style="color: rgb(255, 64, 64)">↓ 30%</h5> -->
             </div>
             <div class="profit">
               <h5>Lãi/lỗ so với năm ngoái</h5>
               <h1>{{ profit }} Triệu</h1>
-              <h5 style="color: rgb(58, 197, 8)">↑ 25%</h5>
+              <!-- <h5 style="color: rgb(58, 197, 8)">↑ 25%</h5> -->
             </div>
           </div>
         </div>
         <div class="charts">
           <div class="bar-line">
             <div class="first-chart">
-              <div class="Title-chart">Biểu đồ cột 12 tháng</div>
+              <div class="Title-chart">Doanh thu trong 12 tháng</div>
               <canvas id="myChart"></canvas>
             </div>
             <div class="second-chart">
-              <div class="Title-chart">Biểu đồ line 12 tháng</div>
+              <div class="Title-chart">Chi phí trong 12 tháng</div>
               <canvas id="myLineChart"></canvas>
             </div>
           </div>
           <div class="polar-radar">
             <div class="third-chart">
-              <div class="Title-chart">Biểu đồ tròn 12 tháng</div>
+              <div class="Title-chart">Số lượng khách hàng trong 12 tháng</div>
               <canvas id="myPolarAreaChart"></canvas>
             </div>
             <div class="forth-chart">
-              <div class="Title-chart">Biểu đồ radar 12 tháng</div>
+              <div class="Title-chart">
+                Số liệu về Top vật liệu được sử dụng
+              </div>
               <canvas id="myRadarChart"></canvas>
             </div>
           </div>
@@ -77,37 +82,211 @@ export default {
   components: { TheSidebar },
   data() {
     return {
+      months: [],
       Revenues: [],
+      monthsEx: [],
+      totalRevenue: 0,
+      totalRevenueLastYear: 0,
+      totalExpenses: 0,
+      totalExpensesLastYear: 0,
+      totalSpentOfMonth: [],
+      monthsPatient: [],
+      totalPatientsPerMonth: [],
+      totalPayOfMonth: [],
+      topMaterial: [],
+      totalQuantity: [],
+      totalPay: [],
       ToTalAmountInYear: 0,
       TotalAmountInMonth: 0,
       TotalAmountInWeek: 0,
       selectedYear: new Date().getFullYear(),
-      years: [2024, 2023, 2022, 2021],
+      years: [],
+      lastYear: 0,
       revenue: 320,
       expenses: 150,
       profit: 120,
+      minus: 0,
+      minusLast: 0,
     };
   },
   mounted() {
+    if (this.selectedYear === null) {
+      this.selectedYear = 2024;
+    }
+    this.lastYear = this.selectedYear - 1;
+    this.generateLastFiveYears();
+    this.fetchRevenueYearly();
+    this.fetchExpenses();
+    this.fetchPatients();
+    this.fetchTopMaterial();
     this.barChart();
     this.LineChart();
     this.PolarAreaChart();
     this.RadarChart();
   },
   methods: {
+    onYearChange() {
+      if (this.selectedYear === null) {
+        this.selectedYear = 2024;
+      }
+      this.lastYear = this.selectedYear - 1;
+      this.fetchRevenueYearly();
+      this.fetchExpenses();
+      this.fetchPatients();
+      this.fetchTopMaterial();
+    },
+    fetchRevenueYearly() {
+      if (this.selectedYear === null) {
+        this.selectedYear = 2024;
+      }
+      let apiURL =
+        "https://localhost:7034/api/Dashboard/revenue?year=" +
+        this.selectedYear;
+      let apiURLLastYear =
+        "https://localhost:7034/api/Dashboard/revenue?year=" + this.lastYear;
+      axios
+        .get(apiURLLastYear)
+        .then((response) => {
+          this.totalPayOfMonth = response.data.map(
+            (item) => item.totalPayOfMonth
+          );
+          this.totalPayOfMonth = [...new Set(this.totalPayOfMonth)];
+          this.totalRevenueLastYear = this.totalPayOfMonth.reduce(
+            (accumulator, currentValue) => accumulator + currentValue,
+            0
+          );
+        })
+        .catch((error) => {
+          console.error("There has been a problem");
+        });
+      axios
+        .get(apiURL)
+        .then((response) => {
+          this.months = response.data.map((item) => item.month);
+          this.months = [...new Set(this.months)];
+          this.totalPayOfMonth = response.data.map(
+            (item) => item.totalPayOfMonth
+          );
+          this.totalPayOfMonth = [...new Set(this.totalPayOfMonth)];
+          this.totalRevenue = this.totalPayOfMonth.reduce(
+            (accumulator, currentValue) => accumulator + currentValue,
+            0
+          );
+          this.barChart();
+        })
+        .catch((error) => {
+          console.error("There has been a problem");
+        });
+    },
+    fetchExpenses() {
+      if (this.selectedYear === null) {
+        this.selectedYear = 2024;
+      }
+      let apiURL =
+        "https://localhost:7034/api/Dashboard/expense?year=" +
+        this.selectedYear;
+      let apiURLLastYear =
+        "https://localhost:7034/api/Dashboard/expense?year=" + this.lastYear;
+      axios
+        .get(apiURLLastYear)
+        .then((response) => {
+          this.totalSpentOfMonth = response.data.map(
+            (item) => item.totalSpentOfMonth
+          );
+          this.totalSpentOfMonth = [...new Set(this.totalSpentOfMonth)];
+          this.totalExpensesLastYear = this.totalSpentOfMonth.reduce(
+            (accumulator, currentValue) => accumulator + currentValue,
+            0
+          );
+          this.minusLast =
+            this.totalRevenueLastYear - this.totalExpensesLastYear;
+          console.log(this.minusLast);
+        })
+        .catch((error) => {
+          console.error("There has been a problem");
+        });
+      axios
+        .get(apiURL)
+        .then((response) => {
+          this.monthsEx = response.data.map((item) => item.month);
+          this.monthsEx = [...new Set(this.monthsEx)];
+          this.totalSpentOfMonth = response.data.map(
+            (item) => item.totalSpentOfMonth
+          );
+          this.totalSpentOfMonth = [...new Set(this.totalSpentOfMonth)];
+          this.totalExpenses = this.totalSpentOfMonth.reduce(
+            (accumulator, currentValue) => accumulator + currentValue,
+            0
+          );
+          this.minus = this.totalRevenue - this.totalExpenses;
+          this.profit = this.minus - this.minusLast;
+          this.LineChart();
+        })
+        .catch((error) => {
+          console.error("There has been a problem");
+        });
+    },
+    fetchPatients() {
+      if (this.selectedYear === null) {
+        this.selectedYear = 2024;
+      }
+      let apiURL =
+        "https://localhost:7034/api/Dashboard/patient?year=" +
+        this.selectedYear;
+
+      axios
+        .get(apiURL)
+        .then((response) => {
+          this.monthsPatient = response.data.map((item) => item.month);
+          this.monthsPatient = [...new Set(this.monthsPatient)];
+          this.totalPatientsPerMonth = response.data.map(
+            (item) => item.totalPatientsPerMonth
+          );
+          this.totalPatientsPerMonth = [...new Set(this.totalPatientsPerMonth)];
+          this.PolarAreaChart();
+        })
+        .catch((error) => {
+          console.error("There has been a problem");
+        });
+    },
+    fetchTopMaterial() {
+      let apiURL = "https://localhost:7034/api/Dashboard/topMaterial";
+      axios
+        .get(apiURL)
+        .then((response) => {
+          this.topMaterial = response.data.map((item) => item.materialName);
+          this.topMaterial = [...new Set(this.topMaterial)];
+          this.totalQuantity = response.data.map((item) => item.totalQuantity);
+          this.totalQuantity = [...new Set(this.totalQuantity)];
+          this.totalPay = response.data.map((item) => item.totalPay);
+          this.totalPay = [...new Set(this.totalPay)];
+          this.RadarChart();
+        })
+        .catch((error) => {
+          console.error("There has been a problem");
+        });
+    },
+    generateLastFiveYears() {
+      const currentYear = new Date().getFullYear();
+      const year = [];
+      for (let i = 0; i < 5; i++) {
+        year.push(currentYear - i);
+      }
+      this.years = year;
+    },
     barChart() {
       const ctx = document.getElementById("myChart").getContext("2d");
       const myChart = new Chart(ctx, {
         type: "bar",
         data: {
-          labels: ["Red", "Blue", "Yellow", "Green", "Purple", "Orange"],
+          labels: this.months,
           barPercentage: 0.5,
           barThickness: 6,
           maxBarThickness: 8,
           minBarLength: 2,
           datasets: [
             {
-              data: [10, 20, 30, 40, 50, 60, 70],
+              data: this.totalPayOfMonth,
               backgroundColor: [
                 "rgba(255, 99, 132, 0.2)",
                 "rgba(255, 159, 64, 0.2)",
@@ -144,10 +323,10 @@ export default {
       const myChart = new Chart(ctx, {
         type: "line",
         data: {
-          labels: ["Red", "Blue", "Yellow", "Green", "Purple", "Orange"],
+          labels: this.monthsEx,
           datasets: [
             {
-              data: [65, 59, 80, 81, 56, 55, 40],
+              data: this.totalSpentOfMonth,
               fill: false,
               borderColor: "rgb(75, 192, 192)",
               tension: 0.1,
@@ -168,11 +347,11 @@ export default {
       const myChart = new Chart(ctx, {
         type: "polarArea",
         data: {
-          labels: ["Red", "Green", "Yellow", "Grey", "Blue"],
+          labels: this.monthsPatient,
           datasets: [
             {
               label: "My First Dataset",
-              data: [11, 16, 7, 3, 15],
+              data: this.totalPatientsPerMonth,
               backgroundColor: [
                 "rgb(255, 99, 132)",
                 "rgb(75, 192, 192)",
@@ -197,19 +376,11 @@ export default {
       const myChart = new Chart(ctx, {
         type: "radar",
         data: {
-          labels: [
-            "Eating",
-            "Drinking",
-            "Sleeping",
-            "Designing",
-            "Coding",
-            "Cycling",
-            "Running",
-          ],
+          labels: this.topMaterial,
           datasets: [
             {
               label: "My First Dataset",
-              data: [65, 59, 90, 81, 56, 55, 40],
+              data: this.totalQuantity,
               fill: true,
               backgroundColor: "rgba(255, 99, 132, 0.2)",
               borderColor: "rgb(255, 99, 132)",
@@ -220,7 +391,7 @@ export default {
             },
             {
               label: "My Second Dataset",
-              data: [28, 48, 40, 19, 96, 27, 100],
+              data: this.totalPay,
               fill: true,
               backgroundColor: "rgba(54, 162, 235, 0.2)",
               borderColor: "rgb(54, 162, 235)",
@@ -244,6 +415,10 @@ export default {
           },
         },
       });
+    },
+    logOut() {
+      this.$router.push({ name: "Login" });
+      localStorage.removeItem("userRole");
     },
   },
 };

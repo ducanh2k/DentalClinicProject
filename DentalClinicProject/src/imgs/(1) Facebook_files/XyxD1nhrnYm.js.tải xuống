@@ -1,0 +1,4 @@
+;/*FB_PKG_DELIM*/
+
+__d("CometBookmarksRoot.entrypoint",["CometClassicHomeLeftRailContainerQuery$Parameters","JSResourceForInteraction","WebPixelRatio"],(function(a,b,c,d,e,f,g){"use strict";a={getPreloadProps:function(a){a=(a=(a=a.routeProps)==null?void 0:a.isEligibleForProfessionalTools)!=null?a:!1;var b=10;a&&(b-=2);return{queries:{menuContainerQueryReference:{environmentProviderOptions:{ssrBoundary:"root"},parameters:c("CometClassicHomeLeftRailContainerQuery$Parameters"),variables:{isEligibleForProfessionalTools:a,numExploreBookmarks:b,numShortcutBookmarks:5,scale:d("WebPixelRatio").get()}}}}},root:c("JSResourceForInteraction")("CometBookmarksRoot.react").__setRef("CometBookmarksRoot.entrypoint")};g["default"]=a}),98);
+__d("MarketplaceCometSetUpShippingLandingExperienceDialogQuery_facebookRelayOperation",[],(function(a,b,c,d,e,f){e.exports="24882342301409673"}),null);

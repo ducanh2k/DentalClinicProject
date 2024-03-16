@@ -9,7 +9,10 @@
           </div>
           <div class="title__company">Nha khoa Dentistry</div>
           <div class="exit__button">
-            <i class="fa-solid fa-right-from-bracket fa-xl"></i>
+            <i
+              class="fa-solid fa-right-from-bracket fa-xl"
+              @click="logOut()"
+            ></i>
           </div>
         </div>
       </div>
@@ -329,6 +332,10 @@ export default {
       } else {
         this.fetchUsers();
       }
+    },
+    logOut() {
+      this.$router.push({ name: "Login" });
+      localStorage.removeItem("userRole");
     },
   },
   mounted: function () {
