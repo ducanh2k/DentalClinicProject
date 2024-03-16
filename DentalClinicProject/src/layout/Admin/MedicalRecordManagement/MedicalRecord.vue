@@ -9,7 +9,10 @@
           </div>
           <div class="title__company">Nha khoa Dentistry</div>
           <div class="exit__button">
-            <i class="fa-solid fa-right-from-bracket fa-xl" @click="logOut()"></i>
+            <i
+              class="fa-solid fa-right-from-bracket fa-xl"
+              @click="logOut()"
+            ></i>
           </div>
         </div>
       </div>
@@ -23,8 +26,7 @@
             @input="filterResults"
           />
           <button class="search-button" @click="filterResults">Tìm kiếm</button>
-          <div class="addnew">
-          </div>
+          <div class="addnew"></div>
         </div>
         <div class="range">
           <table class="table table-striped table-hover" style="height: 30%">
@@ -230,7 +232,7 @@
                       <th scope="col">Mã hồ sơ</th>
                       <th scope="col">Mã lịch hẹn</th>
                       <th scope="col">Dịch vụ</th>
-                      <th scope="col">Mã đơn thuốc</th>
+                      <th scope="col">Đơn thuốc</th>
                       <th scope="col">Chẩn đoán</th>
                     </tr>
                   </thead>
@@ -238,15 +240,75 @@
                     <tr v-for="(a, index) in mrDetails" :key="a.mrDetailId">
                       <th scope="row">{{ index + 1 }}</th>
                       <td class="data-from-db">{{ a.medicalRecordId }}</td>
-                      <td class="data-from-db">{{ a.appointmentIds }}</td>
+                      <td
+                        class="data-from-db"
+                        @click="showAppointmentDetails(a.appointmentIds)"
+                      >
+                        {{ a.appointmentIds }}
+                      </td>
                       <td class="data-from-db">{{ a.serviceName }}</td>
-                      <td class="data-from-db">{{ a.prescriptionId }}</td>
+                      <td class="data-from-db">{{ a.prescriptionNote }}</td>
                       <td class="data-from-db">{{ a.diagnosis }}</td>
                     </tr>
                   </tbody>
                 </table>
               </div>
             </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- Modal -->
+    <div
+      class="modal fade"
+      id="appointmentModal"
+      tabindex="-1"
+      aria-labelledby="modalLabel"
+      aria-hidden="true"
+    >
+  
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="modalLabel">
+              Thông Tin Chi Tiết Lịch Hẹn
+            </h5>
+            <button
+              type="button"
+              class="btn-close"
+              data-bs-dismiss="modal"
+              aria-label="Close"
+            ></button>
+          </div>
+          <div class="modal-body">
+            <table class="table table-striped table-hover" style="height: 30%">
+              <thead>
+                <tr>
+                  <th scope="col">#</th>
+                  <th scope="col">Ngày nhận</th>
+                  <th scope="col">Bác sĩ</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr
+                  v-for="a in appointmentDetailsList"
+                  :key="a.medicalRecordId"
+                >
+                  <th scope="row">{{ a.medicalRecordId }}</th>
+                  <td class="data-from-db">{{ a.datetime }}</td>
+                  <td class="data-from-db">{{ a.doctorName }}</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <div class="modal-footer">
+            <button
+              type="button"
+              class="btn btn-secondary"
+              data-bs-dismiss="modal"
+            >
+              Đóng
+            </button>
           </div>
         </div>
       </div>
@@ -269,13 +331,29 @@ export default {
       modalTitle: "",
       medicalRecordId: 0,
       patientId: 0,
-      deleteFlag: false,
+      doctorId: 0,
       ID: 0,
       currentPage: 1,
       pageSize: 10,
       totalItems: 0,
       totalPages: 0,
       searchText: "",
+      medicalRecordDetailId: 0,
+      employeeId: 0,
+      employeeName: "",
+      patientId: 0,
+      patientName: "",
+      doctorId: 0,
+      doctorName: "",
+      serviceName: "",
+      servicePay: "",
+      prescriptionId: 0,
+      datetime: "",
+      note: "",
+      status: "",
+      deleteFlag: false,
+      appointmentDetailsList: [],
+      appointmentIds: [],
     };
   },
   computed: {
@@ -292,6 +370,29 @@ export default {
     CheckRole() {
       this.role = localStorage.getItem("userRole");
     },
+    showAppointmentDetails(appointmentIds) {
+      this.fetchAppointmentDetailsForEach(appointmentIds);
+      console.log(appointmentIds);
+      $("#appointmentModal").modal("show");
+    },
+    fetchPrescription() {
+      let apiURL = "https://localhost:7034/api/MedicalRecordDetails/list";
+      axios
+        .get(apiURL)
+        .then((response) => {})
+        .catch((error) => {
+          console.error("There has been a problem");
+        });
+    },
+    fetchAppointment(id) {
+      let apiURL = "https://localhost:7034/api/Appointment/" + id;
+      axios
+        .get(apiURL)
+        .then((response) => {})
+        .catch((error) => {
+          console.error("There has been a problem");
+        });
+    },
     ViewDetail(mRecord) {
       let apiURL =
         "https://localhost:7034/api/MedicalRecord/" + mRecord.medicalRecordId;
@@ -300,7 +401,7 @@ export default {
         .then((response) => {
           this.mrDetails = response.data[0].medicalRecordDetails.map(
             (detail) => {
-              const appointmentIds = detail.appointments.map(
+              let appointmentIds = detail.appointments.map(
                 (appointment) => appointment.appointmentId
               );
               return {
@@ -313,6 +414,22 @@ export default {
         .catch((error) => {
           console.error("There has been a problem");
         });
+    },
+    fetchAppointmentDetailsForEach(appointmentIds) {
+      const newArray = appointmentIds.map((a) => {
+        return a; // Ví dụ: Nhân đôi giá trị của phần tử
+      });
+      this.appointmentDetailsList = [];
+      newArray.forEach((appointmentId) => {
+        axios
+          .get(`https://localhost:7034/api/Appointment/${appointmentId}`)
+          .then((response) => {
+            this.appointmentDetailsList.push(response.data);
+          })
+          .catch((error) => {
+            console.error("Error fetching appointment details:", error);
+          });
+      });
     },
     changPageNumber(page) {
       if (page == 1) {
@@ -476,4 +593,5 @@ export default {
   color: black;
   font-size: large;
 }
+
 </style>
