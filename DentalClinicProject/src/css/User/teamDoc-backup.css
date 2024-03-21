@@ -1,13 +1,10 @@
-.container-docTeam {
-  width: 100%;
-  height: 1500px;
-}
 .container-contact-main {
-  /* margin-top: 1200px; */
+  margin-top: 600px;
   width: 100%;
   background-color: rgb(216, 172, 83);
   box-sizing: border-box;
 }
+
 .DoctorName {
   display: flex;
   justify-content: center;
@@ -22,9 +19,11 @@
   background-color: black;
   margin-top: -100px;
 }
+
 .carousel-item {
   margin-left: 60px;
 }
+
 .carousel-item {
   margin-left: 0px;
   margin-top: 50px;
@@ -32,89 +31,32 @@
   width: 10%;
   height: 120%;
 }
-.pic-doc {
-  width: 100%;
-  height: 50%;
-  background-image: url("../../imgs/Bac-si-nha-khoa-tre-2.webp");
-  background-size: cover;
-  background-repeat: no-repeat;
-  background-position: top;
-}
-.heade-doc {
-  font-size: 3rem;
-  color: #fff;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  position: relative;
-  margin-top: -750px;
-  width: 100%;
-  height: 50%;
-  background: rgba(155, 155, 155, 0.5);
-  background-color: rgba(197, 80, 2, 0.185);
-}
 
-.listDoc {
-  width: 100%;
-  height: 50%;
-}
-.carousel {
-  display: flex;
-  flex-direction: row;
-  width: 100%;
-  height: 100%;
-}
-.carousel-inner {
-  padding-left: 20px;
-  display: flex;
-  width: 100%;
-  height: 100%;
-}
-
-.caro-contain {
-  display: inline-block;
-  margin-left: 47px;
-  width: 20%;
-  height: 40%;
-}
 .d-block {
-  width: 100%;
   height: 80%;
-  background-image: url("../../imgs/BS.\ Bùi\ Thị\ Bích\ Loan.jpg");
-  background-size: cover;
-  background-repeat: no-repeat;
-  background-position: top;
 }
 .d-block3 {
-  width: 100%;
   height: 80%;
-  background-image: url("../../imgs/BS.Nguyễn\ Minh\ Thành.jpg");
-  background-size: cover;
-  background-repeat: no-repeat;
-  background-position: top;
 }
 .d-block2 {
-  width: 100%;
   height: 80%;
-  background-image: url("../../imgs/BS.\ Nguyễn\ Thanh\ Tùng.png");
-  background-size: cover;
-  background-repeat: no-repeat;
-  background-position: top;
 }
 .d-block1 {
-  width: 100%;
   height: 80%;
-  background-image: url("../../imgs/BS.\ Đinh\ Thị\ Dung.jpg");
-  background-size: cover;
-  background-repeat: no-repeat;
-  background-position: top;
+  }
+.doc-detail {
+  margin-top: -600px;
+  display: flex;
+  background-color: rgb(228, 228, 230);
+  width: 100%;
+  height: 730px;
 }
 .doc-picture {
   position: relative;
   left: 120px;
-  top: 0px;
+  top: 20px;
   width: 30%;
-  height: 77% ;
+  height: 87%;
   background-image: url("../../imgs/TS.BS.Nguyễn\ Khánh\ Long.jpg");
   background-size: cover;
   background-repeat: no-repeat;

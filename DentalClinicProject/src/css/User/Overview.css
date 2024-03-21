@@ -1,0 +1,155 @@
+.container-overview {
+  height: 360vh;
+}
+.pic-overview {
+  width: 100%;
+  height: 23%;
+  background-image: url("../../imgs/Image-1-1.jpg");
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: top;
+}
+.header-overview {
+  font-family: "Lucida Sans", "Lucida Sans Regular", "Lucida Grande",
+    "Lucida Sans Unicode", Geneva, Verdana, sans-serif;
+  margin-top: -484px;
+  font-size: 5rem;
+  color: #fff;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+  width: 100%;
+  height: 23%;
+  background: rgba(155, 155, 155, 0.5);
+  background-color: rgba(197, 80, 2, 0.185);
+}
+.info-overview {
+  border-radius: 20px;
+  border: 1px solid rgb(214, 214, 214);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 11%;
+}
+.infoInner {
+  margin-top: 20px;
+  margin-left: 30px;
+  height: 70%;
+  width: 20%;
+}
+.icon-number {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 60%;
+  width: 80%;
+}
+.icon-number1 {
+}
+.icon-number4 {
+  margin-left: 2%;
+  font-size: 3rem;
+  font-weight: bold;
+}
+.aboutUs-overview {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 21%;
+  width: 100%;
+}
+.header-left-text {
+  color: rgb(194, 161, 104);
+}
+.overview-left {
+  margin-left: -30px;
+  margin-right: 50px;
+  width: 45%;
+  height: 60%;
+}
+.overview-right {
+  width: 40%;
+  height: 60%;
+  background-image: url("../../imgs/Image-1-1.jpg");
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center;
+}
+.overview-mission {
+  height: 21%;
+}
+.mission-content-header {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: rgb(194, 161, 104);
+}
+.mission-content-inner {
+  display: flex;
+}
+.inner-icon {
+  margin-right: 10px;
+  margin-left: 10px;
+}
+.inner-text {
+  margin-left: 10px;
+}
+.mission-quote {
+  height: 25%;
+  margin-left: 15px;
+  margin-right: 15px;
+  border: 2px solid rgb(194, 161, 104);
+  border-radius: 10px;
+}
+.quote-content {
+  margin-top: -10px;
+  font-weight: bold;
+  font-style: italic;
+  font-size: 2.5rem;
+}
+.quote-icon {
+  margin-top: -20px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.quote-content {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.strength-overview {
+  height: 25%;
+  width: 100%;
+}
+.mission-top {
+  width: 100%;
+  height: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.mission-down {
+  height: 50%;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.mission-block {
+  margin-left: 20px;
+  width: 40%;
+}
+.container-mission, .container-mission1 {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+}
+
+.container-mission1{
+  font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+  font-size: 1.5rem;  
+  font-weight: bold;
+}

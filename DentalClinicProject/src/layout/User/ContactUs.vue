@@ -2,7 +2,7 @@
   <div class="container">
     <div class="dentalHeader">
       <div class="certi-header">
-        <h2><strong>CONTACT US</strong></h2>
+        <h2 ><strong>CONTACT US</strong></h2>
       </div>
     </div>
     <div class="container-picture">

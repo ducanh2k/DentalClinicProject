@@ -280,7 +280,6 @@
         <div class="footer-block">
           <h4><strong>Information</strong></h4>
 
-          <!-- <img src="path-to-logo.png" alt="iMed Logo" class="footer-logo" /> -->
           <p>
             Dentistry focuses on building a dedicated, caring, friendly service
             model, giving customers a feeling of peace of mind and comfort as if
@@ -353,7 +352,6 @@ export default {
           qualifications: "...",
           specialization: "...",
         },
-        // ... more employees
       ],
       selectedEmployee: null,
     };
@@ -422,6 +420,11 @@ li:focus {
 .nav-item {
   width: 150px;
   height: 70px;
+}
+.container-contact-main {
+  width: 100%;
+  background-color: rgb(216, 172, 83);
+  box-sizing: border-box;
 }
 @media (max-width: 1300px) {
   li {

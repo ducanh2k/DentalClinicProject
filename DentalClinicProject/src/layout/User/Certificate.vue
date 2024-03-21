@@ -34,7 +34,6 @@ export default {
 .certi-header {
   color: rgb(216, 172, 83);
   margin-top: 10%;
-  margin-left: 42%;
   justify-content: center;
   align-content: center;
 }

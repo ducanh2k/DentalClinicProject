@@ -80,8 +80,6 @@ export default {
 
 .footer-block {
   width: 20%;
-  /* margin: 0 15px; */
-  /* background-color: aqua; */
 }
 
 .footer-logo {

@@ -143,12 +143,6 @@ tr:nth-child(even) {
   cursor: pointer;
 }
 
-/* .pagination li a.page-1 {
-  background-color: rgba(57, 58, 62, 255);
-  color: white;
-  border: 1px solid rgba(57, 58, 62, 255);
-} */
-
 .pagination li a:hover:not(.active) {
   background-color: rgba(57, 58, 62, 255);
 }
@@ -173,7 +167,7 @@ tr:nth-child(even) {
 @media screen and (max-width: 1300px) {
   th,
   td {
-    padding: 4px; /* Giảm padding trên các thiết bị nhỏ */
+    padding: 4px;
   }
   .pagination li a {
     width: 10px;

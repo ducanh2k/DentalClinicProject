@@ -1,12 +1,15 @@
 <template>
   <div>
-    <LoginVue v-if="!isLoggedIn" @login-success="handleLoginSuccess"></LoginVue>
-    <router-view v-if="isLoggedIn" />
-    <!-- <HomePage></HomePage> -->
+    <!-- <LoginVue v-if="!isLoggedIn" @login-success="handleLoginSuccess"></LoginVue>
+    <router-view v-if="isLoggedIn" /> -->
+    <HomePage></HomePage>
+    <!-- <Overview></Overview> -->
+    <!-- <TeamDoctorContainerVue></TeamDoctorContainerVue> -->
   </div>
 </template>
 
 <script>
+import Overview from "./layout/User/OverviewClinic/Overview.vue";
 import SidebarBoostrap from "./layout/User/Sidebar-boostrap.vue";
 import Appointment from "./layout/Admin/Appointment/Appointment.vue";
 import "@fortawesome/fontawesome-free/css/all.css";
@@ -23,13 +26,12 @@ import Prescription from "./layout/Admin/Prescription/Prescription.vue";
 import News from "./layout/Admin/NewsManagement/News.vue";
 import Revenue from "./layout/Admin/RevenueManagement/Revenue.vue";
 import TeamDoctorContainerVue from "./layout/User/TeamDoctor/TeamDoctor-container.vue";
-import TeamDoctorListVue from "./layout/User/TeamDoctor/TeamDoctorList.vue";
 import LoginVue from "./Login/Login.vue";
 import Invoice from "./layout/Admin/Invoice/Invoice.vue";
 export default {
   name: "App",
   components: {
-    Appointment,
+     Appointment,
     TheSidebar,
     Service,
     User,
@@ -43,10 +45,10 @@ export default {
     News,
     Revenue,
     TeamDoctorContainerVue,
-    TeamDoctorListVue,
     SidebarBoostrap,
     LoginVue,
     Invoice,
+    Overview,
   },
   data() {
     return {
