@@ -9,7 +9,10 @@
           </div>
           <div class="title__company">Nha khoa Dentistry</div>
           <div class="exit__button">
-            <i class="fa-solid fa-right-from-bracket fa-xl"  @click="logOut()"></i>
+            <i
+              class="fa-solid fa-right-from-bracket fa-xl"
+              @click="logOut()"
+            ></i>
           </div>
         </div>
       </div>
@@ -205,7 +208,7 @@
                   v-model="img"
                 />
               </div>
-              <div>
+              <div v-if="ID == 0">
                 <span class="input-group-text"><strong>Mật khẩu</strong></span>
                 <input
                   type="text"
@@ -249,12 +252,12 @@
                   />&nbsp; Bệnh nhân
                 </div>
               </div>
-              <div v-if="ID != 0">
+              <!-- <div v-if="ID != 0">
                 <span class="input-group-text"
                   ><strong>Delete Flag</strong></span
                 >
                 <input type="text" class="form-control" v-model="deleteFlag" />
-              </div>
+              </div> -->
               <div>
                 <span class="input-group-text"><strong>Mô tả</strong></span>
                 <textarea
@@ -267,6 +270,33 @@
                   cols="30"
                   rows="10"
                 ></textarea>
+              </div>
+              <div>
+                <span class="input-group-text"><strong>Giới tính</strong></span>
+                <input
+                  type="text"
+                  class="form-control"
+                  placeholder="Nhập giới tính"
+                  v-model="gender"
+                />
+              </div>
+              <div>
+                <span class="input-group-text"><strong>Ngày sinh</strong></span>
+                <input
+                  type="text"
+                  class="form-control"
+                  placeholder="Nhập ngày sinh"
+                  v-model="dob"
+                />
+              </div>
+              <div>
+                <span class="input-group-text"><strong>Địa chỉ</strong></span>
+                <input
+                  type="text"
+                  class="form-control"
+                  placeholder="Nhập địa chỉ"
+                  v-model="address"
+                />
               </div>
             </div>
             <div>
@@ -662,7 +692,6 @@
           </div>
           <div class="modal-body">
             <div class="input-group md-3">
-           
               <div>
                 <span class="input-group-text"><strong>Mô tả</strong></span>
                 <textarea
@@ -737,6 +766,9 @@ export default {
       role: "",
       deleteFlag: false,
       password: "",
+      gender: "",
+      dob: "",
+      address: "",
       ID: 0,
       currentPage: 1,
       pageSize: 10,
@@ -978,6 +1010,9 @@ export default {
       this.role = "";
       this.deleteFlag = false;
       this.password = "";
+      this.dob = "";
+      this.address = "";
+      this.gender = "";
     },
     editClick(u) {
       this.modalTitle = "Sửa thông tin người dùng";
@@ -991,8 +1026,10 @@ export default {
       this.salary = u.salary;
       this.roleId = u.roleId;
       this.role = u.roleName;
-      this.deleteFlag = u.deleteFlag;
-      this.password = u.password;
+      this.deleteFlag = false;
+      this.dob = u.dob;
+      this.address = u.address;
+      this.gender = u.gender;
     },
     createClick() {
       if (this.role == "doctor") {
@@ -1014,6 +1051,9 @@ export default {
           roleName: this.role,
           deleteFlag: false,
           password: this.password,
+          gender: this.gender,
+          dob: this.dob,
+          addresss: this.address,
         })
         .then((response) => {
           alert(response.data);
@@ -1031,7 +1071,6 @@ export default {
       axios
         .put("https://localhost:7034/api/User/" + this.ID, {
           name: this.name,
-          dateCreated: this.dateCreated,
           phone: this.phone,
           email: this.email,
           img: this.img,
@@ -1039,8 +1078,10 @@ export default {
           salary: this.salary,
           roleId: this.roleId,
           roleName: this.role,
-          deleteFlag: this.deleteFlag,
-          password: this.password,
+          deleteFlag: false,
+          gender: this.gender,
+          dob: this.dob,
+          addresss: this.address,
         })
         .then((response) => {
           alert("Update thành công!");
@@ -1078,10 +1119,10 @@ export default {
         this.fetchUsers();
       }
     },
-    logOut(){
+    logOut() {
       this.$router.push({ name: "Login" });
       localStorage.removeItem("userRole");
-    }
+    },
   },
   mounted: function () {
     this.fetchUsers();

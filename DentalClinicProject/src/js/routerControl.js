@@ -15,11 +15,29 @@ import Service from "../layout/Admin/ServiceManagement/Service.vue";
 import MedicalRecord from "../layout/Admin/MedicalRecordManagement/MedicalRecord.vue";
 import AdminController from "../layout/Admin/AdminController.vue";
 import Login from "../Login/Login.vue";
+import Overview from "../layout/User/OverviewClinic/Overview.vue";
+import Profile from "../layout/User/Profile/Profile.vue";
+import TeamDoctor from "../layout/User/TeamDoctor/TeamDoctor-container.vue"
 const routes = [
   {
     path: "/home",
-    name: "Patient",
+    name: "Home",
     component: HomePage,
+  },
+  {
+    path: "/teamdoctor",
+    name: "TeamDoctor",
+    component: TeamDoctor,
+  },
+  {
+    path: "/profile",
+    name: "Profile",
+    component: Profile,
+  },
+  {
+    path: "/overview",
+    name: "Overview",
+    component: Overview,
   },
   {
     path: "/login",
@@ -94,7 +112,7 @@ const routes = [
   {
     path: "/doctor",
     name: "Doctor",
-    component: AdminController,
+    component: HomePage,
   },
 ];
 

@@ -43,6 +43,7 @@
   </div>
 </template>
 <script>
+// import { getUserFromToken } from "../js/getUser.js";
 import axios from "axios";
 import "../css/login.css";
 export default {
@@ -51,11 +52,11 @@ export default {
     return {
       email: "",
       password: "",
+      userData: null,
     };
   },
   methods: {
     loginClick() {
-      // console.log(this.email + " " + this.password);
       axios
         .post("https://localhost:7034/api/Auth/login", {
           email: this.email,
@@ -64,15 +65,17 @@ export default {
         .then((response) => {
           alert("Login thành công!");
           const userRole = response.data.role;
+          const id = response.data.id;
           this.$emit("login-success", userRole);
           localStorage.setItem("userRole", userRole);
+          localStorage.setItem("UserId", id);
           if (response.data.role === "Admin") {
             this.$router.push({ name: "Admin" });
           } else if (response.data.role === "Staff") {
             this.$router.push({ name: "Staff" });
           } else if (response.data.role === "Doctor") {
             this.$router.push({ name: "Doctor" });
-          } else{
+          } else {
             this.$router.push({ name: "Patient" });
           }
         })

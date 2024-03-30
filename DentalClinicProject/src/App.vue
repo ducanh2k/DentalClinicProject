@@ -1,14 +1,12 @@
 <template>
   <div>
-    <!-- <LoginVue v-if="!isLoggedIn" @login-success="handleLoginSuccess"></LoginVue>
-    <router-view v-if="isLoggedIn" /> -->
-    <HomePage></HomePage>
-    <!-- <Overview></Overview> -->
-    <!-- <TeamDoctorContainerVue></TeamDoctorContainerVue> -->
+    <HomePage v-if="isHomePageVisible" @log-in="handleLogin"></HomePage>
+    <router-view></router-view>
   </div>
 </template>
 
 <script>
+import Profile from "./layout/User/Profile/Profile.vue";
 import Overview from "./layout/User/OverviewClinic/Overview.vue";
 import SidebarBoostrap from "./layout/User/Sidebar-boostrap.vue";
 import Appointment from "./layout/Admin/Appointment/Appointment.vue";
@@ -31,7 +29,8 @@ import Invoice from "./layout/Admin/Invoice/Invoice.vue";
 export default {
   name: "App",
   components: {
-     Appointment,
+    Profile,
+    Appointment,
     TheSidebar,
     Service,
     User,
@@ -54,14 +53,38 @@ export default {
     return {
       isLoggedIn: false,
       role: null,
+      doing: null,
     };
+  },
+  computed: {
+    isHomePageVisible() {
+      if (this.$route.name === "Home" ||typeof this.$route.name === "undefined" || this.$route.name === "/") {
+        return true;
+      }
+    },
   },
   methods: {
     handleLoginSuccess(role) {
       this.isLoggedIn = true;
       this.role = role;
+      this.$router.push({ name: "Login" });
     },
+    handleLogin() {
+      this.isLoggedIn = true;
+      localStorage.removeItem("userRole");
+      this.$router.push({ name: "Login" });
+    },
+    handleLogOut() {
+      this.isLoggedIn = false;
+      this.role = null;
+      this.$router.push({ name: "Login" });
+    },
+    
   },
+  created() {
+    this.$router.push("");
+  },
+  
 };
 </script>
 

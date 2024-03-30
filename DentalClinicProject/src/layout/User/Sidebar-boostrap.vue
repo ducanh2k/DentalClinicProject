@@ -14,7 +14,7 @@
           <span class="navbar-toggler-icon"></span>
         </button>
         <div class="collapse navbar-collapse" id="navbarTogglerDemo01">
-          <a class="navbar-brand" href="#">WebSiteName</a>
+          <a class="navbar-brand" @click="backHome()">WebSiteName</a>
           <ul class="navbar-nav me-auto mb-2 mb-lg-0">
             <li class="nav-item">
               <a
@@ -22,20 +22,19 @@
                 aria-current="page"
                 href="#"
                 data-toggle="dropdown"
-                >About us <span class="caret"></span
+                >Về chúng tôi <span class="caret"></span
               ></a>
               <ul class="dropdown-menu">
                 <li class="li-service">
-                  <a class="a-service" href="#">Page 1-1</a>
+                  <a class="a-service" @click="Overview()"
+                    >Tổng quan phòng khám</a
+                  >
                 </li>
                 <li class="li-service">
-                  <a class="a-service" href="#">Page 1-2</a>
+                  <a class="a-service" href="#">Cơ sở vật chất hiện đại</a>
                 </li>
                 <li class="li-service">
-                  <a class="a-service" href="#">Page 1-2</a>
-                </li>
-                <li class="li-service">
-                  <a class="a-service" href="#">Page 1-2</a>
+                  <a class="a-service" @click="teamDoctor()">Đội ngũ bác sĩ</a>
                 </li>
               </ul>
             </li>
@@ -45,7 +44,7 @@
                 aria-current="page"
                 href="#"
                 data-toggle="dropdown"
-                >Services <span class="caret"></span
+                >Dịch vụ <span class="caret"></span
               ></a>
               <ul class="dropdown-menu dropdown-service">
                 <li class="li-service">
@@ -60,23 +59,29 @@
               </ul>
             </li>
             <li class="nav-item">
-              <a class="nav-link active" aria-current="page" href="#">Price</a>
+              <a class="nav-link active" aria-current="page" href="#"
+                >Bảng giá</a
+              >
             </li>
 
             <li class="nav-item">
               <a class="nav-link active" aria-current="page" href="#"
-                >Customer</a
+                >Khách hàng</a
               >
             </li>
             <li class="nav-item">
               <a class="nav-link active" aria-current="page" href="#">News</a>
             </li>
           </ul>
-          <form class="d-flex">
-            <button class="btn btn-outline-success" type="submit">
-              Contact
-            </button>
-          </form>
+          <div v-if="role != null" class="log-out" @click="logOut()">
+            Đăng xuất
+          </div>
+          <div v-if="role != null" class="profile" @click="checkProfile()">
+            Thông tin cá nhân
+          </div>
+          <div v-if="role === null" class="log-out" @click="logIn()">
+            Đăng nhập
+          </div>
         </div>
       </div>
     </nav>
@@ -84,10 +89,49 @@
 </template>
 
 <script>
-// import "https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js";
-// import "https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js";
+import Overview from "./OverviewClinic/Overview.vue";
+
 export default {
   name: "Sidebar-boostrap",
+  components: {},
+  data() {
+    return {
+      role: "",
+      action: "",
+    };
+  },
+  methods: {
+    CheckRole() {
+      this.role = localStorage.getItem("userRole");
+    },
+    logIn() {
+      this.role = null;
+      localStorage.removeItem("userRole");
+      this.$emit("log-in");
+    },
+    logOut() {
+      this.action = "log-out";
+      localStorage.removeItem("userRole");
+      this.role = null;
+      this.$emit("log-out", this.action);
+      this.$router.push({ name: "Login" });
+    },
+    teamDoctor() {
+      this.$router.push({ name: "TeamDoctor" });
+    },
+    Overview() {
+      this.$router.push({ name: "Overview" });
+    },
+    checkProfile() {
+      this.$router.push({ name: "Profile" });
+    },
+    backHome() {
+      this.$router.push({ name: "Home" });
+    },
+  },
+  mounted: function () {
+    this.CheckRole();
+  },
 };
 </script>
 
@@ -109,6 +153,8 @@ a {
   font-size: 1.5rem;
 }
 .navbar-brand {
+  cursor: pointer;
+
   font-size: 2rem;
   display: flex;
   justify-content: center;
@@ -160,15 +206,50 @@ li .li-service {
   align-items: center;
   width: 198px;
 }
-.a-service:hover {
+.a-service:hover,
+.a-service:active {
+  cursor: pointer;
   background-color: #ddd;
+  background-color: none;
   transition: background-color 0.5s ease, color 0.5s ease;
+}
+.btn-outline-success {
+  margin-right: 220px;
+}
+.log-out {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: rgb(205, 230, 230);
+  width: 100px;
+  height: 35px;
+  cursor: pointer;
+  margin-right: 10px;
+  position: absolute;
+  right: 0;
+}
+.profile {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: rgb(205, 230, 230);
+  width: 100px;
+  height: 35px;
+  cursor: pointer;
+  margin-right: 10px;
+  position: absolute;
+  right: 116px;
+}
+.a-service {
+  padding: 4%;
+  width: 178px;
+  background-color: none;
 }
 @media (max-width: 1300px) {
   .dropdown-menu {
     margin-top: auto;
-    margin-left: 173px;
-    width: 98px;
+    margin-left: 133px;
+    width: 15%;
   }
   li {
     display: flex;
@@ -178,14 +259,17 @@ li .li-service {
     width: 100px;
   }
   .dropdown-service {
-    margin-left: 273px;
-    width: 100px;
+    margin-left: 233px;
+    width: 15%;
   }
   li .li-service {
     display: flex;
     justify-content: center;
     align-items: center;
-    width: 98px;
+    width: 188px;
+  }
+  .nav-item {
+    width: 130px;
   }
 }
 </style>

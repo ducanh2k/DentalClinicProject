@@ -14,9 +14,9 @@
           <span class="navbar-toggler-icon"></span>
         </button>
         <div class="collapse navbar-collapse" id="navbarTogglerDemo01">
-          <a class="navbar-brand" href="#">WebSiteName</a>
+          <a class="navbar-brand" @click="backHome()">WebSiteName</a>
           <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-            <li class="nav-item dropdown">
+            <li class="nav-item">
               <a
                 class="nav-link dropdown-toggle"
                 href="#"
@@ -25,19 +25,24 @@
                 data-bs-toggle="dropdown"
                 aria-expanded="false"
               >
-                About Us
+                Về chúng tôi
               </a>
-              <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-                <li><a class="dropdown-item" href="#">Action</a></li>
-                <li><a class="dropdown-item" href="#">Another action</a></li>
-                <li><hr class="dropdown-divider" /></li>
-                <li>
-                  <a class="dropdown-item" href="#">Something else here</a>
+              <ul class="dropdown-menu">
+                <li class="li-service">
+                  <a class="a-service" @click="Overview()"
+                    >Tổng quan phòng khám</a
+                  >
+                </li>
+                <li class="li-service">
+                  <a class="a-service" href="#">Cơ sở vật chất hiện đại</a>
+                </li>
+                <li class="li-service">
+                  <a class="a-service" @click="teamDoctor()">Đội ngũ bác sĩ</a>
                 </li>
               </ul>
             </li>
 
-            <li class="nav-item dropdown">
+            <li class="nav-item">
               <a
                 class="nav-link dropdown-toggle"
                 href="#"
@@ -46,37 +51,49 @@
                 data-bs-toggle="dropdown"
                 aria-expanded="false"
               >
-                Service
+                Dịch vụ
               </a>
               <ul
-                class="dropdown-menu"
+                class="dropdown-menu nav-item-service"
                 aria-labelledby="navbarDropdownMenuLink"
               >
-                <li><a class="dropdown-item" href="#">Action</a></li>
-                <li><a class="dropdown-item" href="#">Another action</a></li>
-                <li>
-                  <a class="dropdown-item" href="#">Something else here</a>
+                <li class="li-service">
+                  <a class="a-service" href="#">Page 1-1</a>
+                </li>
+                <li class="li-service">
+                  <a class="a-service" href="#">Page 1-2</a>
+                </li>
+                <li class="li-service">
+                  <a class="a-service" href="#">Page 1-3</a>
                 </li>
               </ul>
             </li>
             <li class="nav-item">
-              <a class="nav-link active" aria-current="page" href="#">Price</a>
+              <a class="nav-link active" aria-current="page" href="#"
+                >Bảng giá</a
+              >
             </li>
 
             <li class="nav-item">
               <a class="nav-link active" aria-current="page" href="#"
-                >Customer</a
+                >Khách hàng</a
               >
             </li>
             <li class="nav-item">
-              <a class="nav-link active" aria-current="page" href="#">News</a>
+              <a class="nav-link active" aria-current="page" href="#"
+                >Tin tức</a
+              >
             </li>
           </ul>
-          <form class="d-flex">
-            <button class="btn btn-outline-success" type="submit">
-              Contact
-            </button>
-          </form>
+          <div v-if="role != null" class="log-out" @click="logOut()">
+            Đăng xuất
+          </div>
+          <div v-if="role != null" class="profile" @click="checkProfile()">
+            Thông tin cá nhân
+          </div>
+          <div v-if="role === null" class="log-out" @click="logIn()">
+            Đăng nhập
+          </div>
         </div>
       </div>
     </nav>
@@ -202,12 +219,23 @@
             <div class="doc-workingUnit">
               <h4>Đơn vị công tác và tổ chức tham gia:</h4>
               <div class="inner-content">
-                <p class="inner-list">Phó Giám đốc Bệnh viện Việt Nam – Cu Ba Hà Nội</p>
-                <p class="inner-list">Cố vấn chuyên môn hãng Implant nha khoa Dentium, Hàn Quốc</p>
-                <p class="inner-list">Thành viên Hội phẫu thuật răng miệng Nhật Bản</p>
+                <p class="inner-list">
+                  Phó Giám đốc Bệnh viện Việt Nam – Cu Ba Hà Nội
+                </p>
+                <p class="inner-list">
+                  Cố vấn chuyên môn hãng Implant nha khoa Dentium, Hàn Quốc
+                </p>
+                <p class="inner-list">
+                  Thành viên Hội phẫu thuật răng miệng Nhật Bản
+                </p>
                 <p class="inner-list">Thành viên Hội nha khoa Hoa Kỳ (ADA)</p>
-                <p class="inner-list">Thành viên Hiệp hội Implant quốc tế (ITI)</p>
-                <p class="inner-list">Thành viên Hội phẫu thuật hàm mặt thế giới của Tổ chức AO (AO CMF)</p>
+                <p class="inner-list">
+                  Thành viên Hiệp hội Implant quốc tế (ITI)
+                </p>
+                <p class="inner-list">
+                  Thành viên Hội phẫu thuật hàm mặt thế giới của Tổ chức AO (AO
+                  CMF)
+                </p>
               </div>
             </div>
             <div class="doc-certi">
@@ -215,7 +243,6 @@
               <div class="inner-content">
                 <p class="inner-list">Tiếng Anh</p>
                 <p class="inner-list">Tiếng Nhật</p>
-                
               </div>
             </div>
           </div>
@@ -278,7 +305,7 @@
     <footer class="site-footer">
       <div class="footer-container">
         <div class="footer-block">
-          <h4><strong>Information</strong></h4>
+          <h4><strong>Thông tin</strong></h4>
 
           <p>
             Dentistry focuses on building a dedicated, caring, friendly service
@@ -292,26 +319,26 @@
         </div>
 
         <div class="footer-block" style="margin-left: 7%">
-          <h4><strong>Information</strong></h4>
+          <h4><strong>Thông tin</strong></h4>
           <ul class="footer-list">
-            <li>Owner Information</li>
-            <li>General trading conditions</li>
-            <li>Payments</li>
-            <li>Protecty personal Information</li>
+            <li class="list-inner">Owner Information</li>
+            <li class="list-inner">General trading conditions</li>
+            <li class="list-inner">Payments</li>
+            <li class="list-inner">Protecty personal Information</li>
           </ul>
         </div>
         <div class="footer-block" style="margin-left: 7%">
-          <h4><strong>Services</strong></h4>
+          <h4 class="service-footer"><strong>Dịch vụ</strong></h4>
           <ul class="footer-list">
-            <li>Implant</li>
-            <li>Invisalign orthodontics without braces</li>
-            <li>Traditional braces orthodontics</li>
-            <li>Orthopedic porcelain teeth</li>
-            <li>Cosmetic porcelain teeth</li>
-            <li>Wisdom tooth extraction</li>
-            <li>Children's Dentistry</li>
-            <li>General Dentistry</li>
-            <li>Removal dentures</li>
+            <li class="list-inner1">Implant</li>
+            <li class="list-inner1">Invisalign orthodontics without braces</li>
+            <li class="list-inner1">Traditional braces orthodontics</li>
+            <li class="list-inner1">Orthopedic porcelain teeth</li>
+            <li class="list-inner1">Cosmetic porcelain teeth</li>
+            <li class="list-inner1">Wisdom tooth extraction</li>
+            <li class="list-inner1">Children's Dentistry</li>
+            <li class="list-inner1">General Dentistry</li>
+            <li class="list-inner1">Removal dentures</li>
           </ul>
         </div>
         <div class="footer-block" style="margin-left: 7%">
@@ -339,6 +366,8 @@ export default {
   name: "TeamDocContainer",
   data() {
     return {
+      role: "",
+      action: "",
       employeeList: [
         {
           id: "nguyenkhanhlong",
@@ -362,6 +391,36 @@ export default {
         (employee) => employee.id === employeeId
       );
     },
+    CheckRole() {
+      this.role = localStorage.getItem("userRole");
+    },
+    logIn() {
+      this.role = null;
+      localStorage.removeItem("userRole");
+      this.$emit("log-in");
+    },
+    logOut() {
+      this.action = "log-out";
+      localStorage.removeItem("userRole");
+      this.role = null;
+      this.$emit("log-out", this.action);
+      this.$router.push({ name: "Login" });
+    },
+    teamDoctor() {
+      this.$router.push({ name: "TeamDoctor" });
+    },
+    Overview() {
+      this.$router.push({ name: "Overview" });
+    },
+    checkProfile() {
+      this.$router.push({ name: "Profile" });
+    },
+    backHome() {
+      this.$router.push({ name: "Home" });
+    },
+  },
+  mounted: function () {
+    this.CheckRole();
   },
 };
 </script>
@@ -383,7 +442,8 @@ a {
   font-size: 1rem;
 }
 .navbar-brand {
-  font-size: 1.5rem;
+  cursor: pointer;
+  font-size: 1.3rem;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -392,6 +452,8 @@ li {
   display: flex;
   justify-content: center;
   align-items: center;
+  height: 76px;
+  width: 160px;
 }
 li:hover,
 li:focus {
@@ -404,6 +466,8 @@ li:focus {
   align-items: center;
   color: rgb(224, 196, 140);
   border: 1px solid rgb(196, 196, 196);
+  width: 150px;
+  height: 40px;
 }
 .btn:hover,
 .btn:focus {
@@ -426,15 +490,94 @@ li:focus {
   background-color: rgb(216, 172, 83);
   box-sizing: border-box;
 }
+.dropdown-menu {
+  margin-top: auto;
+  margin-left: 150px;
+  width: 200px;
+}
+.dropdown-service {
+  margin-left: 310px;
+  width: 200px;
+}
+li .li-service {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 198px;
+}
+.a-service:hover,
+.a-service:active {
+  cursor: pointer;
+  background-color: #ddd;
+  background-color: none;
+  transition: background-color 0.5s ease, color 0.5s ease;
+}
+.btn-outline-success {
+  margin-right: 220px;
+}
+.log-out {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: rgb(205, 230, 230);
+  width: 100px;
+  height: 35px;
+  cursor: pointer;
+  margin-right: 10px;
+  position: absolute;
+  right: 0;
+}
+.profile {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: rgb(205, 230, 230);
+  width: 140px;
+  height: 35px;
+  cursor: pointer;
+  margin-right: 10px;
+  position: absolute;
+  right: 116px;
+}
+.a-service {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  color: black;
+  padding: 4%;
+  width: 178px;
+  background-color: none;
+}
+.nav-item-service {
+  margin-left: 200px;
+}
 @media (max-width: 1300px) {
+  .dropdown-menu {
+    margin-top: auto;
+    margin-left: 133px;
+    width: 15%;
+  }
   li {
     display: flex;
     justify-content: center;
     align-items: center;
+    height: 53px;
+    width: 100px;
   }
   .nav-item {
-    width: 100px;
+    width: 130px;
     height: 50px;
+  }
+  .dropdown-service {
+    margin-left: 233px;
+    width: 15%;
+  }
+  li .li-service {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 188px;
   }
 }
 </style>

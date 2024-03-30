@@ -32,8 +32,8 @@ export default {
   height: 50vh;
 }
 .certi-header {
+  display: flex;
   color: rgb(216, 172, 83);
-  margin-top: 10%;
   justify-content: center;
   align-content: center;
 }

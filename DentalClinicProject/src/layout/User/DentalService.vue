@@ -118,7 +118,7 @@ export default {
 .headerDental {
   color: rgb(224, 196, 140);
   margin-top: 10%;
-  margin-left: 42%;
+  margin-left: 45%;
   justify-content: center;
   align-content: center;
 }
@@ -130,6 +130,7 @@ export default {
   margin-top: 2%;
 }
 .dentalHeader {
+  margin-left: 5%;
   justify-content: center;
   align-content: center;
 }

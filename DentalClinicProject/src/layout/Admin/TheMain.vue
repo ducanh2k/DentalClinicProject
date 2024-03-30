@@ -5,11 +5,9 @@
         <div class="title__toggle"></div>
         <div class="title__company">Nha khoa Dentistry</div>
         <div class="exit__button"></div>
-        <!-- <i class="fa-solid fa-arrow-right-from-bracket "></i> -->
       </div>
     </div>
     <div class="main-body">
-      <!-- <AddEButton></AddEButton> -->
       <div class="search-container">
         <input type="text" placeholder="Nhập từ khóa" class="search-box" />
         <button class="search-button">Tìm kiếm</button>
@@ -17,9 +15,7 @@
           <button class="button-create">Thêm mới</button>
         </div>
       </div>
-      <div class="range">
-        <!-- <AdminTable></AdminTable> -->
-      </div>
+      <div class="range"></div>
       <div class="under-table">
         <div class="sum__staff">Tổng số nhân viên: <strong>14</strong></div>
         <div class="pagination">

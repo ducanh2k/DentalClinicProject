@@ -1,6 +1,6 @@
 <template>
   <div>
-  <SidebarBoostrap></SidebarBoostrap>
+  <SidebarBoostrap @log-in="handleLogin"></SidebarBoostrap>
   <HPBody></HPBody>
   </div>
 </template>
@@ -13,7 +13,14 @@ export default {
   components:{
     SidebarBoostrap,
     HPBody
-  }
+  },
+  methods: {
+    
+    handleLogin() {
+      this.$emit("log-in");
+    },
+    
+  },
 };
 </script>
 
