@@ -63,7 +63,6 @@ export default {
           password: this.password,
         })
         .then((response) => {
-          alert("Login thành công!");
           const userRole = response.data.role;
           const id = response.data.id;
           this.$emit("login-success", userRole);
@@ -80,6 +79,7 @@ export default {
           }
         })
         .catch((error) => {
+          alert("Lỗi đăng nhập");
           console.error("Lỗi đăng nhập");
         });
     },

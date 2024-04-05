@@ -41,7 +41,6 @@
                 <th scope="col">#</th>
                 <th scope="col">Tên dịch vụ</th>
                 <th scope="col">Thông tin ngắn</th>
-                <th scope="col">Mô tả</th>
                 <th scope="col">Giá cả</th>
                 <th scope="col" v-if="role === 'Admin'"></th>
                 <th scope="col" v-if="role === 'Admin'"></th>
@@ -52,7 +51,6 @@
                 <th scope="row">{{ index + 1 }}</th>
                 <td>{{ service.serviceName }}</td>
                 <td>{{ service.briefInfo }}</td>
-                <td>{{ service.description }}</td>
                 <td>{{ service.price }}</td>
                 <td v-if="role === 'Admin'">
                   <button

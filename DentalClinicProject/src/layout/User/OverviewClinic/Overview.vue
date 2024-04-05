@@ -53,18 +53,15 @@
               >
                 Dịch vụ
               </a>
-              <ul
-                class="dropdown-menu nav-item-service"
-                aria-labelledby="navbarDropdownMenuLink"
-              >
-                <li class="li-service">
-                  <a class="a-service" href="#">Page 1-1</a>
-                </li>
-                <li class="li-service">
-                  <a class="a-service" href="#">Page 1-2</a>
-                </li>
-                <li class="li-service">
-                  <a class="a-service" href="#">Page 1-3</a>
+              <ul class="dropdown-menu dropdown-service">
+                <li
+                  class="li-service"
+                  v-for="service in services"
+                  :key="service.serviceId"
+                >
+                  <a class="a-service" @click="goService(service.serviceId)">{{
+                    service.serviceName
+                  }}</a>
                 </li>
               </ul>
             </li>
@@ -963,12 +960,14 @@
 import "../../../css/User/contactUs.css";
 import "../../../css/User/footerMain.css";
 import "../../../css/User/Overview.css";
+import axios from "axios";
 export default {
   name: "Overview",
   data() {
     return {
       role: "",
       action: "",
+      services: [],
     };
   },
   methods: {
@@ -976,6 +975,18 @@ export default {
       this.selectedEmployee = this.employeeList.find(
         (employee) => employee.id === employeeId
       );
+    },
+    async fetchServices() {
+      let apiURL = "https://localhost:7034/api/Service/list";
+      axios
+        .get(apiURL)
+        .then((response) => {
+          this.services = response.data;
+          console.log(this.services);
+        })
+        .catch((error) => {
+          console.error("There has been a problem");
+        });
     },
     CheckRole() {
       this.role = localStorage.getItem("userRole");
@@ -1004,8 +1015,13 @@ export default {
     backHome() {
       this.$router.push({ name: "Home" });
     },
+    goService(id) {
+      localStorage.setItem("ServiceId", id);
+      this.$router.push({ name: "Service" });
+    },
   },
   mounted: function () {
+    this.fetchServices();
     this.CheckRole();
   },
 };
@@ -1078,19 +1094,22 @@ li:focus {
   box-sizing: border-box;
 }
 .dropdown-menu {
+  padding: 20px;
   margin-top: auto;
-  margin-left: 150px;
-  width: 200px;
+  margin-left: 130px !important;
+  width: 240px !important;
 }
 .dropdown-service {
-  margin-left: 310px;
-  width: 200px;
+  padding: 20px;
+  margin-top: auto;
+  margin-left: 200px !important;
+  width: 300px !important;
 }
 li .li-service {
   display: flex;
   justify-content: center;
   align-items: center;
-  width: 198px;
+  width: 100% !important;
 }
 .a-service:hover,
 .a-service:active {
@@ -1133,8 +1152,8 @@ li .li-service {
   text-align: center;
   color: black;
   padding: 4%;
-  width: 178px;
-  background-color: none;
+  width: 100% !important;
+  background-color: none !important;
 }
 .nav-item-service {
   margin-left: 500px;

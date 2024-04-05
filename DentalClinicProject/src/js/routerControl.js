@@ -17,12 +17,26 @@ import AdminController from "../layout/Admin/AdminController.vue";
 import Login from "../Login/Login.vue";
 import Overview from "../layout/User/OverviewClinic/Overview.vue";
 import Profile from "../layout/User/Profile/Profile.vue";
-import TeamDoctor from "../layout/User/TeamDoctor/TeamDoctor-container.vue"
+import TeamDoctor from "../layout/User/TeamDoctor/TeamDoctor-container.vue";
+import Implant from "../layout/User/Service/Implant.vue";
+import Implant1 from "../layout/User/Service/Implant1.vue";
+import Diagnose from "../layout/User/Dianogstic/Diagnose.vue";
+import Result from "../layout/User/Dianogstic/Result.vue";
 const routes = [
   {
     path: "/home",
     name: "Home",
     component: HomePage,
+  },
+  {
+    path: "/result",
+    name: "Result",
+    component: Result,
+  },
+  {
+    path: "/diagnose",
+    name: "Diagnose",
+    component: Diagnose,
   },
   {
     path: "/teamdoctor",
@@ -106,12 +120,21 @@ const routes = [
   {
     path: "/service",
     name: "Service",
-    component: Service,
+    component: Implant,
   },
-
+  {
+    path: "/service",
+    name: "Service1",
+    component: Implant1,
+  },
   {
     path: "/doctor",
     name: "Doctor",
+    component: HomePage,
+  },
+  {
+    path: "/patient",
+    name: "Patient",
     component: HomePage,
   },
 ];

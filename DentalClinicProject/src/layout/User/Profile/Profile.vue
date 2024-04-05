@@ -2,21 +2,19 @@
   <div class="profile-container">
     <div class="profile-info">
       <div class="info-picture"></div>
-      <div class="info-raw">
-        Họ và tên: {{ users.name }}
+      <div class="info-raw" v-if="userData !== null">
+        Họ và tên: {{ userData.name }}
         <p class="info-inner"></p>
-        Tuổi: {{ users.dob }}
+        Tuổi: {{ userData.dob }}
         <p class="info-inner"></p>
-        Giới tính: {{ users.gender }}
+        Giới tính: {{ userData.gender }}
         <p class="info-inner"></p>
-        Địa chỉ: {{ users.address }}
+        Địa chỉ: {{ userData.address }}
         <p class="info-inner"></p>
-        Email: {{ users.email }}
+        Email: {{ userData.email }}
         <p class="info-inner"></p>
-        Số điện thoại: {{ users.phone }}
-        <!-- <p class="info-inner"></p>
-        Mật khẩu: {{ users.name }}
-        <p class="info-inner"></p> -->
+        Số điện thoại: {{ userData.phone }}
+        <p class="info-inner"></p>
         <p class="info-inner">Đổi mật khẩu</p>
       </div>
     </div>
@@ -25,6 +23,9 @@
         <div class="mdr-name">Hồ sơ bệnh án</div>
         <div class="go-homepage" @click="goHome()">Trang chủ</div>
         <div class="log-out" @click="logOut()">Đăng xuất</div>
+        <div class="diagnose-button" @click="checkDiagnose()">
+          Xem chẩn đoán của bạn
+        </div>
       </div>
       <div class="profile-mdr">
         <div class="main-body">
@@ -176,7 +177,9 @@ export default {
     return {
       role: "",
       profiles: [],
+      services: [],
       users: [],
+      name: "",
       datetime: "",
       note: "",
       modalTitle: "Bạn muốn đặt cuộc hẹn vào ngày :",
@@ -191,24 +194,21 @@ export default {
       totalPages: 0,
       searchText: "",
       UserId: 0,
+      userData: null,
     };
   },
   methods: {
-    goHome() {
-      this.$router.push({ name: "Home" });
-    },
     CheckRole() {
       this.role = localStorage.getItem("userRole");
       this.UserId = localStorage.getItem("UserId");
     },
-    async fetchUsers() {
+    fetchUsers() {
       let apiURL = "https://localhost:7034/api/User/" + this.UserId;
-      apiURL =
-        "https://localhost:7034/api/User/list?pageNumber=" + this.currentPage;
+      console.log(apiURL);
       axios
         .get(apiURL)
         .then((response) => {
-          this.users = response.data[0];
+          this.userData = response.data.user;
         })
         .catch((error) => {
           console.error("There has been a problem");
@@ -216,11 +216,8 @@ export default {
     },
     async fetchProfiles() {
       let apiURL =
-        "https://localhost:7034/api/Appointment/list/userId?userId=" +
-        this.UserId;
-      //   apiURL =
-      //     "https://localhost:7034/api/User/Appointment?pageNumber=" +
-      //     this.currentPage;
+        "https://localhost:7034/api/Appointment/list/userId?userId=4";
+      // +this.UserId;
       axios
         .get(apiURL)
         .then((response) => {
@@ -245,15 +242,21 @@ export default {
         this.fetchUsers();
       }
     },
+    goHome() {
+      this.$router.push({ name: "Home" });
+    },
+    checkDiagnose() {
+      this.$router.push({ name: "Diagnose" });
+    },
     logOut() {
       this.$router.push({ name: "Login" });
       localStorage.removeItem("userRole");
     },
   },
   mounted: function () {
+    this.CheckRole();
     this.fetchUsers();
     this.fetchProfiles();
-    this.CheckRole();
   },
 };
 </script>
@@ -319,5 +322,16 @@ export default {
   cursor: pointer;
   position: absolute;
   right: 120px;
+}
+.diagnose-button {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: rgb(205, 230, 230);
+  width: 200px;
+  height: 35px;
+  cursor: pointer;
+  position: absolute;
+  right: 230px;
 }
 </style>

@@ -218,7 +218,7 @@
                 />
               </div>
 
-              <div>
+              <div v-if="role != 'patient'">
                 <span class="input-group-text"><strong>Lương</strong></span>
                 <input
                   type="text"
@@ -274,11 +274,18 @@
               <div>
                 <span class="input-group-text"><strong>Giới tính</strong></span>
                 <input
-                  type="text"
-                  class="form-control"
-                  placeholder="Nhập giới tính"
+                  type="radio"
+                  class="btn-role"
                   v-model="gender"
-                />
+                  value="true"
+                />&nbsp; Nam
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                <input
+                  type="radio"
+                  class="btn-role"
+                  v-model="gender"
+                  value="false"
+                />&nbsp; Nữ
               </div>
               <div>
                 <span class="input-group-text"><strong>Ngày sinh</strong></span>
@@ -1039,6 +1046,11 @@ export default {
       } else {
         this.roleId = 4;
       }
+      if (this.gender === "true") {
+        this.gender = true;
+      } else {
+        this.gender = false;
+      }
       axios
         .post("https://localhost:7034/api/User", {
           name: this.name,
@@ -1046,9 +1058,7 @@ export default {
           email: this.email,
           img: this.img,
           description: this.description,
-          salary: this.salary,
           roleId: this.roleId,
-          roleName: this.role,
           deleteFlag: false,
           password: this.password,
           gender: this.gender,
@@ -1149,7 +1159,7 @@ export default {
 }
 .table th,
 .table td {
-  min-width: 120px; /* Hoặc một giá trị phù hợp với nội dung của bạn */
+  min-width: 120px; 
   word-wrap: break-word;
 }
 .detailUser {

@@ -2,10 +2,14 @@
   <div>
     <HomePage v-if="isHomePageVisible" @log-in="handleLogin"></HomePage>
     <router-view></router-view>
+    <!-- <CKEditor></CKEditor> -->
+    <!-- <Implant></Implant> -->
   </div>
 </template>
 
 <script>
+import Implant from "./layout/User/Service/Implant.vue";
+import CKEditor from "./layout/User/Service/CKEditor.vue";
 import Profile from "./layout/User/Profile/Profile.vue";
 import Overview from "./layout/User/OverviewClinic/Overview.vue";
 import SidebarBoostrap from "./layout/User/Sidebar-boostrap.vue";
@@ -29,6 +33,8 @@ import Invoice from "./layout/Admin/Invoice/Invoice.vue";
 export default {
   name: "App",
   components: {
+    Implant,
+    CKEditor,
     Profile,
     Appointment,
     TheSidebar,
@@ -58,7 +64,11 @@ export default {
   },
   computed: {
     isHomePageVisible() {
-      if (this.$route.name === "Home" ||typeof this.$route.name === "undefined" || this.$route.name === "/") {
+      if (
+        this.$route.name === "Home" ||
+        typeof this.$route.name === "undefined" ||
+        this.$route.name === "/"
+      ) {
         return true;
       }
     },
@@ -79,12 +89,10 @@ export default {
       this.role = null;
       this.$router.push({ name: "Login" });
     },
-    
   },
   created() {
     this.$router.push("");
   },
-  
 };
 </script>
 

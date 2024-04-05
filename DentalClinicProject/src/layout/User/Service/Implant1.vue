@@ -1,5 +1,5 @@
 <template>
-  <div style="width: 100%; height: 100%">
+  <div>
     <nav class="navbar navbar-expand-lg">
       <div class="container-fluid">
         <button
@@ -94,157 +94,11 @@
         </div>
       </div>
     </nav>
-    <div class="container-docTeam">
-      <div class="pic-doc"></div>
-      <div class="heade-doc"><strong>GẶP GỠ ĐỘI NGŨ BÁC SĨ</strong></div>
-      <div class="listDoc">
-        <div
-          id="carouselExampleCaptions"
-          class="carousel slide"
-          data-bs-ride="carousel"
-        >
-          <div class="carousel-inner">
-            <div class="carousel-item active">
-              <div class="caro-contain">
-                <div class="d-block w-100" alt="..."></div>
-                <div class="DoctorName">
-                  <p>BS. Bùi Thị Bích Loan</p>
-                </div>
-              </div>
-              <div class="caro-contain">
-                <div class="d-block1 w-100" alt="..."></div>
-                <div class="DoctorName">
-                  <p>BS. Nguyễn Minh Thành</p>
-                </div>
-              </div>
-              <div class="caro-contain">
-                <div class="d-block2 w-100" alt="..."></div>
-                <div class="DoctorName">
-                  <p>BS. Nguyễn Thanh Tùng</p>
-                </div>
-              </div>
-              <div class="caro-contain">
-                <div class="d-block3 w-100" alt="..."></div>
-                <div class="DoctorName">
-                  <p>BS. Đinh Thị Dung</p>
-                </div>
-              </div>
-            </div>
-            <div class="carousel-item">
-              <div class="caro-contain">
-                <div class="d-block w-100" alt="..."></div>
-                <div class="DoctorName">
-                  <p>BS. Bùi Thị Bích Loan</p>
-                </div>
-              </div>
-              <div class="caro-contain">
-                <div class="d-block1 w-100" alt="..."></div>
-
-                <div class="DoctorName">
-                  <p>BS. Nguyễn Minh Thành</p>
-                </div>
-              </div>
-              <div class="caro-contain">
-                <div class="d-block2 w-100" alt="..."></div>
-
-                <div class="DoctorName">
-                  <p>BS. Nguyễn Thanh Tùng</p>
-                </div>
-              </div>
-              <div class="caro-contain">
-                <div class="d-block3 w-100" alt="..."></div>
-
-                <div class="DoctorName">
-                  <p>BS. Đinh Thị Dung</p>
-                </div>
-              </div>
-            </div>
-          </div>
-          <button
-            class="carousel-control-prev caroul-control"
-            type="button"
-            data-bs-target="#carouselExampleCaptions"
-            data-bs-slide="prev"
-          >
-            <i class="fa-solid fa-arrow-left"></i>
-            <span class="visually-hidden">Previous</span>
-          </button>
-          <button
-            class="carousel-control-next caroul-control"
-            type="button"
-            data-bs-target="#carouselExampleCaptions"
-            data-bs-slide="next"
-          >
-            <i class="fa-solid fa-arrow-right"></i>
-            <span class="visually-hidden">Next</span>
-          </button>
-        </div>
-      </div>
-      <div class="doc-detail">
-        <div class="doc-picture"></div>
-        <div class="doc-info">
-          <div class="info-left">
-            <div class="doc-certi">
-              <h4>Bằng cấp:</h4>
-              <div class="inner-content">
-                <p class="inner-list">
-                  Tốt nghiệp Tiến sĩ, chuyên ngành phẫu thuật miệng và hàm mặt,
-                  khoa Y, Đại học Gifu, Nhật Bản
-                </p>
-                <p class="inner-list">
-                  Tốt nghiệp Bác sĩ chuyên khoa Răng hàm mặt chính quy, Đại học
-                  Y Hà Nội
-                </p>
-                <p class="inner-list">
-                  Các khoá đào tạo chuyên ngành tại Hoa Kỳ, Nhật Bản, Hàn Quốc,
-                  CHLB Đức, Singapore, Đài Loan, Thái Lan, Hy Lạp, Canada
-                </p>
-              </div>
-            </div>
-            <div class="doc-expertise">
-              <h4>Lĩnh vực chuyên sâu:</h4>
-              <div class="inner-content">
-                <p class="inner-list">Cấy ghép Implant</p>
-                <p class="inner-list">Phẫu thuật chỉnh hình xương hàm</p>
-                <p class="inner-list">Nha khoa thẩm mỹ</p>
-                <p class="inner-list">Phẫu thuật trong miệng</p>
-                <p class="inner-list">Chỉnh nha</p>
-              </div>
-            </div>
-          </div>
-          <div class="info-right">
-            <div class="doc-workingUnit">
-              <h4>Đơn vị công tác và tổ chức tham gia:</h4>
-              <div class="inner-content">
-                <p class="inner-list">
-                  Phó Giám đốc Bệnh viện Việt Nam – Cu Ba Hà Nội
-                </p>
-                <p class="inner-list">
-                  Cố vấn chuyên môn hãng Implant nha khoa Dentium, Hàn Quốc
-                </p>
-                <p class="inner-list">
-                  Thành viên Hội phẫu thuật răng miệng Nhật Bản
-                </p>
-                <p class="inner-list">Thành viên Hội nha khoa Hoa Kỳ (ADA)</p>
-                <p class="inner-list">
-                  Thành viên Hiệp hội Implant quốc tế (ITI)
-                </p>
-                <p class="inner-list">
-                  Thành viên Hội phẫu thuật hàm mặt thế giới của Tổ chức AO (AO
-                  CMF)
-                </p>
-              </div>
-            </div>
-            <div class="doc-certi">
-              <h4>Ngoại ngữ:</h4>
-              <div class="inner-content">
-                <p class="inner-list">Tiếng Anh</p>
-                <p class="inner-list">Tiếng Nhật</p>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
+    <div class="Service-container-detail">
+      <br />
+      <br />
+      <br />
+      <p v-html="description"></p>
     </div>
     <div class="container-contact-main">
       <div class="dentalHeader">
@@ -356,52 +210,56 @@
 </template>
 
 <script>
+import CKEditor from "@ckeditor/ckeditor5-vue";
+import ClassicEditor from "@ckeditor/ckeditor5-build-classic";
 import "../../../css/User/contactUs.css";
 import "../../../css/User/footerMain.css";
-import "../../../css/User/teamDoc.css";
 import axios from "axios";
-
 export default {
-  name: "TeamDocContainer",
+  name: "Implant1",
   data() {
     return {
+      services: [],
+      serviceData: null,
+      description: "",
       role: "",
       action: "",
-      services: [],
-      employeeList: [
-        {
-          id: "nguyenkhanhlong",
-          name: "TS.BS. Nguyễn Khánh Long",
-          qualifications: "...",
-          specialization: "...",
-        },
-        {
-          id: "nguyenminhthanh",
-          name: "BS. Nguyễn Minh Thanh",
-          qualifications: "...",
-          specialization: "...",
-        },
-      ],
-      selectedEmployee: null,
+      serviceName: "",
+      name: "",
     };
   },
   methods: {
-    showDetails(employeeId) {
-      this.selectedEmployee = this.employeeList.find(
-        (employee) => employee.id === employeeId
-      );
-    },
     async fetchServices() {
       let apiURL = "https://localhost:7034/api/Service/list";
       axios
         .get(apiURL)
         .then((response) => {
           this.services = response.data;
-          console.log(this.services);
         })
         .catch((error) => {
           console.error("There has been a problem");
         });
+      let id = localStorage.getItem("ServiceId");
+      apiURL = "https://localhost:7034/api/Service/" + id;
+      axios
+        .get(apiURL)
+        .then((response) => {
+          this.description = response.data.description;
+        })
+        .catch((error) => {
+          console.error("There has been a problem");
+        });
+    },
+    goService(id) {
+      localStorage.setItem("ServiceId", id);
+      this.$router.push({
+        name: "Service",
+      });
+    },
+    showDetails(employeeId) {
+      this.selectedEmployee = this.employeeList.find(
+        (employee) => employee.id === employeeId
+      );
     },
     CheckRole() {
       this.role = localStorage.getItem("userRole");
@@ -430,17 +288,20 @@ export default {
     backHome() {
       this.$router.push({ name: "Home" });
     },
-    goService(id) {
-      localStorage.setItem("ServiceId", id);
-      this.$router.push({ name: "Service" });
-    },
   },
+  // beforeRouteUpdate(to, from, next) {
+  //   if (to.params.id !== from.params.id) {
+  //     this.goService(to.params.id);
+  //   }
+  //   next();
+  // },
   mounted: function () {
-    this.fetchServices();
     this.CheckRole();
+    this.fetchServices();
   },
 };
 </script>
+
 <style scoped>
 .navbar-expand-lg {
   background-color: rgb(204, 204, 204);
@@ -508,22 +369,19 @@ li:focus {
   box-sizing: border-box;
 }
 .dropdown-menu {
-  padding: 20px;
   margin-top: auto;
-  margin-left: 130px !important;
+  margin-left: 150px;
   width: 240px !important;
 }
 .dropdown-service {
-  padding: 20px;
-  margin-top: auto;
-  margin-left: 200px !important;
-  width: 300px !important;
+  margin-left: 310px;
+  width: 200px;
 }
 li .li-service {
   display: flex;
   justify-content: center;
   align-items: center;
-  width: 100% !important;
+  width: 238px !important ;
 }
 .a-service:hover,
 .a-service:active {
@@ -566,11 +424,17 @@ li .li-service {
   text-align: center;
   color: black;
   padding: 4%;
-  width: 100% !important;
+  height: 100%;
+  width: 100%;
   background-color: none !important;
 }
 .nav-item-service {
-  margin-left: 200px;
+  margin-left: 240px !important;
+}
+.Service-container-detail {
+  margin-left: 10%;
+  width: 80%;
+  height: 80%;
 }
 @media (max-width: 1300px) {
   .dropdown-menu {
