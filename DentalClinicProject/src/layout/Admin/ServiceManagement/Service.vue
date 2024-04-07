@@ -43,7 +43,7 @@
               <tr>
                 <th scope="col">#</th>
                 <th scope="col">Tên dịch vụ</th>
-                <th scope="col">Thông tin ngắn</th>
+                <th scope="col">Nhóm dịch vụ</th>
                 <th scope="col">Giá cả</th>
                 <th scope="col" v-if="role === 'Admin'"></th>
                 <th scope="col" v-if="role === 'Admin'"></th>
@@ -270,7 +270,7 @@ export default {
       axios
         .get(apiURL)
         .then((response) => {
-          this.services = response.data;
+          this.services = response.data.services;
         })
         .catch((error) => {
           console.error("There has been a problem");
