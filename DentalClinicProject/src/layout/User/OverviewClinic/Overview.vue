@@ -96,7 +96,7 @@
     </nav>
     <div class="container-overview">
       <div class="pic-overview"></div>
-      <div class="header-overview">Overview</div>
+      <div class="header-overview">Tổng quan phòng khám</div>
       <div class="info-overview">
         <div class="infoInner">
           <div class="icon-number">
@@ -160,7 +160,7 @@
             </div>
             <div class="icon-number4">25</div>
           </div>
-          Total number of Staff
+          Tổng số nhân viên
         </div>
         <div class="infoInner">
           <div class="icon-number">

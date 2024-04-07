@@ -148,6 +148,11 @@ const routes = [
     name: "Patient",
     component: HomePage,
   },
+  {
+    path: "/",
+    name: "Home",
+    component: HomePage,
+  },
 ];
 
 const router = createRouter({

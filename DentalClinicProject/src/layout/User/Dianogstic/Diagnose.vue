@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="diagnose-container">
     <h1 class="diagnose-header">PHIẾU KẾT QUẢ CHẨN ĐOÁN</h1>
     <h2 class="diagnose-content-header">Mô tả kết quả</h2>
     <div class="diagnose-content">
@@ -9,22 +9,34 @@
           v-for="mdr in mdrs"
           :key="mdr.mrDetailId"
         >
-          &nbsp; {{ mdr.imageDescription }}asdfadfasdf
+          &nbsp; {{ mdr.imageDescription }}
+          <br />
+          <br />
         </div>
-        <br />
       </div>
       <div class="diagnose-picture">
         <h2 class="diagnose-picture-header">Hình ảnh chẩn đoán</h2>
-        <div class="picture-diagnose">
-          <div class="picture-diagnose-inner"></div>
-          <div class="picture-diagnose-inner1"></div>
-          <div class="picture-diagnose-inner2"></div>
+        <div class="picture-diagnose" v-for="mdr in mdrs" :key="mdr.mrDetailId">
+          <div
+            class="picture-diagnose-inner"
+            v-for="image in mdr.images"
+            :key="image.imgId"
+          >
+            &nbsp; {{ image.imgLink }} <br />
+          </div>
         </div>
       </div>
     </div>
     <h3 class="Result-diagnose-header">
-      Kết quả: Chẩn đoán hình ảnh là một ngành trong lĩnh vực y tế.
+      Kết quả:
+      <div v-for="mdr in mdrs" :key="mdr.mrDetailId">
+        <div>
+          &nbsp; {{ mdr.diagnosis }}
+          <br />
+        </div>
+      </div>
     </h3>
+
     <h3 class="Result-diagnose-header">
       Lựa chọn thủ thuật phù hợp cho việc chẩn đoán:
     </h3>
@@ -35,11 +47,8 @@
         v-for="mdr in mdrs"
         :key="mdr.mrDetailId"
       >
-        <input
-          type="checkbox"
-          v-model="selectedService"
-          :value="mdr.mrDetailId"
-        />&nbsp; {{ mdr.serviceName }}
+        <input type="checkbox" @change="checkStatus(mdr.mrDetailId)" />&nbsp;
+        {{ mdr.serviceName }}
       </div>
     </div>
     <button
@@ -87,6 +96,7 @@ export default {
       mdrs: [],
       UserId: 0,
       selectedService: null,
+      selectedMrdetailIds: [],
     };
   },
   methods: {
@@ -112,6 +122,15 @@ export default {
     backProfile() {
       this.$router.push({ name: "Profile" });
     },
+    checkStatus(mrDetailId) {
+      const index = this.selectedMrdetailIds.indexOf(mrDetailId);
+      if (index > -1) {
+        this.selectedMrdetailIds.splice(index, 1);
+      } else {
+        this.selectedMrdetailIds.push(mrDetailId);
+      }
+      localStorage.setItem("listMdr",this.selectedMrdetailIds);
+    },
   },
   mounted: function () {
     this.CheckRole();
@@ -120,6 +139,9 @@ export default {
 };
 </script>
 <style scoped>
+.diagnose-container {
+  height: 100%;
+}
 .diagnose-header {
   display: flex;
   justify-content: center;
@@ -129,12 +151,13 @@ export default {
   margin-left: 10%;
 }
 .diagnose-content {
-  height: 100vh;
+  height: 100%;
   display: flex;
   margin-left: 10%;
   margin-right: 10%;
 }
 .diagnose-description {
+  height: 100%;
   width: 60%;
   overflow: auto;
 }
@@ -157,12 +180,12 @@ export default {
   margin-left: 25%;
   height: 25%;
   width: 80%;
-  background-image: url("../../../imgs/image.png");
+  /* background-image: url("../../../imgs/image.png"); */
   background-size: cover;
   background-repeat: no-repeat;
   background-position: center;
 }
-.picture-diagnose-inner1 {
+/* .picture-diagnose-inner1 {
   margin-left: 25%;
   margin-top: 5%;
   height: 25%;
@@ -181,7 +204,7 @@ export default {
   background-size: cover;
   background-repeat: no-repeat;
   background-position: center;
-}
+} */
 .Result-diagnose-header {
   margin-bottom: 3%;
   margin-left: 10%;

@@ -1,6 +1,6 @@
 <template>
   <div>
-    <HomePage v-if="isHomePageVisible" @log-in="handleLogin"></HomePage>
+    <!-- <HomePage v-if="isHomePageVisible" @log-in="handleLogin"></HomePage> -->
     <router-view></router-view>
     <!-- <CKEditor></CKEditor> -->
     <!-- <Implant></Implant> -->

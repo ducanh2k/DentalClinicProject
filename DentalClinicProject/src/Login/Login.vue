@@ -15,7 +15,7 @@
           placeholder="Nhập email"
           name="email"
           v-model="email"
-          required
+          required="true"
         />
         <br />
         <br /><label for="pass"
@@ -23,7 +23,7 @@
         ><br />
         <input
           class="formLogin"
-          type="text"
+          type="password"
           placeholder="Nhập mật khẩu"
           v-model="password"
           name="pass"
@@ -57,6 +57,10 @@ export default {
   },
   methods: {
     loginClick() {
+      if (this.email === "" || this.password === "") {
+        alert("Email hoặc mật khẩu không được để trống.");
+        return;
+      }
       axios
         .post("https://localhost:7034/api/Auth/login", {
           email: this.email,
@@ -79,8 +83,7 @@ export default {
           }
         })
         .catch((error) => {
-          alert("Lỗi đăng nhập");
-          console.error("Lỗi đăng nhập");
+          alert(error.response.data);
         });
     },
   },

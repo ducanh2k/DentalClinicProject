@@ -1,5 +1,5 @@
 .sidebar {
-  width: 11%;
+  width: 14%;
   height: 100vh;
   background-color: #4d4b4b;
 }
@@ -80,8 +80,14 @@
   color: rgba(57, 58, 62, 255);
 }
 
+.item1:active{
+  border: 1px;
+  background-color: white;
+  text-decoration: none;
+  color: rgba(57, 58, 62, 255);
+}
 .item1:focus,
-.item1__content:focus {
+.item1__content:focus, .item1:active {
   border: 1px;
   z-index: 1;
   background-color: white;

@@ -1,26 +1,26 @@
 <template>
   <div class="result-container">
     <h1 class="cus Result-header">PHIẾU KHÁM BỆNH</h1>
-    <div class="cus cusName">
-      Họ và tên:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Trần Đức Anh
+    <div class="cus cusName" v-if="userData !== null">
+      Họ và tên:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; {{ userData.name }}
     </div>
-    <div class="cus cusAge">
-      Năm sinh:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 17/05/2000
+    <div class="cus cusAge" v-if="userData !== null">
+      Năm sinh:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; {{ userData.dob }}
     </div>
-    <div class="cus cusAddress">
-      Địa chỉ:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Đinh Công, Hoàng Mai
+    <div class="cus cusAddress" v-if="userData !== null">
+      Địa chỉ:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; {{ userData.address }}
     </div>
-    <div class="cus cusPhone">
-      Điện thoại:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 0965316967
+    <div class="cus cusPhone" v-if="userData !== null">
+      Điện thoại:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; {{ userData.phone }}
     </div>
-    <div class="cus cusEmail">
-      Email:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; anhtdhe141741@fpt.edu.vn
+    <div class="cus cusEmail" v-if="userData !== null">
+      Email:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; {{ userData.email }}
     </div>
     <div class="range-Result">
       <div class="table-container">
         <table>
           <tr>
-            <th>Lần</th>
+            <th>Mã</th>
             <th>Triệu chứng/Chẩn đoán</th>
             <th>Thủ thuật điều trị</th>
             <th>Bác sỹ</th>
@@ -30,49 +30,28 @@
             <th>Thành tiền</th>
           </tr>
           <!-- Repeat this row for each record -->
-          <tr>
-            <td>3</td>
-            <td>Chẩn đoán: Abscess chế</td>
-            <td>Cắt lợi bằng Laser r23</td>
-            <td>THI HIEN</td>
-            <td>500,000</td>
+          <tr v-for="d in detailsList" :key="d.mrDetailId">
+            <td>{{ d.mrDetailId }}</td>
+            <td>{{ d.diagnosis }}</td>
+            <td>{{ d.serviceName }}</td>
+            <td>{{ d.appointments[0].doctorName }}</td>
+            <td>{{ d.servicePay }}</td>
             <td>1</td>
             <td>0</td>
-            <td>500,000</td>
+            <td>{{ d.servicePay }}</td>
           </tr>
-          <tr>
-            <td>3</td>
-            <td>Chẩn đoán: Abscess chế</td>
-            <td>Cắt lợi bằng Laser r23</td>
-            <td>THI HIEN</td>
-            <td>500,000</td>
-            <td>1</td>
-            <td>0</td>
-            <td>500,000</td>
-          </tr>
-          <tr>
-            <td>3</td>
-            <td>Chẩn đoán: Abscess chế</td>
-            <td>Cắt lợi bằng Laser r23</td>
-            <td>THI HIEN</td>
-            <td>500,000</td>
-            <td>1</td>
-            <td>0</td>
-            <td>500,000</td>
-          </tr>
-          <!-- Additional rows go here -->
         </table>
       </div>
     </div>
     <div class="result-info">
-      <div class="result-info-left">
-        <div class="cus cusBooking">Lịch hẹn:</div>
-        <div class="cusBookingContent">-11:00:00 ngày 16/09/2019</div>
-        <div class="cusBookingContent">-Nội dung: lịch hẹn</div>
+      <div class="cus cusBooking">Lịch hẹn:</div>
+      <div class="result-info-left" v-for="d in detailsList" :key="d.mrDetailId">
+        <div class="cusBookingContent">{{ d.appointments[0].datetime }}</div>
+        <div class="cusBookingContent">-Nội dung: {{ d.appointments[0].note }}</div>
       </div>
       <div class="result-info-right">
         <div class="cusBooking">
-          <strong>Lịch hẹn:</strong
+          <strong>Tổng tiền:</strong
           >&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
           600.000
         </div>
@@ -134,21 +113,87 @@
 </template>
 
 <script>
+import axios from "axios";
 export default {
   name: "Result",
   data() {
-    return {};
+    return {
+      role: "",
+      profiles: [],
+      services: [],
+      users: [],
+      name: "",
+      datetime: "",
+      note: "",
+      modalTitle: "Bạn muốn đặt cuộc hẹn vào ngày :",
+      roleId: 0,
+      role: "",
+      deleteFlag: false,
+      password: "",
+      ID: 0,
+      selectedService: null,
+      searchText: "",
+      UserId: 0,
+      userData: null,
+      serviceId: 0,
+      doctorId: 0,
+      selectedMrdetailIds: [],
+      detailsList: [],
+    };
   },
   methods: {
     backProfile() {
       this.$router.push({ name: "Diagnose" });
     },
+    CheckRole() {
+      this.selectedMrdetailIds = localStorage.getItem("listMdr").split(",");
+      this.role = localStorage.getItem("userRole");
+      this.UserId = localStorage.getItem("UserId");
+    },
+    fetchUsers() {
+      let apiURL = "https://localhost:7034/api/User/" + this.UserId;
+      axios
+        .get(apiURL)
+        .then((response) => {
+          this.userData = response.data.user;
+        })
+        .catch((error) => {
+          console.error("There has been a problem");
+        });
+    },
+    fetchDetailsForSelectedServices() {
+      this.detailsList = [];
+      if (!Array.isArray(this.selectedMrdetailIds)) {
+        console.error(
+          "selectedMrdetailIds is not an array",
+          this.selectedMrdetailIds
+        );
+        return;
+      }
+      const requests = this.selectedMrdetailIds.map((id) => {
+        const url = `https://localhost:7034/api/MedicalRecordDetails/${id}`;
+        return axios.get(url);
+      });
+      Promise.all(requests)
+        .then((responses) => {
+          responses.forEach((response) => {
+            this.detailsList.push(response.data);
+          });
+        })
+        .catch((error) => {
+          console.error("There was an error fetching the details:", error);
+        });
+    },
+  },
+  mounted: function () {
+    this.CheckRole();
+    this.fetchUsers();
+    this.fetchDetailsForSelectedServices();
   },
 };
 </script>
 <style scoped>
 .range-Result {
-  /* border: 1px solid black; */
   height: 100%;
 }
 .result-container {

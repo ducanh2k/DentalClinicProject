@@ -121,6 +121,8 @@ export default {
       this.role = null;
       localStorage.removeItem("userRole");
       this.$emit("log-in");
+      this.$router.push({ name: "Login" });
+
     },
     logOut() {
       this.action = "log-out";

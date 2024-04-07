@@ -501,7 +501,8 @@ export default {
   display: flex;
   justify-content: center;
   align-items: center;
-  margin-top: -100%;
+  margin-top: -90%;
+  margin-left: -10%;
   margin-bottom: 30%;
   font-size: 6rem;
   color: black;
