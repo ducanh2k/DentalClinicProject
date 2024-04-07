@@ -4,37 +4,14 @@
     <h2 class="diagnose-content-header">Mô tả kết quả</h2>
     <div class="diagnose-content">
       <div class="diagnose-description">
-        Chẩn đoán (diagnosis) là một từ ghép nghĩa; trong đó “chẩn” là xác định,
-        phân biệt dựa trên những triệu chứng, dấu hiệu có sẵn; “đoán” có nghĩa
-        dựa vào những có sẵn, đã biết để tìm ra, suy ra những điều còn chưa rõ
-        hoặc chưa xảy ra.
+        <div
+          class="description-inner"
+          v-for="mdr in mdrs"
+          :key="mdr.mrDetailId"
+        >
+          &nbsp; {{ mdr.imageDescription }}asdfadfasdf
+        </div>
         <br />
-        Như vậy “chẩn đoán” trong y học có nghĩa là thông qua biểu hiện các dấu
-        hiệu, triệu chứng, kết quả xét nghiệm từ đó đưa ra được kết luận về bệnh
-        hay một tình trạng sức khỏe.
-        <br />
-        Chẩn đoán là một bước rất quan trọng, quyết định đến toàn bộ quá trình
-        điều trị, chăm sóc hay các can thiệp y khoa.
-        <br />
-
-        Việc đưa ra chẩn đoán cần có cơ sở khoa học vững chắc, rõ ràng và luôn
-        là thách thức với đội ngũ y tế; bởi lẽ có những bệnh hay vấn đề sức khỏe
-        có dấu hiệu, triệu chứng rõ ràng, nhưng cũng có nhiều trường hợp bệnh
-        không điển hình và đòi hỏi người khám cần vận dụng kiến thức, thậm chí
-        là kinh nghiệm để tìm tòi, khai thác và đưa ra được kết luận đúng đắn.
-        <br />
-        Chẩn đoán trong y học có nhiều loại. Ứng với các chuyên ngành khác nhau
-        sẽ có các loại chẩn đoán khác nhau.
-        <br />
-
-        Việc đưa ra chẩn đoán cần có cơ sở khoa học vững chắc, rõ ràng và luôn
-        là thách thức với đội ngũ y tế; bởi lẽ có những bệnh hay vấn đề sức khỏe
-        có dấu hiệu, triệu chứng rõ ràng, nhưng cũng có nhiều trường hợp bệnh
-        không điển hình và đòi hỏi người khám cần vận dụng kiến thức, thậm chí
-        là kinh nghiệm để tìm tòi, khai thác và đưa ra được kết luận đúng đắn.
-        <br />
-        Chẩn đoán trong y học có nhiều loại. Ứng với các chuyên ngành khác nhau
-        sẽ có các loại chẩn đoán khác nhau.
       </div>
       <div class="diagnose-picture">
         <h2 class="diagnose-picture-header">Hình ảnh chẩn đoán</h2>
@@ -53,71 +30,16 @@
     </h3>
     <div class="service-choice">
       <div class="service-choice-name"></div>
-      <div class="btnchoice-container">
+      <div
+        class="btnchoice-container"
+        v-for="mdr in mdrs"
+        :key="mdr.mrDetailId"
+      >
         <input
-          type="radio"
-          class="btnchoice"
-          v-model="btnchoice"
-          value=""
-        />&nbsp; Thủ Thuật 1
-        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-        <input
-          type="radio"
-          class="btnchoice"
-          v-model="btnchoice"
-          value=""
-        />&nbsp; Thủ Thuật 2
-        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-        <input
-          type="radio"
-          class="btnchoice"
-          v-model="btnchoice"
-          value=""
-        />&nbsp; Thủ Thuật 3
-      </div>
-      <div class="btnchoice-container">
-        <input
-          type="radio"
-          class="btnchoice"
-          v-model="btnchoice"
-          value=""
-        />&nbsp; Thủ Thuật 4
-        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-        <input
-          type="radio"
-          class="btnchoice"
-          v-model="btnchoice"
-          value=""
-        />&nbsp; Thủ Thuật 5
-        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-        <input
-          type="radio"
-          class="btnchoice"
-          v-model="btnchoice"
-          value=""
-        />&nbsp; Thủ Thuật 6
-      </div>
-      <div class="btnchoice-container">
-        <input
-          type="radio"
-          class="btnchoice"
-          v-model="btnchoice"
-          value=""
-        />&nbsp; Thủ Thuật 7
-        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-        <input
-          type="radio"
-          class="btnchoice"
-          v-model="btnchoice"
-          value=""
-        />&nbsp; Thủ Thuật 8
-        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-        <input
-          type="radio"
-          class="btnchoice"
-          v-model="btnchoice"
-          value=""
-        />&nbsp; Thủ Thuật 9
+          type="checkbox"
+          v-model="selectedService"
+          :value="mdr.mrDetailId"
+        />&nbsp; {{ mdr.serviceName }}
       </div>
     </div>
     <button
@@ -148,18 +70,52 @@
 </template>
 
 <script>
+import axios from "axios";
+
 export default {
   name: "Diagnose",
   data() {
-    return {};
+    return {
+      role: "",
+      profiles: [],
+      services: [],
+      users: [],
+      name: "",
+      roleId: 0,
+      role: "",
+      note: "",
+      mdrs: [],
+      UserId: 0,
+      selectedService: null,
+    };
   },
   methods: {
+    CheckRole() {
+      this.role = localStorage.getItem("userRole");
+      this.UserId = localStorage.getItem("UserId");
+    },
+    fetchMdr() {
+      let apiURL =
+        "https://localhost:7034/api/MedicalRecord/patient/" + this.UserId;
+      axios
+        .get(apiURL)
+        .then((response) => {
+          this.mdrs = response.data[0].medicalRecordDetails;
+        })
+        .catch((error) => {
+          console.error("There has been a problem");
+        });
+    },
     NextPage() {
       this.$router.push({ name: "Result" });
     },
     backProfile() {
       this.$router.push({ name: "Profile" });
     },
+  },
+  mounted: function () {
+    this.CheckRole();
+    this.fetchMdr();
   },
 };
 </script>
@@ -180,6 +136,10 @@ export default {
 }
 .diagnose-description {
   width: 60%;
+  overflow: auto;
+}
+.description-inner {
+  overflow: auto;
 }
 .diagnose-picture {
   height: 100%;

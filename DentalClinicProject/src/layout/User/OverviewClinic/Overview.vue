@@ -56,7 +56,7 @@
               <ul class="dropdown-menu dropdown-service">
                 <li
                   class="li-service"
-                  v-for="service in services"
+                  v-for="service in filteredServices"
                   :key="service.serviceId"
                 >
                   <a class="a-service" @click="goService(service.serviceId)">{{
@@ -65,7 +65,7 @@
                 </li>
               </ul>
             </li>
-            <li class="nav-item">
+            <li class="nav-item" @click="PriceList()">
               <a class="nav-link active" aria-current="page" href="#"
                 >Bảng giá</a
               >
@@ -961,6 +961,7 @@ import "../../../css/User/contactUs.css";
 import "../../../css/User/footerMain.css";
 import "../../../css/User/Overview.css";
 import axios from "axios";
+import PriceList from "../Service/PriceList.vue";
 export default {
   name: "Overview",
   data() {
@@ -1006,6 +1007,9 @@ export default {
     teamDoctor() {
       this.$router.push({ name: "TeamDoctor" });
     },
+    PriceList() {
+      this.$router.push({ name: "PriceList" });
+    },
     Overview() {
       this.$router.push({ name: "Overview" });
     },
@@ -1018,6 +1022,11 @@ export default {
     goService(id) {
       localStorage.setItem("ServiceId", id);
       this.$router.push({ name: "Service" });
+    },
+  },
+  computed: {
+    filteredServices() {
+      return this.services.filter((service) => service.briefInfo === "title");
     },
   },
   mounted: function () {

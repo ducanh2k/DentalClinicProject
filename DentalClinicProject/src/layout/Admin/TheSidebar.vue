@@ -7,7 +7,7 @@
     </div>
     <div class="sidebar-main">
       <div class="item1" tabindex="1">
-        <router-link to="/service" class="item1__content">
+        <router-link to="/service2" class="item1__content">
           <div class="item1-inner">Quản lý dịch vụ</div>
         </router-link>
       </div>

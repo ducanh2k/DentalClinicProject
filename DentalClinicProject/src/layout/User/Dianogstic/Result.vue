@@ -1,38 +1,22 @@
 <template>
   <div class="result-container">
     <h1 class="cus Result-header">PHIẾU KHÁM BỆNH</h1>
-    <div class="cus cusName">Họ và tên:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Trần Đức Anh</div>
-    <div class="cus cusAge">Năm sinh:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 17/05/2000 </div>
-    <div class="cus cusAddress">Địa chỉ:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Đinh Công, Hoàng Mai</div>
-    <div class="cus cusPhone">Điện thoại:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 0965316967</div>
-    <div class="cus cusEmail">Email:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; anhtdhe141741@fpt.edu.vn</div>
+    <div class="cus cusName">
+      Họ và tên:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Trần Đức Anh
+    </div>
+    <div class="cus cusAge">
+      Năm sinh:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 17/05/2000
+    </div>
+    <div class="cus cusAddress">
+      Địa chỉ:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Đinh Công, Hoàng Mai
+    </div>
+    <div class="cus cusPhone">
+      Điện thoại:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 0965316967
+    </div>
+    <div class="cus cusEmail">
+      Email:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; anhtdhe141741@fpt.edu.vn
+    </div>
     <div class="range-Result">
-      <!-- <table class="" style="height: 30%">
-        <thead>
-          <tr>
-            <th scope="col">Lần</th>
-            <th scope="col">Triệu chứng /Chẩn đoán</th>
-            <th scope="col">Thủ thuật điều trị</th>
-            <th scope="col">Bác sĩ</th>
-            <th scope="col">Đơn giá</th>
-            <th scope="col">S.Lượng</th>
-            <th scope="col">K.mại</th>
-            <th scope="col">Thành tiền</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr v-for="user in users" :key="user.userId">
-            <td class="data-from-db">{{}}</td>
-            <td class="data-from-db">{{}}</td>
-            <td class="data-from-db">{{}}</td>
-            <td class="data-from-db">{{}}</td>
-            <td class="data-from-db">{{}}</td>
-            <td class="data-from-db">{{}}</td>
-            <td class="data-from-db">{{}}</td>
-            <td class="data-from-db">{{}}</td>
-          </tr>
-        </tbody>
-      </table> -->
       <div class="table-container">
         <table>
           <tr>
@@ -166,7 +150,6 @@ export default {
 .range-Result {
   /* border: 1px solid black; */
   height: 100%;
-  
 }
 .result-container {
   margin-left: 10%;

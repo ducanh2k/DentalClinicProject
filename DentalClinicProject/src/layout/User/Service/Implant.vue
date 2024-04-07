@@ -56,16 +56,16 @@
               <ul class="dropdown-menu dropdown-service">
                 <li
                   class="li-service"
-                  v-for="service in services"
+                  v-for="service in filteredServices"
                   :key="service.serviceId"
                 >
-                  <a class="a-service" @click="goService(service.serviceId)">{{
-                    service.serviceName
-                  }}</a>
+                  <a class="a-service" @click="goService(service.serviceId)">
+                    {{ service.serviceName }}
+                  </a>
                 </li>
               </ul>
             </li>
-            <li class="nav-item">
+            <li class="nav-item" @click="PriceList()">
               <a class="nav-link active" aria-current="page" href="#"
                 >Bảng giá</a
               >
@@ -276,6 +276,9 @@ export default {
       this.$emit("log-out", this.action);
       this.$router.push({ name: "Login" });
     },
+    PriceList() {
+      this.$router.push({ name: "PriceList" });
+    },
     teamDoctor() {
       this.$router.push({ name: "TeamDoctor" });
     },
@@ -295,6 +298,11 @@ export default {
   //   }
   //   next();
   // },
+  computed: {
+    filteredServices() {
+      return this.services.filter((service) => service.briefInfo === "title");
+    },
+  },
   mounted: function () {
     this.CheckRole();
     this.fetchServices();

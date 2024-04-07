@@ -59,9 +59,9 @@
                   v-for="service in filteredServices"
                   :key="service.serviceId"
                 >
-                  <a class="a-service" @click="goService(service.serviceId)">
-                    {{ service.serviceName }}
-                  </a>
+                  <a class="a-service" @click="goService(service.serviceId)">{{
+                    service.serviceName
+                  }}</a>
                 </li>
               </ul>
             </li>
@@ -94,11 +94,31 @@
         </div>
       </div>
     </nav>
-    <div class="Service-container-detail">
-      <br />
-      <br />
-      <br />
-      <p v-html="description"></p>
+    <br />
+    <br />
+    <br />
+    <div class="Price-container">
+      <table class="pricing-table">
+        <thead>
+          <tr>
+            <th>Tên dịch vụ</th>
+            <th>Giá / Chi phí</th>
+          </tr>
+        </thead>
+        <tbody v-for="ser in groupedServices" :key="ser.title">
+          <tr class="service-category" v-if="ser.title !== 'title'">
+            <td colspan="2">{{ ser.title }}</td>
+          </tr>
+          <tr v-for="service in services" :key="service.serviceId">
+            <td v-if="ser.title === service.briefInfo && ser.title !== 'title'">
+              {{ service.serviceName }}
+            </td>
+            <td v-if="ser.title === service.briefInfo && ser.title !== 'title'">
+              {{ service.price.toLocaleString("vi-VN") }}.000 VND
+            </td>
+          </tr>
+        </tbody>
+      </table>
     </div>
     <div class="container-contact-main">
       <div class="dentalHeader">
@@ -210,25 +230,25 @@
 </template>
 
 <script>
-import CKEditor from "@ckeditor/ckeditor5-vue";
-import ClassicEditor from "@ckeditor/ckeditor5-build-classic";
+import "../../../css/User/priceList.css";
 import "../../../css/User/contactUs.css";
 import "../../../css/User/footerMain.css";
 import axios from "axios";
 export default {
-  name: "Implant1",
+  name: "PriceList",
   data() {
     return {
-      services: [],
-      serviceData: null,
-      description: "",
       role: "",
       action: "",
-      serviceName: "",
-      name: "",
+      services: [],
     };
   },
   methods: {
+    showDetails(employeeId) {
+      this.selectedEmployee = this.employeeList.find(
+        (employee) => employee.id === employeeId
+      );
+    },
     async fetchServices() {
       let apiURL = "https://localhost:7034/api/Service/list";
       axios
@@ -239,27 +259,6 @@ export default {
         .catch((error) => {
           console.error("There has been a problem");
         });
-      let id = localStorage.getItem("ServiceId");
-      apiURL = "https://localhost:7034/api/Service/" + id;
-      axios
-        .get(apiURL)
-        .then((response) => {
-          this.description = response.data.description;
-        })
-        .catch((error) => {
-          console.error("There has been a problem");
-        });
-    },
-    goService(id) {
-      localStorage.setItem("ServiceId", id);
-      this.$router.push({
-        name: "Service",
-      });
-    },
-    showDetails(employeeId) {
-      this.selectedEmployee = this.employeeList.find(
-        (employee) => employee.id === employeeId
-      );
     },
     CheckRole() {
       this.role = localStorage.getItem("userRole");
@@ -279,33 +278,71 @@ export default {
     teamDoctor() {
       this.$router.push({ name: "TeamDoctor" });
     },
+    PriceList() {
+      this.$router.push({ name: "PriceList" });
+    },
     Overview() {
       this.$router.push({ name: "Overview" });
     },
     checkProfile() {
       this.$router.push({ name: "Profile" });
     },
-    PriceList() {
-      this.$router.push({ name: "PriceList" });
-    },
     backHome() {
       this.$router.push({ name: "Home" });
     },
+    goService(id) {
+      localStorage.setItem("ServiceId", id);
+      this.$router.push({ name: "Service" });
+    },
   },
-  // beforeRouteUpdate(to, from, next) {
-  //   if (to.params.id !== from.params.id) {
-  //     this.goService(to.params.id);
-  //   }
-  //   next();
-  // },
   computed: {
     filteredServices() {
       return this.services.filter((service) => service.briefInfo === "title");
     },
+    KhamTongQuat() {
+      return this.services.filter(
+        (service) => service.briefInfo === "Khám tổng quát"
+      );
+    },
+    ChinhNha() {
+      return this.services.filter(
+        (service) => service.briefInfo === "Chỉnh nha"
+      );
+    },
+    // groupedServices() {
+    //   const groups = this.services.reduce((acc, service) => {
+    //     const key = service.briefInfo || "Other"; // 'Other' là giá trị mặc định nếu briefInfo không tồn tại
+    //     if (!acc[key]) {
+    //       acc[key] = [];
+    //     }
+    //     acc[key].push(service);
+    //     return acc;
+    //   }, {});
+    //   return Object.keys(groups).map((key) => ({
+    //     briefInfo: key,
+    //     services: groups[key],
+    //   }));
+    // },
+    groupedServices() {
+      const serviceGroups = {};
+
+      this.services.forEach(service => {
+        const group = service.briefInfo || 'Other'; // 'Other' là nhóm mặc định nếu không có briefInfo
+        if (!serviceGroups[group]) {
+          serviceGroups[group] = {
+            title: group,
+            services: []
+          };
+        }
+        serviceGroups[group].services.push(service);
+      });
+
+      return Object.values(serviceGroups);
+    }
   },
   mounted: function () {
-    this.CheckRole();
     this.fetchServices();
+    this.CheckRole();
   },
 };
 </script>
@@ -377,19 +414,22 @@ li:focus {
   box-sizing: border-box;
 }
 .dropdown-menu {
+  padding: 20px;
   margin-top: auto;
-  margin-left: 150px;
+  margin-left: 130px !important;
   width: 240px !important;
 }
 .dropdown-service {
-  margin-left: 310px;
-  width: 200px;
+  padding: 20px;
+  margin-top: auto;
+  margin-left: 200px !important;
+  width: 300px !important;
 }
 li .li-service {
   display: flex;
   justify-content: center;
   align-items: center;
-  width: 238px !important ;
+  width: 100% !important;
 }
 .a-service:hover,
 .a-service:active {
@@ -432,17 +472,11 @@ li .li-service {
   text-align: center;
   color: black;
   padding: 4%;
-  height: 100%;
-  width: 100%;
+  width: 100% !important;
   background-color: none !important;
 }
 .nav-item-service {
-  margin-left: 240px !important;
-}
-.Service-container-detail {
-  margin-left: 10%;
-  width: 80%;
-  height: 80%;
+  margin-left: 500px;
 }
 @media (max-width: 1300px) {
   .dropdown-menu {

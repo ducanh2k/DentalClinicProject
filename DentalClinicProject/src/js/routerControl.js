@@ -22,11 +22,17 @@ import Implant from "../layout/User/Service/Implant.vue";
 import Implant1 from "../layout/User/Service/Implant1.vue";
 import Diagnose from "../layout/User/Dianogstic/Diagnose.vue";
 import Result from "../layout/User/Dianogstic/Result.vue";
+import PriceList from "../layout/User/Service/PriceList.vue";
 const routes = [
   {
     path: "/home",
     name: "Home",
     component: HomePage,
+  },
+  {
+    path: "/price",
+    name: "PriceList",
+    component: PriceList,
   },
   {
     path: "/result",
@@ -126,6 +132,11 @@ const routes = [
     path: "/service",
     name: "Service1",
     component: Implant1,
+  },
+  {
+    path: "/service2",
+    name: "Service2",
+    component: Service,
   },
   {
     path: "/doctor",

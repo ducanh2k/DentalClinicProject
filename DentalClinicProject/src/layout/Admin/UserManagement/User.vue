@@ -1159,7 +1159,7 @@ export default {
 }
 .table th,
 .table td {
-  min-width: 120px; 
+  min-width: 120px;
   word-wrap: break-word;
 }
 .detailUser {

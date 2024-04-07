@@ -2,6 +2,9 @@
   <div class="profile-container">
     <div class="profile-info">
       <div class="info-picture"></div>
+      <div class="Char">
+        {{ firstChar }}
+      </div>
       <div class="info-raw" v-if="userData !== null">
         Họ và tên: {{ userData.name }}
         <p class="info-inner"></p>
@@ -69,10 +72,14 @@
                 <tr v-for="p in profiles" :key="p.appointmentId">
                   <th scope="row">{{ p.appointmentId }}</th>
                   <td class="data-from-db">{{ p.datetime }}</td>
-                  <td class="data-from-db">{{ p.serviceName }}</td>
+                  <td class="data-from-db">
+                    {{ p.serviceInfos[0].serviceName }}
+                  </td>
                   <td class="data-from-db">{{ p.doctorName }}</td>
                   <td class="data-from-db">{{ p.note }}</td>
-                  <td class="data-from-db">{{ p.servicePay }}</td>
+                  <td class="data-from-db">
+                    {{ p.serviceInfos[0].servicePay }}
+                  </td>
                   <td class="data-from-db">{{ p.status }}</td>
                 </tr>
               </tbody>
@@ -128,31 +135,89 @@
                       placeholder="Nhập ghi chú"
                     />
                   </div>
+                  <div class="dropdown">
+                    <button
+                      class="btn btn-secondary dropdown-toggle"
+                      type="button"
+                      id="dropdownMenuButton1"
+                      data-bs-toggle="dropdown"
+                      aria-expanded="false"
+                      @click="filterResultsService"
+                    >
+                      <input
+                        type="text"
+                        placeholder="Nhập tên dịch vụ"
+                        class="search-box1"
+                        v-model="searchText1"
+                        @input="filterResultsService"
+                      />
+                    </button>
+                    <ul
+                      class="dropdown-menu"
+                      aria-labelledby="dropdownMenuButton1"
+                    >
+                      <li>
+                        <a
+                          class="dropdown-item"
+                          v-for="service in services"
+                          :key="service.serviceId"
+                          @click.prevent="addService(service.serviceId)"
+                        >
+                          {{ service.serviceName }}</a
+                        >
+                      </li>
+                    </ul>
+                  </div>
+                  <div class="dropdown100">
+                    <button
+                      class="btn btn-secondary dropdown-toggle"
+                      type="button"
+                      id="dropdownMenuButton1"
+                      data-bs-toggle="dropdown"
+                      aria-expanded="false"
+                      @click="filterResultsUser"
+                    >
+                      <input
+                        type="text"
+                        placeholder="Chọn bác sĩ"
+                        class="search-box2"
+                        v-model="searchText2"
+                        @input="filterResultsUser"
+                      />
+                    </button>
+                    <ul
+                      class="dropdown-menu"
+                      aria-labelledby="dropdownMenuButton1"
+                    >
+                      <li>
+                        <a
+                          class="dropdown-item"
+                          v-for="user in users"
+                          :key="user.userId"
+                          @click.prevent="addUser(user.userId)"
+                        >
+                          {{ user.name }}</a
+                        >
+                      </li>
+                    </ul>
+                  </div>
                 </div>
                 <div>
                   <button
                     type="button"
-                    @click="createClick()"
-                    v-if="ID === 0"
+                    @click="Booking()"
                     class="btn btn-primary"
+                    style="margin-right: 2%; width: 11%"
                   >
                     Lưu
                   </button>
 
                   <button
                     type="button"
-                    @click="updateClick()"
-                    v-if="ID != 0"
-                    class="btn btn-primary"
-                  >
-                    Lưu
-                  </button>
-                  <button
-                    type="button"
                     class="btn btn-primary"
                     data-bs-dismiss="modal"
                     aria-label="Close"
-                    style="background-color: rgb(77, 75, 75)"
+                    style="background-color: rgb(77, 75, 75); width: 12%"
                   >
                     Hủy
                   </button>
@@ -188,6 +253,7 @@ export default {
       deleteFlag: false,
       password: "",
       ID: 0,
+      selectedService: null,
       currentPage: 1,
       pageSize: 10,
       totalItems: 0,
@@ -195,29 +261,124 @@ export default {
       searchText: "",
       UserId: 0,
       userData: null,
+      firstChar: "",
+      searchText1: "",
+      searchText2: "",
+      serviceId: 0,
+      doctorId: 0,
     };
   },
   methods: {
+    addService(id) {
+      this.serviceId = id;
+    },
+    addUser(id) {
+      this.doctorId = id;
+    },
+    filterResultsService() {
+      if (this.searchText1) {
+        this.services = this.services.filter((service) =>
+          service.serviceName
+            .toLowerCase()
+            .includes(this.searchText1.toLowerCase())
+        );
+      } else {
+        this.fetchServices();
+      }
+    },
+    filterResultsUser() {
+      if (this.searchText1) {
+        this.users = this.users.filter((user) =>
+          user.userName.toLowerCase().includes(this.searchText2.toLowerCase())
+        );
+      } else {
+        this.fetchListUsers();
+      }
+    },
+    // filterResults() {
+    //   console.log(this.searchText);
+    //   if (this.searchText) {
+    //     this.profiles = this.profiles.filter((profile) =>
+    //       profile.serviceInfos[0].serviceName
+    //           .toLowerCase()
+    //           .includes(this.searchText.toLowerCase())
+
+    //     );
+    //   } else {
+    //     this.fetchProfiles();
+    //   }
+    // },
+    filterResults() {
+      if (this.searchText) {
+        const lowerSearchText = this.searchText.toLowerCase();
+        this.profiles = this.profiles.filter((profile) => {
+          const valuesToCheck = [
+            profile.datetime,
+            profile.note,
+            profile.serviceInfos[0].serviceName,
+            profile.doctorName,
+            profile.status,
+          ];
+          return valuesToCheck.some(
+            (value) => value && value.toLowerCase().includes(lowerSearchText)
+          );
+        });
+      } else {
+        this.fetchProfiles();
+      }
+    },
     CheckRole() {
       this.role = localStorage.getItem("userRole");
       this.UserId = localStorage.getItem("UserId");
     },
-    fetchUsers() {
-      let apiURL = "https://localhost:7034/api/User/" + this.UserId;
-      console.log(apiURL);
+    async fetchListUsers() {
+      let apiURL = "https://localhost:7034/api/User/doctor/list";
       axios
         .get(apiURL)
         .then((response) => {
-          this.userData = response.data.user;
+          this.users = response.data;
         })
         .catch((error) => {
           console.error("There has been a problem");
         });
     },
+    fetchUsers() {
+      let apiURL = "https://localhost:7034/api/User/" + this.UserId;
+      axios
+        .get(apiURL)
+        .then((response) => {
+          this.userData = response.data.user;
+          if (this.userData !== null) {
+            this.firstChar = this.userData.name.charAt(0);
+          }
+        })
+        .catch((error) => {
+          console.error("There has been a problem");
+        });
+    },
+    Booking() {
+      let apiURL = "https://localhost:7034/api/Appointment";
+      axios
+        .post(apiURL, {
+          patientId: this.userData.userId,
+          doctorId: this.doctorId,
+          services: [
+            {
+              id: this.serviceId,
+            },
+          ],
+          datetime: this.datetime,
+          note: this.note,
+        })
+        .then((response) => {
+          alert("Đặt lịch thành công.");
+          this.fetchProfiles();
+        });
+    },
     async fetchProfiles() {
       let apiURL =
-        "https://localhost:7034/api/Appointment/list/userId?userId=4";
-      // +this.UserId;
+        "https://localhost:7034/api/Appointment/list/userId?userId=" +
+        this.UserId;
       axios
         .get(apiURL)
         .then((response) => {
@@ -227,20 +388,20 @@ export default {
           console.error("There has been a problem");
         });
     },
-    filterResults() {
-      console.log(this.searchText);
-      if (this.searchText) {
-        this.users = this.users.filter((user) =>
-          Object.values(user).some((value) =>
-            value
-              .toString()
-              .toLowerCase()
-              .includes(this.searchText.toLowerCase())
-          )
-        );
-      } else {
-        this.fetchUsers();
-      }
+
+    async fetchServices() {
+      let apiURL = "https://localhost:7034/api/Service/list";
+      axios
+        .get(apiURL)
+        .then((response) => {
+          this.services = response.data;
+        })
+        .catch((error) => {
+          console.error("There has been a problem");
+        });
+    },
+    selectService(service) {
+      this.selectedService = services;
     },
     goHome() {
       this.$router.push({ name: "Home" });
@@ -257,6 +418,8 @@ export default {
     this.CheckRole();
     this.fetchUsers();
     this.fetchProfiles();
+    this.fetchServices();
+    this.fetchListUsers();
   },
 };
 </script>
@@ -333,5 +496,17 @@ export default {
   cursor: pointer;
   position: absolute;
   right: 230px;
+}
+.Char {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: -100%;
+  margin-bottom: 30%;
+  font-size: 6rem;
+  color: black;
+}
+.dropdown100 {
+  margin-left: 54% !important;
 }
 </style>

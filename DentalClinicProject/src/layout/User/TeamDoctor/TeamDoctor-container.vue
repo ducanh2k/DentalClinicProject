@@ -56,7 +56,7 @@
               <ul class="dropdown-menu dropdown-service">
                 <li
                   class="li-service"
-                  v-for="service in services"
+                  v-for="service in filteredServices"
                   :key="service.serviceId"
                 >
                   <a class="a-service" @click="goService(service.serviceId)">{{
@@ -65,7 +65,7 @@
                 </li>
               </ul>
             </li>
-            <li class="nav-item">
+            <li class="nav-item" @click="PriceList()">
               <a class="nav-link active" aria-current="page" href="#"
                 >Bảng giá</a
               >
@@ -433,6 +433,14 @@ export default {
     goService(id) {
       localStorage.setItem("ServiceId", id);
       this.$router.push({ name: "Service" });
+    },
+    PriceList() {
+      this.$router.push({ name: "PriceList" });
+    },
+  },
+  computed: {
+    filteredServices() {
+      return this.services.filter((service) => service.briefInfo === "title");
     },
   },
   mounted: function () {
