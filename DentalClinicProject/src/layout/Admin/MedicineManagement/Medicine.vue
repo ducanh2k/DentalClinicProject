@@ -1,15 +1,18 @@
 <template>
   <div class="container-Admin">
-    <TheSidebar></TheSidebar>
+    <TheSidebar v-if="isClicked === true"></TheSidebar>
     <div class="main">
       <div class="main-header">
         <div class="title">
-          <div class="title__toggle">
+          <div class="title__toggle" @click="openSideBar()">
             <i class="fa-solid fa-bars fa-xl"></i>
           </div>
           <div class="title__company">Nha khoa Dentistry</div>
           <div class="exit__button">
-            <i class="fa-solid fa-right-from-bracket fa-xl" @click="logOut()"></i>
+            <i
+              class="fa-solid fa-right-from-bracket fa-xl"
+              @click="logOut()"
+            ></i>
           </div>
         </div>
       </div>
@@ -296,9 +299,14 @@ export default {
       currentPage: 1,
       searchText: "",
       role: "",
+      isClicked: true,
     };
   },
   methods: {
+    openSideBar() {
+      if (this.isClicked === true) this.isClicked = false;
+      else if (this.isClicked === false) this.isClicked = true;
+    },
     CheckRole() {
       this.role = localStorage.getItem("userRole");
     },
@@ -423,16 +431,15 @@ export default {
       } else {
         this.fetchMedicines();
       }
-    }, 
-    logOut(){
+    },
+    logOut() {
       this.$router.push({ name: "Login" });
       localStorage.removeItem("userRole");
-    }
+    },
   },
   mounted: function () {
     this.fetchMedicines();
     this.CheckRole();
-
   },
 };
 </script>

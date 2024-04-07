@@ -14,7 +14,7 @@
   font-weight: bold;
   width: 20%;
   height: 4vh;
-  margin-top: -5vh;
+  margin-top: -4.5vh;
   margin-left: 3%;
   float: left;
   font-size: 3vh;
@@ -22,7 +22,7 @@
 }
 
 .title__toggle {
-  margin-top: 1%;
+  margin-top: 8px;
   width: 2%;
   height: 4vh;
   background-image: url(../imgs/menu.png);

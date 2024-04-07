@@ -1,10 +1,10 @@
 <template>
   <div class="container-Admin">
-    <TheSidebar></TheSidebar>
+    <TheSidebar v-if="isClicked === true"></TheSidebar>
     <div class="main">
       <div class="main-header">
         <div class="title">
-          <div class="title__toggle">
+          <div class="title__toggle" @click="openSideBar()">
             <i class="fa-solid fa-bars fa-xl"></i>
           </div>
           <div class="title__company">Nha khoa Dentistry</div>
@@ -107,6 +107,7 @@ export default {
       profit: 120,
       minus: 0,
       minusLast: 0,
+      isClicked: true,
     };
   },
   mounted() {
@@ -125,6 +126,10 @@ export default {
     this.RadarChart();
   },
   methods: {
+    openSideBar() {
+      if (this.isClicked === true) this.isClicked = false;
+      else if (this.isClicked === false) this.isClicked = true;
+    },
     onYearChange() {
       if (this.selectedYear === null) {
         this.selectedYear = 2024;

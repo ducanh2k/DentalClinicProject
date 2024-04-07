@@ -1,15 +1,18 @@
 <template>
   <div class="container-Admin">
-    <TheSidebar></TheSidebar>
+    <TheSidebar v-if="isClicked === true"></TheSidebar>
     <div class="main">
       <div class="main-header">
         <div class="title">
-          <div class="title__toggle">
+          <div class="title__toggle" @click="openSideBar()">
             <i class="fa-solid fa-bars fa-xl"></i>
           </div>
           <div class="title__company">Nha khoa Dentistry</div>
           <div class="exit__button">
-            <i class="fa-solid fa-right-from-bracket fa-xl" @click="logOut()"></i>
+            <i
+              class="fa-solid fa-right-from-bracket fa-xl"
+              @click="logOut()"
+            ></i>
           </div>
         </div>
       </div>
@@ -45,7 +48,10 @@
                 <th scope="col">Ngày tiếp nhận</th>
                 <th scope="col">Ghi chú</th>
                 <th scope="col">Trạng thái</th>
-                <th scope="col" v-if="role === 'Admin' || role === 'Staff'"></th>
+                <th
+                  scope="col"
+                  v-if="role === 'Admin' || role === 'Staff'"
+                ></th>
                 <th scope="col" v-if="role === 'Admin'"></th>
               </tr>
             </thead>
@@ -109,7 +115,7 @@
           </table>
         </div>
         <div class="under-table">
-          <div class="sum__staff">Tổng số Appoitment: <strong>10</strong></div>
+          <div class="sum__staff">Tổng số lịch hẹn: <strong> 10 </strong></div>
           <div class="pagination">
             <li><a @click="changPageNumber(1)" class="page-1">1</a></li>
             <li><a @click="changPageNumber(2)" class="page-2">2</a></li>
@@ -250,12 +256,13 @@ import axios from "axios";
 import TheSidebar from "../TheSidebar.vue";
 export default {
   name: "Appointment",
-  components: { 
-    TheSidebar
+  components: {
+    TheSidebar,
   },
   data() {
     return {
-      role:"",
+      isClicked: true,
+      role: "",
       appointments: [], // Data property to store the servicers data
       modalTitle: "",
       appointmentId: 0,
@@ -285,6 +292,10 @@ export default {
     },
   },
   methods: {
+    openSideBar() {
+      if (this.isClicked === true) this.isClicked = false;
+      else if (this.isClicked === false) this.isClicked = true;
+    },
     CheckRole() {
       this.role = localStorage.getItem("userRole");
     },
@@ -397,10 +408,10 @@ export default {
         this.fetchAppointment();
       }
     },
-    logOut(){
+    logOut() {
       this.$router.push({ name: "Login" });
       localStorage.removeItem("userRole");
-    }
+    },
   },
   mounted: function () {
     this.fetchAppointment();

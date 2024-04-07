@@ -1,6 +1,6 @@
 <template>
   <div class="container-Admin">
-    <TheSidebar></TheSidebar>
+    <TheSidebar v-if="isClicked === true"></TheSidebar>
     <div class="main">
       <div class="main-header">
         <div class="title">

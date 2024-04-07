@@ -1,15 +1,18 @@
 <template>
   <div class="container-Admin">
-    <TheSidebar></TheSidebar>
+    <TheSidebar v-if="isClicked === true"></TheSidebar>
     <div class="main">
       <div class="main-header">
         <div class="title">
-          <div class="title__toggle">
+          <div class="title__toggle" @click="openSideBar()">
             <i class="fa-solid fa-bars fa-xl"></i>
           </div>
           <div class="title__company">Nha khoa Dentistry</div>
           <div class="exit__button">
-            <i class="fa-solid fa-right-from-bracket fa-xl" @click="logOut()"></i>
+            <i
+              class="fa-solid fa-right-from-bracket fa-xl"
+              @click="logOut()"
+            ></i>
           </div>
         </div>
       </div>
@@ -51,7 +54,7 @@
                 <th scope="row">{{ index + 1 }}</th>
                 <td>{{ service.serviceName }}</td>
                 <td>{{ service.briefInfo }}</td>
-                <td>{{ service.price }}</td>
+                <td>{{ service.price.toLocaleString("vi-VN") }}.000 VND</td>
                 <td v-if="role === 'Admin'">
                   <button
                     type="button"
@@ -144,31 +147,27 @@
               </div>
               <div>
                 <span class="input-group-text"
-                  ><strong>Thông tin ngắn</strong></span
+                  ><strong>Nhóm dịch vụ</strong></span
                 >
                 <input
                   type="text"
                   class="form-control"
                   v-model="briefInfo"
-                  placeholder="Nhập tiểu sử ngắn"
+                  placeholder="Nhập tên nhóm dịch vụ"
                 />
               </div>
 
               <div>
                 <span class="input-group-text"><strong>Giá thành</strong></span>
                 <input
-                  type="text"
+                  type="number"
                   class="form-control"
                   v-model="price"
                   placeholder="Nhập giá thành"
                 />
+                <div class="form-price">(nghìn VND)</div>
               </div>
-              <div>
-                <span class="input-group-text"
-                  ><strong>Delete Flag</strong></span
-                >
-                <input type="text" class="form-control" v-model="deleteFlag" />
-              </div>
+
               <div>
                 <span class="input-group-text"><strong>Mô tả</strong></span>
                 <textarea
@@ -179,7 +178,7 @@
                   id=""
                   cols="30"
                   rows="10"
-                  placeholder="Mô tả ngắn gọn"
+                  placeholder="Thêm mô tả"
                 ></textarea>
               </div>
             </div>
@@ -240,9 +239,14 @@ export default {
       ID: 0,
       currentPage: 1,
       searchText: "",
+      isClicked: true,
     };
   },
   methods: {
+    openSideBar() {
+      if (this.isClicked === true) this.isClicked = false;
+      else if (this.isClicked === false) this.isClicked = true;
+    },
     CheckRole() {
       this.role = localStorage.getItem("userRole");
     },
@@ -287,10 +291,18 @@ export default {
       this.serviceName = u.serviceName;
       this.briefInfo = u.briefInfo;
       this.description = u.description;
-      this.deleteFlag = u.deleteFlag;
+      this.deleteFlag = false;
       this.price = u.price;
     },
     createClick() {
+      if (
+        this.serviceName === "" ||
+        this.price === "" ||
+        this.briefInfo === ""
+      ) {
+        alert("Tên dịch vụ, thông tin ngắn hoặc giá thành không được để trống");
+        return;
+      }
       axios
         .post("https://localhost:7034/api/Service", {
           serviceName: this.serviceName,
@@ -351,10 +363,10 @@ export default {
     handleNavigation(view) {
       this.currentView = view;
     },
-    logOut(){
+    logOut() {
       this.$router.push({ name: "Login" });
       localStorage.removeItem("userRole");
-    }
+    },
   },
   mounted: function () {
     this.CheckRole();
@@ -373,7 +385,7 @@ export default {
   width: 80%;
 }
 .form-Des {
-  width: 80%;
+  width: 200%;
   height: 50%;
   word-wrap: break-word;
 }
@@ -400,5 +412,10 @@ export default {
 .btn-primary {
   width: 150px;
   margin-right: 20px;
+}
+.form-price {
+  float: right;
+  margin-right: -30px;
+  margin-top: -30px;
 }
 </style>

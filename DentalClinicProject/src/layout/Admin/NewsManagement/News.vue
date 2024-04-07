@@ -1,10 +1,10 @@
 <template>
   <div class="container-Admin">
-    <TheSidebar></TheSidebar>
+    <TheSidebar v-if="isClicked === true"></TheSidebar>
     <div class="main">
       <div class="main-header">
         <div class="title">
-          <div class="title__toggle">
+          <div class="title__toggle" @click="openSideBar()">
             <i class="fa-solid fa-bars fa-xl"></i>
           </div>
           <div class="title__company">Nha khoa Dentistry</div>
@@ -255,9 +255,14 @@ export default {
       ID: 0,
       currentPage: 1,
       searchText: "",
+      isClicked: true,
     };
   },
   methods: {
+    openSideBar() {
+      if (this.isClicked === true) this.isClicked = false;
+      else if (this.isClicked === false) this.isClicked = true;
+    },
     CheckRole() {
       this.role = localStorage.getItem("userRole");
     },
