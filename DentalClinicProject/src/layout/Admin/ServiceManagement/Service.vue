@@ -300,7 +300,7 @@ export default {
         this.price === "" ||
         this.briefInfo === ""
       ) {
-        alert("Tên dịch vụ, thông tin ngắn hoặc giá thành không được để trống");
+        alert("Tên dịch vụ, nhóm dịch vụ hoặc giá thành không được để trống!");
         return;
       }
       axios
@@ -317,6 +317,14 @@ export default {
         });
     },
     updateClick() {
+      if (
+        this.serviceName === "" ||
+        this.price === "" ||
+        this.briefInfo === ""
+      ) {
+        alert("Tên dịch vụ, nhóm dịch vụ hoặc giá thành không được để trống!");
+        return;
+      }
       axios
         .put("https://localhost:7034/api/Service/" + this.ID, {
           serviceName: this.serviceName,
@@ -326,12 +334,12 @@ export default {
           price: this.price,
         })
         .then((response) => {
-          alert("Update thành công!");
+          alert(response.data);
           this.fetchServices();
         });
     },
     deleteClick(id) {
-      if (!confirm("Bạn có chắc không ?")) {
+      if (!confirm("Bạn có chắc chắn muốn xóa không ?")) {
         return;
       }
       axios
@@ -343,7 +351,7 @@ export default {
         .catch((error) => {
           // Handle errors
           console.error("Error:", error);
-          this.message = "Lỗi xóa service.";
+          this.message = "Lỗi xóa dịch vụ!";
         });
     },
     filterResults() {
@@ -385,7 +393,7 @@ export default {
   width: 80%;
 }
 .form-Des {
-  width: 200%;
+  width: 320%;
   height: 50%;
   word-wrap: break-word;
 }
