@@ -20,49 +20,51 @@
       <div class="table-container">
         <table>
           <tr>
-            <th>Mã</th>
+            <th>Ngày</th>
             <th>Triệu chứng/Chẩn đoán</th>
             <th>Thủ thuật điều trị</th>
             <th>Bác sỹ</th>
             <th>Đơn giá</th>
             <th>S.lượng</th>
-            <th>K.mại</th>
+            <th>Nội dung</th>
             <th>Thành tiền</th>
           </tr>
           <!-- Repeat this row for each record -->
           <tr v-for="d in detailsList" :key="d.mrDetailId">
-            <td>{{ d.mrDetailId }}</td>
+            <td>{{ d.appointments[0].datetime }}</td>
             <td>{{ d.diagnosis }}</td>
             <td>{{ d.serviceName }}</td>
             <td>{{ d.appointments[0].doctorName }}</td>
             <td>{{ d.servicePay }}</td>
             <td>1</td>
-            <td>0</td>
+            <td>{{ d.appointments[0].note }}</td>
             <td>{{ d.servicePay }}</td>
           </tr>
         </table>
       </div>
     </div>
     <div class="result-info">
-      <div class="cus cusBooking">Lịch hẹn:</div>
-      <div class="result-info-left" v-for="d in detailsList" :key="d.mrDetailId">
+      <!-- <div class="cus cusBooking">Lịch hẹn:</div>
+      <div
+        class="result-info-left"
+        v-for="d in detailsList"
+        :key="d.mrDetailId"
+      >
         <div class="cusBookingContent">{{ d.appointments[0].datetime }}</div>
-        <div class="cusBookingContent">-Nội dung: {{ d.appointments[0].note }}</div>
-      </div>
+        <div class="cusBookingContent">
+          -Nội dung: {{ d.appointments[0].note }}
+        </div>
+      </div> -->
       <div class="result-info-right">
         <div class="cusBooking">
           <strong>Tổng tiền:</strong
           >&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-          600.000
-        </div>
-        <div class="cusBooking">
-          <strong>Tổng khuyến mại:</strong
-          >&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 0
+          {{ totalServicePay }}
         </div>
         <div class="cusBooking">
           <strong>Nợ cũ:</strong
           >&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-          1.114.000
+          0
         </div>
         <div class="cusBooking">
           <strong>Đã thanh toán:</strong
@@ -72,17 +74,20 @@
         <div class="cusBooking">
           <strong>Còn lại:</strong
           >&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-          1.714.000
+          {{ totalServicePay }}
         </div>
       </div>
     </div>
 
     <br />
     <div class="cus cusBooking">Lời dặn:</div>
-    <div class="cusBookingContent">
+    <!-- <div class="cusBookingContent">
       -Kiêng ăn uống đồ dễ gây nhiễm màu như chè, cà phê, thuốc lá, rượu vang đỏ
       ... và hạn chế dùng đồ quá cứng, quá nóng, quá lạnh sau khi tẩy trắng răng
       ít nhất 2 tuần.
+    </div> -->
+    <div class="cusBookingContent">
+      -Làm theo chỉ định của bác sĩ.
     </div>
     <div class="signing">
       <div class="cusSigning">
@@ -146,7 +151,9 @@ export default {
       this.$router.push({ name: "Diagnose" });
     },
     CheckRole() {
-      this.selectedMrdetailIds = localStorage.getItem("listMdr").split(",");
+      if (localStorage.getItem("listMdr") !== null) {
+        this.selectedMrdetailIds = localStorage.getItem("listMdr").split(",");
+      }
       this.role = localStorage.getItem("userRole");
       this.UserId = localStorage.getItem("UserId");
     },
@@ -183,6 +190,13 @@ export default {
         .catch((error) => {
           console.error("There was an error fetching the details:", error);
         });
+    },
+  },
+  computed: {
+    totalServicePay() {
+      return this.detailsList.reduce((total, detail) => {
+        return total + (detail.servicePay || 0);
+      }, 0);
     },
   },
   mounted: function () {
@@ -233,7 +247,7 @@ export default {
   display: flex;
 }
 .result-info-right {
-  margin-left: 60%;
+  margin-left: 84%;
 }
 .table-container {
   font-family: Arial, sans-serif;

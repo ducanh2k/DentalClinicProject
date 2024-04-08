@@ -75,12 +75,13 @@
                   <td class="data-from-db">
                     {{ p.serviceInfos[0].serviceName }}
                   </td>
-                  <td class="data-from-db">{{ p.doctorName }}</td>
-                  <td class="data-from-db">{{ p.note }}</td>
-                  <td class="data-from-db">
+                  <td class="data-from-db" v-if="role !== 'Doctor'">{{ p.doctorName }}</td>
+                  <td class="data-from-db" v-if="role === 'Doctor'">{{ p.patientName }}</td>
+                  <td class="data-from-db" v-if="role !== 'Doctor'">{{ p.note }}</td>
+                  <td class="data-from-db" v-if="role !== 'Doctor'">
                     {{ p.serviceInfos[0].servicePay }}
                   </td>
-                  <td class="data-from-db">{{ p.status }}</td>
+                  <td class="data-from-db" v-if="role !== 'Doctor'">{{ p.status }}</td>
                 </tr>
               </tbody>
             </table>
@@ -295,19 +296,6 @@ export default {
         this.fetchListUsers();
       }
     },
-    // filterResults() {
-    //   console.log(this.searchText);
-    //   if (this.searchText) {
-    //     this.profiles = this.profiles.filter((profile) =>
-    //       profile.serviceInfos[0].serviceName
-    //           .toLowerCase()
-    //           .includes(this.searchText.toLowerCase())
-
-    //     );
-    //   } else {
-    //     this.fetchProfiles();
-    //   }
-    // },
     filterResults() {
       if (this.searchText) {
         const lowerSearchText = this.searchText.toLowerCase();
@@ -344,6 +332,7 @@ export default {
     },
     fetchUsers() {
       let apiURL = "https://localhost:7034/api/User/" + this.UserId;
+
       axios
         .get(apiURL)
         .then((response) => {
@@ -379,6 +368,11 @@ export default {
       let apiURL =
         "https://localhost:7034/api/Appointment/list/userId?userId=" +
         this.UserId;
+      if (this.role === "Doctor") {
+        apiURL =
+          "https://localhost:7034/api/Appointment/list/doctorId?doctorId=" +
+          this.UserId;
+      }
       axios
         .get(apiURL)
         .then((response) => {

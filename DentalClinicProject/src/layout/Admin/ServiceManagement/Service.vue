@@ -136,7 +136,10 @@
             <div class="input-group md-3">
               <div>
                 <span class="input-group-text"
-                  ><strong>Tên dịch vụ</strong></span
+                  ><strong
+                    >Tên dịch vụ
+                    <b class="star" style="color: red">*</b></strong
+                  ></span
                 >
                 <input
                   type="text"
@@ -147,7 +150,10 @@
               </div>
               <div>
                 <span class="input-group-text"
-                  ><strong>Nhóm dịch vụ</strong></span
+                  ><strong
+                    >Nhóm dịch vụ
+                    <b class="star" style="color: red">*</b></strong
+                  ></span
                 >
                 <input
                   type="text"
@@ -270,7 +276,7 @@ export default {
       axios
         .get(apiURL)
         .then((response) => {
-          this.services = response.data.services;
+          this.services = response.data;
         })
         .catch((error) => {
           console.error("There has been a problem");
@@ -283,7 +289,7 @@ export default {
       this.briefInfo = "";
       this.description = "";
       this.deleteFlag = false;
-      this.price = "";
+      this.price = 0;
     },
     editClick(u) {
       this.modalTitle = "Sửa dịch vụ";
@@ -295,12 +301,11 @@ export default {
       this.price = u.price;
     },
     createClick() {
-      if (
-        this.serviceName === "" ||
-        this.price === "" ||
-        this.briefInfo === ""
-      ) {
-        alert("Tên dịch vụ, nhóm dịch vụ hoặc giá thành không được để trống!");
+      if (this.price === "") {
+        this.price = 0;
+      }
+      if (this.serviceName === "" || this.briefInfo === "") {
+        alert("Tên dịch vụ hoặc nhóm dịch vụ không được để trống!");
         return;
       }
       axios
@@ -312,17 +317,16 @@ export default {
           price: this.price,
         })
         .then((response) => {
-          alert(response.data);
+          alert("Thêm mới thành công!");
           this.fetchServices();
         });
     },
     updateClick() {
-      if (
-        this.serviceName === "" ||
-        this.price === "" ||
-        this.briefInfo === ""
-      ) {
-        alert("Tên dịch vụ, nhóm dịch vụ hoặc giá thành không được để trống!");
+      if (this.price === "") {
+        this.price = 0;
+      }
+      if (this.serviceName === "" || this.briefInfo === "") {
+        alert("Tên dịch vụ hoặc nhóm dịch vụ không được để trống!");
         return;
       }
       axios
@@ -334,7 +338,7 @@ export default {
           price: this.price,
         })
         .then((response) => {
-          alert(response.data);
+          alert("Cập nhật thành công!");
           this.fetchServices();
         });
     },
@@ -425,5 +429,8 @@ export default {
   float: right;
   margin-right: -30px;
   margin-top: -30px;
+}
+.addnew {
+  margin-left: -5%;
 }
 </style>

@@ -17,7 +17,6 @@
         </div>
       </div>
       <div class="main-body">
-        <!-- <AddEButton></AddEButton> -->
         <div class="search-container">
           <input
             type="text"
@@ -34,7 +33,7 @@
               data-bs-target="#exampleModal"
               @click="addClick()"
             >
-              Thêm mới nguyên liệu
+              Thêm mới
             </button>
           </div>
         </div>
@@ -44,8 +43,8 @@
               <tr>
                 <th scope="col">#</th>
                 <th scope="col">Tên</th>
-                <th scope="col">Nguồn cung</th>
-                <th scope="col">Giá cả</th>
+                <th scope="col">Nhà cung cấp</th>
+                <th scope="col">Giá thành</th>
                 <th scope="col">Số lượng</th>
                 <th scope="col">Kiểu</th>
                 <th scope="col" v-if="role === 'Admin'"></th>
@@ -60,9 +59,17 @@
                 <th scope="row">{{ index + 1 }}</th>
                 <td class="data-from-db">{{ material.materialName }}</td>
                 <td class="data-from-db">{{ material.supplier }}</td>
-                <td class="data-from-db">{{ material.unitPrice }}</td>
+                <td class="data-from-db">
+                  {{ material.unitPrice.toLocaleString("vi-VN") }}.000 VND
+                </td>
                 <td class="data-from-db">{{ material.quantityInStock }}</td>
-                <td class="data-from-db">{{ material.type }}</td>
+                <td class="data-from-db" v-if="material.type === true">
+                  Tiêu hao
+                </td>
+                <td class="data-from-db" v-if="material.type !== true">
+                  Không tiêu hao
+                </td>
+
                 <td v-if="role === 'Admin'">
                   <button
                     type="button"
@@ -114,7 +121,9 @@
           </table>
         </div>
         <div class="under-table">
-          <div class="sum__staff">Tổng số nguyên liệu: <strong>10</strong></div>
+          <div class="sum__staff">
+            Tổng số vật tư - vật liệu: <strong>10</strong>
+          </div>
           <div class="pagination">
             <li><a @click="changPageNumber(1)" class="page-1">1</a></li>
             <li><a @click="changPageNumber(2)" class="page-2">2</a></li>
@@ -144,7 +153,10 @@
             <div class="input-group md-3">
               <div>
                 <span class="input-group-text"
-                  ><strong>Tên vật liệu</strong></span
+                  ><strong
+                    >Tên vật liệu
+                    <b class="star" style="color: red">*</b></strong
+                  ></span
                 >
                 <input
                   type="text"
@@ -155,7 +167,10 @@
               </div>
               <div>
                 <span class="input-group-text"
-                  ><strong>Nhà cung ứng</strong></span
+                  ><strong
+                    >Nhà cung cấp
+                    <b class="star" style="color: red">*</b></strong
+                  ></span
                 >
                 <input
                   type="text"
@@ -167,26 +182,41 @@
               <div>
                 <span class="input-group-text"><strong>Giá thành</strong></span>
                 <input
-                  type="text"
+                  type="number"
                   class="form-control"
                   v-model="unitPrice"
                   placeholder="Nhập giá thành"
                 />
+                <div class="form-price">(nghìn VND)</div>
               </div>
               <div>
-                <span class="input-group-text"
-                  ><strong>Số lượng còn lại</strong></span
-                >
+                <span class="input-group-text"><strong>Số lượng</strong></span>
                 <input
-                  type="text"
+                  type="number"
                   class="form-control"
                   v-model="quantityInStock"
                   placeholder="Nhập số lượng"
                 />
               </div>
               <div>
-                <span class="input-group-text">Delete Flag</span>
-                <input type="text" class="form-control" v-model="deleteFlag" />
+                <span class="input-group-text"><strong>Kiểu</strong></span>
+                <div class="btnRole-container">
+                  <input
+                    type="radio"
+                    class="btn-role"
+                    v-model="type"
+                    value="true"
+                    @change="changeValue()"
+                  />&nbsp; Tiêu hao
+                  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                  <input
+                    type="radio"
+                    class="btn-role"
+                    v-model="type"
+                    value="false"
+                    @change="changeValue()"
+                  />&nbsp; Không tiêu hao
+                </div>
               </div>
             </div>
             <div>
@@ -249,7 +279,7 @@ export default {
       searchText: "",
       role: "",
       isClicked: true,
-
+      status: "",
     };
   },
   methods: {
@@ -284,30 +314,55 @@ export default {
           this.materials = response.data;
         })
         .catch((error) => {
-          console.error("There has been a problem");
+          console.error("There has been a problem!");
         });
     },
+    changeValue() {
+      if (this.type === "true") {
+        this.type === false;
+      } else {
+        this.type === true;
+      }
+      // alert(this.type);
+    },
     addClick() {
-      this.modalTitle = "Thêm người dùng";
+      if (this.type === "true") {
+        this.type = true;
+      } else {
+        this.type = false;
+      }
+      this.modalTitle = "Thêm vật tư - vật liệu";
       this.materialId = 0;
       this.materialName = "";
       this.supplier = "";
       this.unitPrice = 0;
       this.quantityInStock = 0;
-      this.type = true;
       this.deleteFlag = false;
     },
     editClick(u) {
-      this.modalTitle = "Sửa thông tin người dùng";
+      if (u.type == true) {
+        this.type = true;
+      } else {
+        this.type = false;
+      }
+      this.modalTitle = "Sửa thông tin vật tư - vật liệu";
       this.ID = u.materialId;
       this.materialName = u.materialName;
       this.supplier = u.supplier;
       this.unitPrice = u.unitPrice;
       this.quantityInStock = u.quantityInStock;
-      this.type = u.type;
-      this.deleteFlag = u.deleteFlag;
+      this.deleteFlag = false;
     },
     createClick() {
+      if (this.materialName === "" || this.supplier === "") {
+        alert("Tên vật liệu hoặc nhà cung cấp không được để trống!");
+        return;
+      }
+      if (this.type === "true") {
+        this.type = true;
+      } else {
+        this.type = false;
+      }
       axios
         .post("https://localhost:7034/api/Material", {
           materialName: this.materialName,
@@ -323,6 +378,15 @@ export default {
         });
     },
     updateClick() {
+      if (this.materialName === "" || this.supplier === "") {
+        alert("Tên vật liệu hoặc nhà cung cấp không được để trống!");
+        return;
+      }
+      if (this.type === "true") {
+        this.type = true;
+      } else {
+        this.type = false;
+      }
       axios
         .put("https://localhost:7034/api/Material/" + this.ID, {
           materialId: this.ID,
@@ -334,12 +398,12 @@ export default {
           deleteFlag: this.deleteFlag,
         })
         .then((response) => {
-          alert("Update thành công!");
+          alert(response.data);
           this.fetchMaterial();
         });
     },
     deleteClick(id) {
-      if (!confirm("Bạn có chắc không ?")) {
+      if (!confirm("Bạn có chắc chắn muốn xóa không ?")) {
         return;
       }
       axios
@@ -423,5 +487,13 @@ export default {
 .btn-primary {
   width: 150px;
   margin-right: 20px;
+}
+.addnew {
+  margin-left: -5% !important;
+}
+.form-price {
+  float: right;
+  margin-right: -30px;
+  margin-top: -30px;
 }
 </style>

@@ -44,13 +44,13 @@
               <tr>
                 <th scope="col">#</th>
                 <th scope="col">Tên thuốc</th>
-                <th scope="col">Đơn vị</th>
+                <th scope="col">Đơn vị sản xuất</th>
                 <th scope="col">Ngày hết hạn</th>
                 <th scope="col">Ngày sản xuất</th>
                 <th scope="col">Giá</th>
-                <th scope="col">Số lượng hiện tại</th>
+                <th scope="col">Số lượng</th>
                 <th scope="col">Liều lượng</th>
-                <th scope="col">Mô tả</th>
+                <th scope="col">Ghi chú</th>
                 <th scope="col" v-if="role === 'Admin'"></th>
                 <th scope="col" v-if="role === 'Admin'"></th>
               </tr>
@@ -60,9 +60,15 @@
                 <th scope="row">{{ index + 1 }}</th>
                 <td class="data-from-db">{{ medicine.name }}</td>
                 <td class="data-from-db">{{ medicine.manufacturer }}</td>
-                <td class="data-from-db">{{ medicine.expiryDate }}</td>
-                <td class="data-from-db">{{ medicine.inputDay }}</td>
-                <td class="data-from-db">{{ medicine.price }}</td>
+                <td class="data-from-db">
+                  {{ formatDateString(medicine.expiryDate) }}
+                </td>
+                <td class="data-from-db">
+                  {{ formatDateString(medicine.inputDay) }}
+                </td>
+                <td class="data-from-db">
+                  {{ medicine.price.toLocaleString("vi-VN") }}.000 VND
+                </td>
                 <td class="data-from-db">{{ medicine.quantityInStock }}</td>
                 <td class="data-from-db">{{ medicine.dosage }}</td>
                 <td class="data-from-db">{{ medicine.description }}</td>
@@ -148,7 +154,10 @@
           <div class="modal-body">
             <div class="input-group md-3">
               <div>
-                <span class="input-group-text"><strong>Tên thuốc</strong></span>
+                <span class="input-group-text"
+                  ><strong>Tên thuốc <b class="star">*</b></strong></span
+                >
+
                 <input
                   type="text"
                   class="form-control"
@@ -172,27 +181,29 @@
                   ><strong>Ngày hết hạn</strong></span
                 >
                 <input
-                  type="text"
+                  type="date"
                   class="form-control"
                   v-model="expiryDate"
-                  placeholder="Nhập ngày hết hạn"
+                  placeholder="YYYY-MM-dd"
                 />
               </div>
               <div>
                 <span class="input-group-text"
-                  ><strong>ngày sản xuất</strong></span
+                  ><strong>Ngày sản xuất</strong></span
                 >
                 <input
-                  type="text"
+                  type="date"
                   class="form-control"
                   v-model="inputDay"
-                  placeholder="Nhập ngày sản xuất"
+                  placeholder="YYYY-MM-dd"
                 />
               </div>
               <div>
-                <span class="input-group-text"><strong>Giá thành</strong></span>
+                <span class="input-group-text"
+                  ><strong>Giá thành </strong>&nbsp;&nbsp; (nghìn VND)</span
+                >
                 <input
-                  type="text"
+                  type="number"
                   class="form-control"
                   v-model="price"
                   placeholder="Nhập giá thành"
@@ -202,7 +213,7 @@
               <div>
                 <span class="input-group-text"><strong>Số lượng</strong></span>
                 <input
-                  type="text"
+                  type="number"
                   class="form-control"
                   v-model="quantityInStock"
                   placeholder="Nhập số lượng"
@@ -212,21 +223,26 @@
                 <span class="input-group-text"
                   ><strong>Liều lượng</strong></span
                 >
-                <input
+
+                <textarea
                   type="text"
-                  class="form-control"
+                  class="form-control form-Des2"
                   v-model="dosage"
+                  name=""
+                  id=""
+                  cols="10"
+                  rows="10"
                   placeholder="Nhập liều lượng"
-                />
+                ></textarea>
               </div>
-              <div v-if="ID != 0">
+              <!-- <div v-if="ID != 0">
                 <span class="input-group-text"
                   ><strong>Delete Flag</strong></span
                 >
                 <input type="text" class="form-control" v-model="deleteFlag" />
-              </div>
+              </div> -->
               <div>
-                <span class="input-group-text"><strong>Mô tả</strong></span>
+                <span class="input-group-text"><strong>Ghi chú</strong></span>
                 <textarea
                   type="text"
                   class="form-control form-Des"
@@ -235,7 +251,7 @@
                   id=""
                   cols="30"
                   rows="10"
-                  placeholder="Mô tả ngắn gọn"
+                  placeholder="Ghi chú"
                 ></textarea>
               </div>
             </div>
@@ -275,6 +291,7 @@
 </template>
 
 <script>
+import { format, parseISO } from "date-fns";
 import "/src/css/Admin/main.css";
 import TheSidebar from "../TheSidebar.vue";
 import axios from "axios";
@@ -300,6 +317,7 @@ export default {
       searchText: "",
       role: "",
       isClicked: true,
+      type: true,
     };
   },
   methods: {
@@ -338,14 +356,14 @@ export default {
         });
     },
     addClick() {
-      this.modalTitle = "Thêm thuốc mới";
+      this.modalTitle = "Thêm mới thuốc";
       this.ID = 0;
       this.name = "";
       this.manufacturer = "";
       this.expiryDate = "";
       this.inputDay = "";
-      this.price = "";
-      this.quantityInStock = "";
+      this.price = 0;
+      this.quantityInStock = 0;
       this.dosage = "";
       this.description = "";
       this.deleteFlag = false;
@@ -355,16 +373,24 @@ export default {
       this.ID = u.id;
       this.name = u.name;
       this.manufacturer = u.manufacturer;
-      this.expiryDate = u.expiryDate;
-      this.inputDay = u.inputDay;
+      this.expiryDate = this.formatDateString2(u.inputDay);
+      this.inputDay = this.formatDateString2(u.inputDay);
       this.price = u.price;
       this.quantityInStock = u.quantityInStock;
       this.dosage = u.dosage;
       this.description = u.description;
       this.deleteFlag = u.deleteFlag;
-      console.log(this.name);
+      console.log(this.expiryDate);
     },
     createClick() {
+      if (this.name === "") {
+        alert("Tên thuốc không được để trống!");
+        return;
+      }
+      if (this.expiryDate === "" || this.inputDay === "") {
+        alert("Yêu cầu nhập ngày hết hạn hoặc ngày sản xuất!");
+      }
+      console.log(this.expiryDate);
       axios
         .post("https://localhost:7034/api/Medicine", {
           name: this.name,
@@ -378,11 +404,19 @@ export default {
           deleteFlag: false,
         })
         .then((response) => {
-          alert(response.data);
+          alert("Thêm mới thành công!");
           this.fetchMedicines();
         });
     },
     updateClick() {
+      if (this.name === "") {
+        alert("Tên thuốc không được để trống!");
+        return;
+      }
+      if (this.expiryDate === "" || this.inputDay === "") {
+        alert("Yêu cầu nhập ngày hết hạn hoặc ngày sản xuất!");
+      }
+      console.log(this.expiryDate);
       axios
         .put("https://localhost:7034/api/Medicine/" + this.ID, {
           // userId: this.userId,
@@ -397,12 +431,12 @@ export default {
           deleteFlag: false,
         })
         .then((response) => {
-          alert("Update thành công!");
+          alert("Cập nhật thành công!");
           this.fetchMedicines();
         });
     },
     deleteClick(id) {
-      if (!confirm("Bạn có chắc không ?")) {
+      if (!confirm("Bạn có chắc chắn muốn xóa không ?")) {
         return;
       }
       axios
@@ -436,6 +470,12 @@ export default {
       this.$router.push({ name: "Login" });
       localStorage.removeItem("userRole");
     },
+    formatDateString(isoString) {
+      return format(parseISO(isoString), "dd-MM-yyyy");
+    },
+    formatDateString2(isoString) {
+      return format(parseISO(isoString), "yyyy-MM-dd");
+    },
   },
   mounted: function () {
     this.fetchMedicines();
@@ -454,7 +494,11 @@ export default {
   width: 80%;
 }
 .form-Des {
-  width: 80%;
+  width: 180%;
+  height: 50%;
+  word-wrap: break-word;
+}
+.form-Des2 {
   height: 50%;
   word-wrap: break-word;
 }
@@ -486,5 +530,11 @@ export default {
 }
 .modal-body {
   height: auto;
+}
+.addnew {
+  margin-left: -5% !important;
+}
+.star {
+  color: brown;
 }
 </style>
