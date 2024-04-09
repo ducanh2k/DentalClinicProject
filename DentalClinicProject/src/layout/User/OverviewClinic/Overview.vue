@@ -158,7 +158,7 @@
                 </defs>
               </svg>
             </div>
-            <div class="icon-number4">25</div>
+            <div class="icon-number4">{{ countStaff }}</div>
           </div>
           Tổng số nhân viên
         </div>
@@ -254,9 +254,9 @@
                 ></path>
               </svg>
             </div>
-            <div class="icon-number4">08</div>
+            <div class="icon-number4">{{ countDoctor }}</div>
           </div>
-          Officialy graduated doctor
+          Bác sĩ tốt nghiệp chính quy
         </div>
         <div class="infoInner">
           <div class="icon-number">
@@ -308,9 +308,9 @@
                 ></path>
               </svg>
             </div>
-            <div class="icon-number4">13</div>
+            <div class="icon-number4">{{ countMaterial }}</div>
           </div>
-          Total of treatment material
+          Tổng số vật tư - vật liệu
         </div>
         <div class="infoInner">
           <div class="icon-number">
@@ -348,9 +348,9 @@
                 ></path>
               </svg>
             </div>
-            <div class="icon-number4">200.000+</div>
+            <div class="icon-number4">{{ countService }}</div>
           </div>
-          Total number of treatment
+          Tổng sô dịch vụ
         </div>
       </div>
       <div class="aboutUs-overview">
@@ -971,6 +971,9 @@ export default {
       services: [],
       staffs: [],
       countStaff: 0,
+      countDoctor: 0,
+      countMaterial: 0,
+      countService: 0,
     };
   },
   methods: {
@@ -979,13 +982,36 @@ export default {
         (employee) => employee.id === employeeId
       );
     },
-    async fetchServices() {
+    async fetchStaff() {
       let apiURL = "https://localhost:7034/api/User/staff/list";
       axios
         .get(apiURL)
         .then((response) => {
           this.staffs = response.data;
-          this.countStaff = this.staffs.Count();
+          this.countStaff = this.staffs.length;
+        })
+        .catch((error) => {
+          console.error("There has been a problem");
+        });
+    },
+    async fetchDoctor() {
+      let apiURL = "https://localhost:7034/api/User/doctor/list";
+      axios
+        .get(apiURL)
+        .then((response) => {
+          this.countDoctor = response.data.length;
+        })
+        .catch((error) => {
+          console.error("There has been a problem");
+        });
+    },
+    async fetchMaterial() {
+      let apiURL = "https://localhost:7034/api/Material/listall";
+      axios
+        .get(apiURL)
+        .then((response) => {
+          this.countMaterial = response.data.length;
+          console.log(this.countMaterial);
         })
         .catch((error) => {
           console.error("There has been a problem");
@@ -997,7 +1023,8 @@ export default {
         .get(apiURL)
         .then((response) => {
           this.services = response.data;
-          console.log(this.services);
+          this.countService = this.services.length;
+          console.log(this.countService);
         })
         .catch((error) => {
           console.error("There has been a problem");
@@ -1046,6 +1073,9 @@ export default {
   mounted: function () {
     this.fetchServices();
     this.CheckRole();
+    this.fetchStaff();
+    this.fetchDoctor();
+    this.fetchMaterial();
   },
 };
 </script>

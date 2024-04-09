@@ -320,11 +320,12 @@ export default {
       this.briefInfo = u.briefInfo;
       this.description = u.description;
       this.deleteFlag = false;
-      if (u.type == true) {
+      if (u.featured == true) {
         this.type = true;
       } else {
         this.type = false;
       }
+      console.log(u.featured);
     },
     createClick() {
       if (this.tittle === "" || this.description === "") {

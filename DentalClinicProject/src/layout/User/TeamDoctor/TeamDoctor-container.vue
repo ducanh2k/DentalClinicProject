@@ -130,32 +130,40 @@
                 </div>
               </div>
             </div>
-            <div class="carousel-item">
-              <div class="caro-contain">
+            <div
+              class="carousel-item"
+              v-for="(group, index) in groupedDoctors"
+              :key="index"
+            >
+              <div
+                class="caro-contain"
+                v-for="(doctor) in group"
+                :key="doctor.id"
+              >
                 <div class="d-block w-100" alt="..."></div>
                 <div class="DoctorName">
-                  <p>BS. Bùi Thị Bích Loan</p>
+                  <p>{{ doctor.name }}</p>
                 </div>
               </div>
               <div class="caro-contain">
-                <div class="d-block1 w-100" alt="..."></div>
+                <div class="d-block1 w-100" alt="`Doctor ${doctor.name}`"></div>
 
                 <div class="DoctorName">
-                  <p>BS. Nguyễn Minh Thành</p>
+                  <p>{{ doctor.name }}</p>
                 </div>
               </div>
               <div class="caro-contain">
-                <div class="d-block2 w-100" alt="..."></div>
+                <div class="d-block2 w-100" alt="`Doctor ${doctor.name}`"></div>
 
                 <div class="DoctorName">
-                  <p>BS. Nguyễn Thanh Tùng</p>
+                  <p>{{ doctor.name }}</p>
                 </div>
               </div>
               <div class="caro-contain">
-                <div class="d-block3 w-100" alt="..."></div>
+                <div class="d-block3 w-100" alt="`Doctor ${doctor.name}`"></div>
 
                 <div class="DoctorName">
-                  <p>BS. Đinh Thị Dung</p>
+                  <p>{{ doctor.name }}</p>
                 </div>
               </div>
             </div>
@@ -368,6 +376,7 @@ export default {
       role: "",
       action: "",
       services: [],
+      doctors: [],
       employeeList: [
         {
           id: "nguyenkhanhlong",
@@ -398,6 +407,17 @@ export default {
         .then((response) => {
           this.services = response.data;
           console.log(this.services);
+        })
+        .catch((error) => {
+          console.error("There has been a problem");
+        });
+    },
+    async fetchDoctors() {
+      let apiURL = "https://localhost:7034/api/User/doctor/list";
+      axios
+        .get(apiURL)
+        .then((response) => {
+          this.doctors = response.data;
         })
         .catch((error) => {
           console.error("There has been a problem");
@@ -442,9 +462,17 @@ export default {
     filteredServices() {
       return this.services.filter((service) => service.briefInfo === "title");
     },
+    groupedDoctors() {
+      let groups = [];
+      for (let i = 0; i < this.doctors.length; i += 4) {
+        groups.push(this.doctors.slice(i, i + 4));
+      }
+      return groups;
+    },
   },
   mounted: function () {
     this.fetchServices();
+    this.fetchDoctors();
     this.CheckRole();
   },
 };
