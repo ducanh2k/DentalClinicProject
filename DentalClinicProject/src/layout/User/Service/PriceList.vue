@@ -250,7 +250,7 @@ export default {
       );
     },
     async fetchServices() {
-      let apiURL = "https://localhost:7034/api/Service/list";
+      let apiURL = "https://localhost:7034/api/Service/listall";
       axios
         .get(apiURL)
         .then((response) => {

@@ -21,24 +21,24 @@
           <div class="dropdown-year">
             <select v-model="selectedYear" @change="onYearChange">
               <option v-for="year in years" :key="year" :value="year">
-                năm {{ year }}
+                {{ year }}
               </option>
             </select>
           </div>
           <div class="overview">
             <div class="revenue">
               <h5>Tổng thu</h5>
-              <h1>{{ totalRevenue }} Triệu</h1>
+              <h5>{{ totalRevenue.toLocaleString("vi-VN") }} VND</h5>
               <!-- <h5 style="color: rgb(58, 197, 8)">↑ 25%</h5> -->
             </div>
             <div class="expenses">
               <h5>Tổng chi</h5>
-              <h1>{{ totalExpenses }} Triệu</h1>
+              <h5>{{ totalExpenses.toLocaleString("vi-VN") }} VND</h5>
               <!-- <h5 style="color: rgb(255, 64, 64)">↓ 30%</h5> -->
             </div>
             <div class="profit">
               <h5>Lãi/lỗ so với năm ngoái</h5>
-              <h1>{{ profit }} Triệu</h1>
+              <h5>{{ profit.toLocaleString("vi-VN") }} VND </h5>
               <!-- <h5 style="color: rgb(58, 197, 8)">↑ 25%</h5> -->
             </div>
           </div>
@@ -108,6 +108,7 @@ export default {
       minus: 0,
       minusLast: 0,
       isClicked: true,
+      percentage: [],
     };
   },
   mounted() {
@@ -259,13 +260,13 @@ export default {
       axios
         .get(apiURL)
         .then((response) => {
-          this.topMaterial = response.data.map((item) => item.materialName);
-          this.topMaterial = [...new Set(this.topMaterial)];
-          this.totalQuantity = response.data.map((item) => item.totalQuantity);
-          this.totalQuantity = [...new Set(this.totalQuantity)];
-          this.totalPay = response.data.map((item) => item.totalPay);
-          this.totalPay = [...new Set(this.totalPay)];
-          this.RadarChart();
+          this.topMaterial = response.data.topMaterials.map(
+            (item) => item.materialName
+          );
+          this.percentage = response.data.topMaterials.map(
+            (item) => item.percentage
+          );
+            this.PolarAreaChart2();
         })
         .catch((error) => {
           console.error("There has been a problem");
@@ -376,6 +377,35 @@ export default {
         },
       });
     },
+    PolarAreaChart2() {
+      const ctx = document.getElementById("myRadarChart").getContext("2d");
+      const myChart = new Chart(ctx, {
+        type: "polarArea",
+        data: {
+          labels: this.topMaterial,
+          datasets: [
+            {
+              label: "My First Dataset",
+              data: this.percentage,
+              backgroundColor: [
+                "rgb(255, 99, 132)",
+                "rgb(75, 192, 192)",
+                "rgb(255, 205, 86)",
+                "rgb(201, 203, 207)",
+                "rgb(54, 162, 235)",
+              ],
+            },
+          ],
+        },
+        options: {
+          scales: {
+            y: {
+              beginAtZero: true,
+            },
+          },
+        },
+      });
+    },
     RadarChart() {
       const ctx = document.getElementById("myRadarChart").getContext("2d");
       const myChart = new Chart(ctx, {
@@ -385,7 +415,7 @@ export default {
           datasets: [
             {
               label: "My First Dataset",
-              data: this.totalQuantity,
+              data: this.percentage,
               fill: true,
               backgroundColor: "rgba(255, 99, 132, 0.2)",
               borderColor: "rgb(255, 99, 132)",
@@ -394,17 +424,17 @@ export default {
               pointHoverBackgroundColor: "#fff",
               pointHoverBorderColor: "rgb(255, 99, 132)",
             },
-            {
-              label: "My Second Dataset",
-              data: this.totalPay,
-              fill: true,
-              backgroundColor: "rgba(54, 162, 235, 0.2)",
-              borderColor: "rgb(54, 162, 235)",
-              pointBackgroundColor: "rgb(54, 162, 235)",
-              pointBorderColor: "#fff",
-              pointHoverBackgroundColor: "#fff",
-              pointHoverBorderColor: "rgb(54, 162, 235)",
-            },
+            // {
+            //   label: "My Second Dataset",
+            //   data: this.totalPay,
+            //   fill: true,
+            //   backgroundColor: "rgba(54, 162, 235, 0.2)",
+            //   borderColor: "rgb(54, 162, 235)",
+            //   pointBackgroundColor: "rgb(54, 162, 235)",
+            //   pointBorderColor: "#fff",
+            //   pointHoverBackgroundColor: "#fff",
+            //   pointHoverBorderColor: "rgb(54, 162, 235)",
+            // },
           ],
         },
         options: {
@@ -475,6 +505,7 @@ export default {
   gap: 20px;
 }
 .overview {
+  width: 1000px !important;
   display: flex;
   justify-content: space-between;
 }
@@ -485,14 +516,13 @@ export default {
 .main-body {
   flex-wrap: wrap;
   width: 100%;
-  height: 888px;
-  overflow-y: auto;
+  height: 90vh;
+  overflow-y: auto !important;
 }
 .dropdown-year {
-  margin-left: 240px;
   margin-top: 50px;
-  width: 13%;
-  height: 30%;
+  width: 15%;
+  height: 45%;
 }
 .dropdown-year select {
   border: 1px solid rgb(190, 190, 190);
