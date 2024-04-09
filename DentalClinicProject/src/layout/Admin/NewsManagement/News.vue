@@ -9,7 +9,10 @@
           </div>
           <div class="title__company">Nha khoa Dentistry</div>
           <div class="exit__button">
-            <i class="fa-solid fa-right-from-bracket fa-xl" @click="logOut()"></i>
+            <i
+              class="fa-solid fa-right-from-bracket fa-xl"
+              @click="logOut()"
+            ></i>
           </div>
         </div>
       </div>
@@ -40,11 +43,10 @@
               <tr>
                 <th scope="col">#</th>
                 <th scope="col">Tin tức</th>
-                <th scope="col">Thông tin ngắn</th>
-                <th scope="col">Mô tả</th>
-                <th scope="col">Tên tác giả</th>
-                <th scope="col">Tạo ngày</th>
-                <th scope="col">Feature</th>
+                <th scope="col">Thông tin</th>
+                <th scope="col">Nội dung</th>
+                <th scope="col">Ngày tạo</th>
+                <th scope="col">Kiểu</th>
                 <th scope="col" v-if="role === 'Admin'"></th>
                 <th scope="col" v-if="role === 'Admin'"></th>
               </tr>
@@ -55,9 +57,9 @@
                 <td>{{ News.tittle }}</td>
                 <td>{{ News.briefInfo }}</td>
                 <td>{{ News.description }}</td>
-                <td>{{ News.authorName }}</td>
-                <td>{{ News.createdAt }}</td>
-                <td>{{ News.featured }}</td>
+                <td>{{ formatDateString(News.createdAt) }}</td>
+                <td v-if="News.featured === true">Tin nổi bật</td>
+                <td v-if="News.featured === false">Tin tức</td>
                 <td v-if="role === 'Admin'">
                   <button
                     type="button"
@@ -138,7 +140,11 @@
           <div class="modal-body">
             <div class="input-group md-3">
               <div>
-                <span class="input-group-text"><strong>Tiêu đề</strong></span>
+                <span class="input-group-text"
+                  ><strong
+                    >Tiêu đề <b class="star" style="color: red">*</b></strong
+                  ></span
+                >
                 <input
                   type="text"
                   class="form-control"
@@ -147,44 +153,39 @@
                 />
               </div>
               <div>
-                <span class="input-group-text"
-                  ><strong>Thông tin ngắn</strong></span
-                >
+                <span class="input-group-text"><strong>Thông tin</strong></span>
                 <input
                   type="text"
                   class="form-control"
                   v-model="briefInfo"
-                  placeholder="Nhập tiểu sử ngắn"
+                  placeholder="Nhập thông tin"
                 />
               </div>
+              <div>
+                <span class="input-group-text"><strong>Kiểu</strong></span>
+                <div class="btnRole-container">
+                  <input
+                    type="radio"
+                    class="btn-role"
+                    v-model="type"
+                    value="true"
+                  />&nbsp; Tin nổi bật
+                  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                  <input
+                    type="radio"
+                    class="btn-role"
+                    v-model="type"
+                    value="false"
+                  />&nbsp; Tin tức
+                </div>
+              </div>
+
               <div>
                 <span class="input-group-text"
-                  ><strong>Mã tác giả</strong></span
+                  ><strong
+                    >Nội dung <b class="star" style="color: red">*</b></strong
+                  ></span
                 >
-                <input
-                  type="number"
-                  class="form-control"
-                  v-model="author"
-                  placeholder="Nhập mã tác giả"
-                />
-              </div>
-              <div>
-                <span class="input-group-text"><strong>Feature</strong></span>
-                <input
-                  type="text"
-                  class="form-control"
-                  v-model="feature"
-                  placeholder="Nhập feature"
-                />
-              </div>
-              <div v-if="ID != 0">
-                <span class="input-group-text"
-                  ><strong>Delete Flag</strong></span
-                >
-                <input type="text" class="form-control" v-model="deleteFlag" />
-              </div>
-              <div>
-                <span class="input-group-text"><strong>Mô tả</strong></span>
                 <textarea
                   type="text"
                   class="form-control form-Des"
@@ -193,7 +194,7 @@
                   id=""
                   cols="30"
                   rows="10"
-                  placeholder="Mô tả ngắn gọn"
+                  placeholder="Nhập nội dung"
                 ></textarea>
               </div>
             </div>
@@ -234,6 +235,7 @@
 </template>
 
 <script>
+import { format, parseISO } from "date-fns";
 import "/src/css/Admin/main.css";
 import axios from "axios";
 import TheSidebar from "../TheSidebar.vue";
@@ -256,15 +258,21 @@ export default {
       currentPage: 1,
       searchText: "",
       isClicked: true,
+      UserId: 0,
+      type: true,
     };
   },
   methods: {
+    formatDateString(isoString) {
+      return format(parseISO(isoString), "dd-MM-yyyy");
+    },
     openSideBar() {
       if (this.isClicked === true) this.isClicked = false;
       else if (this.isClicked === false) this.isClicked = true;
     },
     CheckRole() {
       this.role = localStorage.getItem("userRole");
+      this.UserId = localStorage.getItem("UserId");
     },
     changPageNumber(page) {
       if (page == 1) {
@@ -297,10 +305,13 @@ export default {
       this.tittle = "";
       this.briefInfo = "";
       this.description = "";
-      this.author = "";
       this.createdAt = "";
       this.deleteFlag = false;
-      this.featured = true;
+      if (this.type === "true") {
+        this.type = true;
+      } else {
+        this.type = false;
+      }
     },
     editClick(u) {
       this.modalTitle = "Sửa tin tức";
@@ -308,45 +319,66 @@ export default {
       this.tittle = u.tittle;
       this.briefInfo = u.briefInfo;
       this.description = u.description;
-      this.author = u.author;
-      this.createdAt = u.createdAt;
-      this.deleteFlag = u.deleteFlag;
-      this.featured = u.featured;
+      this.deleteFlag = false;
+      if (u.type == true) {
+        this.type = true;
+      } else {
+        this.type = false;
+      }
     },
     createClick() {
+      if (this.tittle === "" || this.description === "") {
+        alert("Tiêu đề hoặc nội dung không được để trống!");
+        return;
+      }
+      if (this.type === "true") {
+        this.type = true;
+      } else {
+        this.type = false;
+      }
+      console.log(this.UserId);
       axios
         .post("https://localhost:7034/api/News", {
           tittle: this.tittle,
           briefInfo: this.briefInfo,
           description: this.description,
-          author: this.author,
-          createdAt: this.createdAt,
+          author: this.UserId,
           deleteFlag: false,
-          featured: this.featured,
+          featured: this.type,
+          img: "string",
         })
         .then((response) => {
-          alert(response.data);
+          alert("Thêm mới thành công!");
           this.fetchNewss();
         });
     },
     updateClick() {
+      if (this.tittle === "" || this.description === "") {
+        alert("Tiêu đề hoặc nội dung không được để trống!");
+        return;
+      }
+      if (this.type === "true") {
+        this.type = true;
+      } else {
+        this.type = false;
+      }
       axios
         .put("https://localhost:7034/api/News/" + this.ID, {
           tittle: this.tittle,
           briefInfo: this.briefInfo,
           description: this.description,
-          author: this.author,
-          createdAt: this.createdAt,
+          author: this.UserId,
           deleteFlag: this.deleteFlag,
-          featured: this.featured,
+          featured: this.type,
+          img: "string",
         })
         .then((response) => {
-          alert("Update thành công!");
+          alert("Cập nhật thành công!");
           this.fetchNewss();
         });
     },
     deleteClick(id) {
-      if (!confirm("Bạn có chắc không ?")) {
+      if (!confirm("Bạn có chắc chắn muốn xóa không ?")) {
         return;
       }
       axios
@@ -377,10 +409,10 @@ export default {
     handleNavigation(view) {
       this.currentView = view;
     },
-    logOut(){
+    logOut() {
       this.$router.push({ name: "Login" });
       localStorage.removeItem("userRole");
-    }
+    },
   },
   mounted: function () {
     this.CheckRole();
@@ -399,7 +431,7 @@ export default {
   width: 80%;
 }
 .form-Des {
-  width: 80%;
+  width: 300%;
   height: 50%;
   word-wrap: break-word;
 }
@@ -426,5 +458,8 @@ export default {
 .btn-primary {
   width: 150px;
   margin-right: 20px;
+}
+.addnew {
+  margin-left: -5%;
 }
 </style>

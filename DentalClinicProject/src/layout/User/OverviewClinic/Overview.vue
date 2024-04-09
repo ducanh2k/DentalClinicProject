@@ -969,6 +969,8 @@ export default {
       role: "",
       action: "",
       services: [],
+      staffs: [],
+      countStaff: 0,
     };
   },
   methods: {
@@ -976,6 +978,18 @@ export default {
       this.selectedEmployee = this.employeeList.find(
         (employee) => employee.id === employeeId
       );
+    },
+    async fetchServices() {
+      let apiURL = "https://localhost:7034/api/User/staff/list";
+      axios
+        .get(apiURL)
+        .then((response) => {
+          this.staffs = response.data;
+          this.countStaff = this.staffs.Count();
+        })
+        .catch((error) => {
+          console.error("There has been a problem");
+        });
     },
     async fetchServices() {
       let apiURL = "https://localhost:7034/api/Service/listall";
