@@ -201,14 +201,8 @@
                   placeholder="Nhập mã"
                 />
               </div>
-              <div v-if="ID === 0">
-                <span class="input-group-text"
-                  ><strong>Delete Flag</strong></span
-                >
-                <input type="text" class="form-control" v-model="deleteFlag" />
-              </div>
               <div>
-                <span class="input-group-text"><strong>Ghi chú</strong></span>
+                <span class="input-group-text textEx"><strong>Ghi chú</strong></span>
                 <textarea
                   type="text"
                   class="form-control form-Des"
@@ -258,6 +252,7 @@
 </template>
 
 <script>
+import { format, parseISO } from "date-fns";
 import { format, parseISO } from "date-fns";
 import "/src/css/Admin/main.css";
 import axios from "axios";
@@ -409,6 +404,8 @@ export default {
     logOut() {
       this.$router.push({ name: "Login" });
       localStorage.removeItem("userRole");
+    },formatDateString2(isoString) {
+      return format(parseISO(isoString), "dd-MM-yyyy");
     },
   },
   mounted: function () {
