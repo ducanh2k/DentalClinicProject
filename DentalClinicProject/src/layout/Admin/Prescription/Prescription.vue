@@ -53,7 +53,7 @@
             <tbody>
               <tr v-for="pre in prescriptions" :key="pre.prescriptionId">
                 <th scope="row">{{ pre.prescriptionId }}</th>
-                <td class="data-from-db">{{ pre.createdDate }}</td>
+                <td class="data-from-db">{{ formatDateString(pre.createdDate) }}</td>
                 <td class="data-from-db">{{ pre.doctorName }}</td>
                 <td class="data-from-db">{{ pre.note }}</td>
                 <td>
@@ -321,6 +321,7 @@
 </template>
 
 <script>
+import { format, parseISO } from "date-fns";
 import "/src/css/Admin/main.css";
 import axios from "axios";
 import TheSidebar from "../TheSidebar.vue";
@@ -465,6 +466,8 @@ export default {
       } else {
         this.fetchUsers();
       }
+    },formatDateString(isoString) {
+      return format(parseISO(isoString), "dd-MM-yyyy");
     },
     logOut() {
       this.$router.push({ name: "Login" });
