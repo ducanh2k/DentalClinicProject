@@ -71,12 +71,7 @@
               >
             </li>
 
-            <li class="nav-item">
-              <a class="nav-link active" aria-current="page" href="#"
-                >Khách hàng</a
-              >
-            </li>
-            <li class="nav-item">
+            <li class="nav-item" @click="DentalKnowledge()">
               <a class="nav-link active" aria-current="page" href="#"
                 >Tin tức</a
               >
@@ -104,70 +99,28 @@
           data-bs-ride="carousel"
         >
           <div class="carousel-inner">
-            <div class="carousel-item active">
-              <div class="caro-contain">
-                <div class="d-block w-100" alt="..."></div>
-                <div class="DoctorName">
-                  <p>BS. Bùi Thị Bích Loan</p>
-                </div>
-              </div>
-              <div class="caro-contain">
-                <div class="d-block1 w-100" alt="..."></div>
-                <div class="DoctorName">
-                  <p>BS. Nguyễn Minh Thành</p>
-                </div>
-              </div>
-              <div class="caro-contain">
-                <div class="d-block2 w-100" alt="..."></div>
-                <div class="DoctorName">
-                  <p>BS. Nguyễn Thanh Tùng</p>
-                </div>
-              </div>
-              <div class="caro-contain">
-                <div class="d-block3 w-100" alt="..."></div>
-                <div class="DoctorName">
-                  <p>BS. Đinh Thị Dung</p>
-                </div>
-              </div>
-            </div>
             <div
-              class="carousel-item"
               v-for="(group, index) in groupedDoctors"
               :key="index"
+              :class="{ 'carousel-item': true, active: index === 0 }"
             >
               <div
                 class="caro-contain"
-                v-for="(doctor) in group"
-                :key="doctor.id"
+                v-for="doctor in group"
+                :key="doctor.userId"
               >
-                <div class="d-block w-100" alt="..."></div>
-                <div class="DoctorName">
-                  <p>{{ doctor.name }}</p>
-                </div>
-              </div>
-              <div class="caro-contain">
-                <div class="d-block1 w-100" alt="`Doctor ${doctor.name}`"></div>
-
-                <div class="DoctorName">
-                  <p>{{ doctor.name }}</p>
-                </div>
-              </div>
-              <div class="caro-contain">
-                <div class="d-block2 w-100" alt="`Doctor ${doctor.name}`"></div>
-
-                <div class="DoctorName">
-                  <p>{{ doctor.name }}</p>
-                </div>
-              </div>
-              <div class="caro-contain">
-                <div class="d-block3 w-100" alt="`Doctor ${doctor.name}`"></div>
-
-                <div class="DoctorName">
+                <img
+                  :src="doctor.img"
+                  class="d-block w-100"
+                  @click="ViewDetail(doctor)"
+                />
+                <div class="DoctorName" @click="ViewDetail(doctor)">
                   <p>{{ doctor.name }}</p>
                 </div>
               </div>
             </div>
           </div>
+
           <button
             class="carousel-control-prev caroul-control"
             type="button"
@@ -195,59 +148,35 @@
             <div class="doc-certi">
               <h4>Bằng cấp:</h4>
               <div class="inner-content">
-                <p class="inner-list">
-                  Tốt nghiệp Tiến sĩ, chuyên ngành phẫu thuật miệng và hàm mặt,
-                  khoa Y, Đại học Gifu, Nhật Bản
-                </p>
-                <p class="inner-list">
-                  Tốt nghiệp Bác sĩ chuyên khoa Răng hàm mặt chính quy, Đại học
-                  Y Hà Nội
-                </p>
-                <p class="inner-list">
-                  Các khoá đào tạo chuyên ngành tại Hoa Kỳ, Nhật Bản, Hàn Quốc,
-                  CHLB Đức, Singapore, Đài Loan, Thái Lan, Hy Lạp, Canada
+                <p class="inner-list" v-for="d in degrees" :key="d.id">
+                  {{ d.detail }}
                 </p>
               </div>
             </div>
             <div class="doc-expertise">
               <h4>Lĩnh vực chuyên sâu:</h4>
-              <div class="inner-content">
-                <p class="inner-list">Cấy ghép Implant</p>
-                <p class="inner-list">Phẫu thuật chỉnh hình xương hàm</p>
-                <p class="inner-list">Nha khoa thẩm mỹ</p>
-                <p class="inner-list">Phẫu thuật trong miệng</p>
-                <p class="inner-list">Chỉnh nha</p>
+              <div class="inner-content" v-for="d in experties" :key="d.id">
+                <p class="inner-list">{{ d.detail }}</p>
               </div>
             </div>
           </div>
           <div class="info-right">
             <div class="doc-workingUnit">
               <h4>Đơn vị công tác và tổ chức tham gia:</h4>
-              <div class="inner-content">
+              <div
+                class="inner-content"
+                v-for="d in trainingCourse"
+                :key="d.id"
+              >
                 <p class="inner-list">
-                  Phó Giám đốc Bệnh viện Việt Nam – Cu Ba Hà Nội
-                </p>
-                <p class="inner-list">
-                  Cố vấn chuyên môn hãng Implant nha khoa Dentium, Hàn Quốc
-                </p>
-                <p class="inner-list">
-                  Thành viên Hội phẫu thuật răng miệng Nhật Bản
-                </p>
-                <p class="inner-list">Thành viên Hội nha khoa Hoa Kỳ (ADA)</p>
-                <p class="inner-list">
-                  Thành viên Hiệp hội Implant quốc tế (ITI)
-                </p>
-                <p class="inner-list">
-                  Thành viên Hội phẫu thuật hàm mặt thế giới của Tổ chức AO (AO
-                  CMF)
+                  {{ d.detail }}
                 </p>
               </div>
             </div>
             <div class="doc-certi">
               <h4>Ngoại ngữ:</h4>
-              <div class="inner-content">
-                <p class="inner-list">Tiếng Anh</p>
-                <p class="inner-list">Tiếng Nhật</p>
+              <div class="inner-content" v-for="d in language" :key="d.id">
+                <p class="inner-list">{{ d.detail }}</p>
               </div>
             </div>
           </div>
@@ -377,6 +306,10 @@ export default {
       action: "",
       services: [],
       doctors: [],
+      degrees: [],
+      trainingCourse: [],
+      experties: [],
+      language: [],
       employeeList: [
         {
           id: "nguyenkhanhlong",
@@ -454,8 +387,79 @@ export default {
       localStorage.setItem("ServiceId", id);
       this.$router.push({ name: "Service" });
     },
+    DentalKnowledge() {
+      this.$router.push({ name: "DentalKnowledge" });
+    },
     PriceList() {
       this.$router.push({ name: "PriceList" });
+    },
+    ViewDetail(user) {
+      if (user !== null) {
+        this.empId = user.userId;
+        this.ID = user.userId;
+      }
+      let apiURL = "";
+      if (user !== null) {
+        apiURL = "https://localhost:7034/api/User/degree?userId=" + user.userId;
+      } else {
+        apiURL = "https://localhost:7034/api/User/degree?userId=9";
+      }
+      axios
+        .get(apiURL)
+        .then((response) => {
+          this.degrees = response.data;
+        })
+        .catch((error) => {
+          console.error("There has been a problem");
+        });
+      if (user !== null) {
+        apiURL =
+          "https://localhost:7034/api/User/AreasOfExpertise?userId=" +
+          user.userId;
+      } else {
+        apiURL = "https://localhost:7034/api/User/AreasOfExpertise?userId=9";
+      }
+      axios
+        .get(apiURL)
+        .then((response) => {
+          this.experties = response.data;
+        })
+        .catch((error) => {
+          console.error("There has been a problem");
+        });
+      if (user !== null) {
+        apiURL =
+          "https://localhost:7034/api/User/ForeignLanguages?userId=" +
+          user.userId;
+      } else {
+        apiURL = "https://localhost:7034/api/User/ForeignLanguages?userId=9";
+      }
+
+      axios
+        .get(apiURL)
+        .then((response) => {
+          this.language = response.data;
+        })
+        .catch((error) => {
+          console.error("There has been a problem");
+        });
+      if (user !== null) {
+        apiURL =
+          "https://localhost:7034/api/User/ParticipatingTrainingCourse?userId=" +
+          user.userId;
+      } else {
+        apiURL =
+          "https://localhost:7034/api/User/ParticipatingTrainingCourse?userId=9";
+      }
+
+      axios
+        .get(apiURL)
+        .then((response) => {
+          this.trainingCourse = response.data;
+        })
+        .catch((error) => {
+          console.error("There has been a problem");
+        });
     },
   },
   computed: {
@@ -474,6 +478,7 @@ export default {
     this.fetchServices();
     this.fetchDoctors();
     this.CheckRole();
+    this.ViewDetail(null);
   },
 };
 </script>

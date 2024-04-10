@@ -71,12 +71,7 @@
               >
             </li>
 
-            <li class="nav-item">
-              <a class="nav-link active" aria-current="page" href="#"
-                >Khách hàng</a
-              >
-            </li>
-            <li class="nav-item">
+            <li class="nav-item" @click="DentalKnowledge()">
               <a class="nav-link active" aria-current="page" href="#"
                 >Tin tức</a
               >
@@ -355,33 +350,33 @@
       </div>
       <div class="aboutUs-overview">
         <div class="overview-left">
-          <h2 class="header-left-text"><strong>ABOUT US</strong></h2>
+          <h2 class="header-left-text"><strong>Về Nha khoa</strong></h2>
           <h5
             style="
               font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS',
                 sans-serif;
             "
           >
-            Born in mid-2009, it can be said that iMed Dental Clinic is one of
-            the few dental clinics in Hanoi with a team of doctors fluent in
-            English and Japanese (trained in Germany and Japan), equipped with
-            modern machines and applying high-quality dental techniques in
-            general dental services, cosmetic dentistry, children’s dentistry,
-            orthodontics with brackets and Invisalign, implants… In 2019, iMed
-            Dental was a Platinum supplier at the top of the best suppliers of
-            INVISALIGN bracketless orthodontic procedures in Vietnam.
+            Ra đời vào giữa năm 2009, có thể nói Nha khoa cuả chúng tôi là một
+            trong số ít những phòng khám nha khoa tại Hà Nội có đội ngũ bác sĩ
+            thành thạo tiếng Anh, tiếng Nhật (tu nghiệp tại Đức và Nhật Bản),
+            được trang bị máy móc hiện đại và áp dụng những kỹ thuật nha khoa
+            chất lượng cao trong các dịch vụ nha khoa tổng quát, nha khoa thẩm
+            mỹ, nha khoa trẻ em, chỉnh nha mắc cài và Invisalign, cấy ghép
+            implant… Năm 2019, Nha khoa iMed là nhà cung cấp Bạch Kim (Platinum)
+            và nằm trong top những nhà cung cấp tốt nhất của hệ thống chỉnh nha
+            không mắc cài INVISALIGN tại Việt Nam.
           </h5>
         </div>
         <div class="overview-right"></div>
       </div>
       <div class="overview-mission">
         <div class="mission-content">
-          <h2 class="mission-content-header"><strong>OUR MISSION</strong></h2>
+          <h2 class="mission-content-header"><strong>SỨ MỆNH CỦA CHÚNG TÔI</strong></h2>
           <br />
           <br />
           <div class="inner-text">
-            The practice principle of iMed Dental is to treat patients as family
-            members.
+            Nguyên tắc thực hành của Nha khoa iMed là coi người bệnh như người thân trong gia đình.
           </div>
           <br />
           <div class="mission-content-inner">
@@ -389,19 +384,7 @@
               <i class="fa-solid fa-circle-check"></i>
             </div>
             <div class="inner-text">
-              In 2019, iMed Dental was at the top of the best suppliers of
-              INVISALIGN bracketless orthodontic procedures in Vietnam.
-            </div>
-          </div>
-          <br />
-
-          <div class="mission-content-inner">
-            <div class="inner-icon">
-              <i class="fa-solid fa-circle-check"></i>
-            </div>
-            <div class="inner-text">
-              100% Customer satisfaction after experiencing dental services at
-              iMed.
+              Năm 2019, Nha khoa chúng tôi nằm trong top những nhà cung cấp tốt nhất của hệ thống chỉnh nha không mắc cài INVISALIGN tại Việt Nam.
             </div>
           </div>
           <br />
@@ -411,9 +394,17 @@
               <i class="fa-solid fa-circle-check"></i>
             </div>
             <div class="inner-text">
-              We have successfully performed many difficult implant cases,
-              giving a new look to patients with protruding jaw, underbites, and
-              gummy smile… through orthopedic surgery.
+              100% Khách hàng hài lòng sau khi trải nghiệm dịch vụ nha khoa tại iMed.
+            </div>
+          </div>
+          <br />
+
+          <div class="mission-content-inner">
+            <div class="inner-icon">
+              <i class="fa-solid fa-circle-check"></i>
+            </div>
+            <div class="inner-text">
+              Thực hiện thành công nhiều ca cấy ghép implant khó, đem lại diện mạo mới cho các bệnh nhân hàm hô vẩu, hàm móm, cười hở lợi… thông qua phẫu thuật chỉnh hình.
             </div>
           </div>
         </div>
@@ -438,12 +429,12 @@
             </svg>
           </div>
           <div class="quote-content">
-            The optimal solution, minimal interference
+            Giải pháp tối ưu, can thiệp tối thiểu
           </div>
         </div>
       </div>
       <div class="strength-overview">
-        <h2 class="mission-content-header"><strong>STRENGTHS OF US</strong></h2>
+        <h2 class="mission-content-header"><strong>THẾ MẠNH CỦA NHA KHOA CHÚNG TÔI</strong></h2>
         <div class="mission-top">
           <div class="mission-block">
             <div class="container-mission">
@@ -545,7 +536,7 @@
               </div>
             </div>
             <div class="container-mission1">
-              <div class="mission-content">High-quality team of doctors</div>
+              <div class="mission-content">Đội ngũ bác sĩ chất lượng cao</div>
             </div>
           </div>
           <div class="mission-block" style="margin-top: 40px">
@@ -599,7 +590,7 @@
             </div>
             <div class="container-mission1">
               <div class="mission-content">
-                Strict process standards by the Ministry of Health
+                Quy trình nghiêm ngặt chuẩn bộ Y tế
               </div>
             </div>
           </div>
@@ -645,7 +636,7 @@
               </div>
             </div>
             <div class="container-mission1">
-              <div class="mission-content">Modern facilities</div>
+              <div class="mission-content">Cơ sở vật chất hiện đại</div>
             </div>
           </div>
         </div>
@@ -726,7 +717,7 @@
               </div>
             </div>
             <div class="container-mission1">
-              <div class="mission-content">Warranty, long-term maintenance</div>
+              <div class="mission-content">Bảo hành, bảo dưỡng dài lâu</div>
             </div>
           </div>
           <div class="mission-block" style="margin-top: 40px">
@@ -759,7 +750,8 @@
             </div>
             <div class="container-mission1">
               <div class="mission-content">
-                The listed price is clear, and not incurred
+                Giá niêm yết rõ ràng, không phát sinh
+
               </div>
             </div>
           </div>
@@ -841,7 +833,7 @@
               </div>
             </div>
             <div class="container-mission1">
-              <div class="mission-content">24/7 consulting team</div>
+              <div class="mission-content">Đội ngũ tư vấn hoạt động 24/7</div>
             </div>
           </div>
         </div>
@@ -906,12 +898,12 @@
           <h4><strong>Thông tin</strong></h4>
 
           <p>
-            Dentistry focuses on building a dedicated, caring, friendly service
-            model, giving customers a feeling of peace of mind and comfort as if
-            they were in their own home. Our goal is to become a top quality
-            dentist in Vietnam Operation License No. 196/HNO/GPHD issued by
-            Hanoi Department of Health Practice certificate number
-            000119/HNO-CCHN issued by Hanoi Department of Health
+            Nha khoa chú trọng xây dựng dịch vụ tận tình, chu đáo, thân thiện
+            mẫu mã, mang đến cho khách hàng cảm giác an tâm, thoải mái như thể
+            họ đã ở trong nhà riêng của họ. Mục tiêu của chúng tôi là trở thành
+            một công ty có chất lượng hàng đầu Giấy phép hoạt động nha khoa tại
+            Việt Nam số 196/HNO/GPHD do Số chứng chỉ hành nghề của Sở Y tế Hà
+            Nội 000119/HNO-CCHN do Sở Y tế Hà Nội cấp
           </p>
           <div class="pic"></div>
         </div>
@@ -919,36 +911,36 @@
         <div class="footer-block" style="margin-left: 7%">
           <h4><strong>Thông tin</strong></h4>
           <ul class="footer-list">
-            <li class="list-inner">Owner Information</li>
-            <li class="list-inner">General trading conditions</li>
-            <li class="list-inner">Payments</li>
-            <li class="list-inner">Protecty personal Information</li>
+            <li class="list-inner">Thông tin của chủ sở hữu</li>
+            <li class="list-inner">Điều kiện giao dịch chung</li>
+            <li class="list-inner">Các phương thức thanh toán</li>
+            <li class="list-inner">Bảo vệ thông tin cá nhân</li>
           </ul>
         </div>
         <div class="footer-block" style="margin-left: 7%">
           <h4 class="service-footer"><strong>Dịch vụ</strong></h4>
           <ul class="footer-list">
-            <li class="list-inner1">Implant</li>
-            <li class="list-inner1">Invisalign orthodontics without braces</li>
-            <li class="list-inner1">Traditional braces orthodontics</li>
-            <li class="list-inner1">Orthopedic porcelain teeth</li>
-            <li class="list-inner1">Cosmetic porcelain teeth</li>
-            <li class="list-inner1">Wisdom tooth extraction</li>
-            <li class="list-inner1">Children's Dentistry</li>
-            <li class="list-inner1">General Dentistry</li>
-            <li class="list-inner1">Removal dentures</li>
+            <li class="list-inner1">Cấy ghép Implant</li>
+            <li class="list-inner1">Chỉnh nha không mắc cài Invisalign</li>
+            <li class="list-inner1">Nhổ răng khôn</li>
+            <li class="list-inner1">Chỉnh nha mắc cài truyền thống</li>
+            <li class="list-inner1">Nha khoa trẻ em</li>
+            <li class="list-inner1">Nha khoa tổng quát</li>
+            <li class="list-inner1">Nha khoa thẩm mĩ</li>
+            <li class="list-inner1">Phẫu thuật chỉnh hình xương hàm</li>
+            <li class="list-inner1">Răng giả tháo lắp</li>
           </ul>
         </div>
         <div class="footer-block" style="margin-left: 7%">
           <h4><strong>Contact</strong></h4>
           <address>
-            <i class="fa-solid fa-map-location-dot"></i>&nbsp; 3rd floor, 125
-            Hoang Ngan building, Cau Giay, Hanoi<br />
+            <i class="fa-solid fa-map-location-dot"></i>&nbsp; Tầng 3, 125 Tòa
+            nhà Hoàng Ngân, Cầu Giấy, Hà Nội<br />
             <i class="fa-solid fa-phone"></i>&nbsp; 972 435 008<br />
             <i class="fa-regular fa-envelope"></i>&nbsp;
             imednhakhoa@gmail.com<br />
-            <i class="fa-solid fa-calendar-days"></i>&nbsp; 9am - 8pm Monday to
-            Friday, 8am to 5pm Saturday
+            <i class="fa-solid fa-calendar-days"></i>&nbsp; 9 giờ sáng - 8 giờ
+            tối Thứ Hai đến Thứ Sáu, 8 giờ sáng - 5 giờ chiều Thứ Bảy
           </address>
         </div>
       </div>
@@ -962,6 +954,7 @@ import "../../../css/User/footerMain.css";
 import "../../../css/User/Overview.css";
 import axios from "axios";
 import PriceList from "../Service/PriceList.vue";
+import DentalKnowledge from "../News/DentalKnowledge.vue";
 export default {
   name: "Overview",
   data() {
@@ -1053,6 +1046,9 @@ export default {
     },
     Overview() {
       this.$router.push({ name: "Overview" });
+    },
+    DentalKnowledge() {
+      this.$router.push({ name: "DentalKnowledge" });
     },
     checkProfile() {
       this.$router.push({ name: "Profile" });

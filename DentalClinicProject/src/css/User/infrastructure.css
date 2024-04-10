@@ -1,0 +1,99 @@
+.container-overview1 {
+  height: 300vh;
+}
+.pic-overview1 {
+  width: 100%;
+  height: 28%;
+  background-image: url("../../imgs/Image-1-1.jpg");
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: top;
+}
+.header-overview1 {
+  font-family: "Lucida Sans", "Lucida Sans Regular", "Lucida Grande",
+    "Lucida Sans Unicode", Geneva, Verdana, sans-serif;
+  margin-top: -545px;
+  font-size: 5rem;
+  color: #fff;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+  width: 100%;
+  height: 28%;
+  background: rgba(155, 155, 155, 0.5);
+  background-color: rgba(197, 80, 2, 0.185);
+}
+.location-section {
+  text-align: center;
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 20px;
+  font-family: "Open Sans", sans-serif;
+  color: #333;
+  line-height: 1.6;
+}
+
+.location-section h2 {
+  font-size: 24px;
+  margin-bottom: 10px;
+  color: #d4af37;
+}
+
+.location-section p {
+  font-size: 16px; /* Cỡ chữ của đoạn văn */
+}
+
+
+.clinic-space-section {
+  text-align: center; /* Centers text elements like <h2> and <p> */
+  max-width: 1000px; /* or whatever maximum width you prefer */
+  margin: auto; /* Centers the .clinic-space-section */
+}
+
+.gallery-container {
+  max-width: 1000px; /* or the max-width you prefer */
+  margin: auto;
+  text-align: center;
+}
+
+.gallery-header {
+  font-size: 2em; /* Adjust the size as needed */
+  margin: 20px 0;
+  color: #333; /* Your desired text color */
+}
+
+.gallery-description {
+  margin-bottom: 20px;
+}
+
+.row {
+  display: flex;
+  justify-content: space-around;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.gallery-image {
+  background-repeat: no-repeat;
+  flex-basis: calc(25% - 10px); 
+  margin-bottom: 10px;
+  background-position: center;
+  background-size: cover;
+  height: 200px; 
+  border-radius: 10px; 
+  box-shadow: 0 4px 8px rgba(0,0,0,0.1); 
+}
+
+/* Media queries for responsiveness */
+@media (max-width: 768px) {
+  .gallery-image {
+    flex-basis: calc(50% - 10px);
+  }
+}
+
+@media (max-width: 480px) {
+  .gallery-image {
+    flex-basis: 100%;
+  }
+}

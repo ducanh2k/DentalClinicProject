@@ -2,10 +2,10 @@
   <div class="container">
     <div class="dentalHeader">
       <div class="certi-header">
-        <h2><strong>CUSTOMER COMMENTS</strong></h2>
+        <h2><strong>Các bình luận của khách hàng</strong></h2>
       </div>
       <div class="certi-description">
-        <h4>Let’s hear from our lovely guests</h4>
+        <h4>Hãy cùng nghe ý kiến của các khách hàng quen thuộc</h4>
       </div>
     </div>
     <div class="container-picture">
@@ -14,8 +14,8 @@
       <div class="picture pic3"></div>
       <div class="picture pic4"></div>
     </div>
-    <button type="button" class="btn btn-primary">
-      <strong>See All</strong>&nbsp; >
+    <button type="button" class="btn btn-primary" @click="seeAll()">
+      <strong>Xem tất cả</strong>&nbsp; 
     </button>
   </div>
 </template>
@@ -25,6 +25,11 @@ import "https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js";
 import "https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js";
 export default {
   name: "CustomerComment",
+  methods: {
+    seeAll() {
+      this.$router.push({ name: "CommentHP" });
+    },
+  },
 };
 </script>
 

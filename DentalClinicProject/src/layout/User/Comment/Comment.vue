@@ -88,34 +88,36 @@
         </div>
       </div>
     </nav>
-
-    <div class="container-overview">
-      <div class="pic-overview"></div>
-      <div class="header-overview">Hiểu biết về nha khoa</div>
-
-      <div class="strength-overview1">
-        <h1 class="mission-content-header"><strong>Tin tức nổi bật</strong></h1>
-        <div class="mission-top1">
-          <div class="mission-block-container" v-for="n in news" :key="n.id">
-            <div
-              class="mission-block1"
-              v-if="n.featured == true"
-              @click="goNews(n.id)"
-            >
-              <div class="container-mission12">
-                <div class="mission-icon1"></div>
-              </div>
-              <div class="container-mission11">
-                <div class="mission-content1">{{ n.createdAt }}</div>
-              </div>
-              <div class="container-mission11">
-                <div class="mission-content1">{{ n.tittle }}</div>
-              </div>
-            </div>
-          </div>
+    <br />
+    <br />
+    <br />
+    <br />
+    <br />
+    <br />
+    <div class="customer-testimonial" v-for="c in comments" :key="c.id">
+      <h2 class="customer-name">{{ c.patientName }}</h2>
+      <p class="posted-date">{{ c.createdAt }}</p>
+      <h4 class="customer-feedback">
+        {{ c.commentDetail }}
+      </h4>
+    </div>
+    <div class="comment-section" v-if="role === 'Patient'">
+      <h2>Để Lại Bình Luận Của Bạn</h2>
+      <div id="commentForm">
+        <div class="form-group">
+          <label for="comment">Bình Luận:</label>
+          <textarea
+            id="comment"
+            name="comment"
+            rows="5"
+            required
+            v-model="commentDetail"
+          ></textarea>
         </div>
+        <button @click="addComment()" type="submit">Gửi Bình Luận</button>
       </div>
     </div>
+
     <div class="container-contact-main">
       <div class="dentalHeader">
         <div class="certi-header">
@@ -175,12 +177,12 @@
           <h4><strong>Thông tin</strong></h4>
 
           <p>
-            Nha khoa chú trọng xây dựng dịch vụ tận tình, chu đáo, thân thiện
-            mẫu mã, mang đến cho khách hàng cảm giác an tâm, thoải mái như thể
-            họ đã ở trong nhà riêng của họ. Mục tiêu của chúng tôi là trở thành
-            một công ty có chất lượng hàng đầu Giấy phép hoạt động nha khoa tại
-            Việt Nam số 196/HNO/GPHD do Số chứng chỉ hành nghề của Sở Y tế Hà
-            Nội 000119/HNO-CCHN do Sở Y tế Hà Nội cấp
+            Dentistry focuses on building a dedicated, caring, friendly service
+            model, giving customers a feeling of peace of mind and comfort as if
+            they were in their own home. Our goal is to become a top quality
+            dentist in Vietnam Operation License No. 196/HNO/GPHD issued by
+            Hanoi Department of Health Practice certificate number
+            000119/HNO-CCHN issued by Hanoi Department of Health
           </p>
           <div class="pic"></div>
         </div>
@@ -188,36 +190,36 @@
         <div class="footer-block" style="margin-left: 7%">
           <h4><strong>Thông tin</strong></h4>
           <ul class="footer-list">
-            <li class="list-inner">Thông tin của chủ sở hữu</li>
-            <li class="list-inner">Điều kiện giao dịch chung</li>
-            <li class="list-inner">Các phương thức thanh toán</li>
-            <li class="list-inner">Bảo vệ thông tin cá nhân</li>
+            <li class="list-inner">Owner Information</li>
+            <li class="list-inner">General trading conditions</li>
+            <li class="list-inner">Payments</li>
+            <li class="list-inner">Protecty personal Information</li>
           </ul>
         </div>
         <div class="footer-block" style="margin-left: 7%">
           <h4 class="service-footer"><strong>Dịch vụ</strong></h4>
           <ul class="footer-list">
-            <li class="list-inner1">Cấy ghép Implant</li>
-            <li class="list-inner1">Chỉnh nha không mắc cài Invisalign</li>
-            <li class="list-inner1">Nhổ răng khôn</li>
-            <li class="list-inner1">Chỉnh nha mắc cài truyền thống</li>
-            <li class="list-inner1">Nha khoa trẻ em</li>
-            <li class="list-inner1">Nha khoa tổng quát</li>
-            <li class="list-inner1">Nha khoa thẩm mĩ</li>
-            <li class="list-inner1">Phẫu thuật chỉnh hình xương hàm</li>
-            <li class="list-inner1">Răng giả tháo lắp</li>
+            <li class="list-inner1">Implant</li>
+            <li class="list-inner1">Invisalign orthodontics without braces</li>
+            <li class="list-inner1">Traditional braces orthodontics</li>
+            <li class="list-inner1">Orthopedic porcelain teeth</li>
+            <li class="list-inner1">Cosmetic porcelain teeth</li>
+            <li class="list-inner1">Wisdom tooth extraction</li>
+            <li class="list-inner1">Children's Dentistry</li>
+            <li class="list-inner1">General Dentistry</li>
+            <li class="list-inner1">Removal dentures</li>
           </ul>
         </div>
         <div class="footer-block" style="margin-left: 7%">
           <h4><strong>Contact</strong></h4>
           <address>
-            <i class="fa-solid fa-map-location-dot"></i>&nbsp; Tầng 3, 125 Tòa
-            nhà Hoàng Ngân, Cầu Giấy, Hà Nội<br />
+            <i class="fa-solid fa-map-location-dot"></i>&nbsp; 3rd floor, 125
+            Hoang Ngan building, Cau Giay, Hanoi<br />
             <i class="fa-solid fa-phone"></i>&nbsp; 972 435 008<br />
             <i class="fa-regular fa-envelope"></i>&nbsp;
             imednhakhoa@gmail.com<br />
-            <i class="fa-solid fa-calendar-days"></i>&nbsp; 9 giờ sáng - 8 giờ
-            tối Thứ Hai đến Thứ Sáu, 8 giờ sáng - 5 giờ chiều Thứ Bảy
+            <i class="fa-solid fa-calendar-days"></i>&nbsp; 9am - 8pm Monday to
+            Friday, 8am to 5pm Saturday
           </address>
         </div>
       </div>
@@ -235,6 +237,8 @@ export default {
   name: "DentalKnowledge",
   data() {
     return {
+      commentDetail: "",
+      UserId: 0,
       role: "",
       action: "",
       services: [],
@@ -243,7 +247,9 @@ export default {
       countDoctor: 0,
       countMaterial: 0,
       countService: 0,
+      comments: [],
       news: [],
+      userName: "",
     };
   },
   methods: {
@@ -280,6 +286,17 @@ export default {
           console.error("There has been a problem");
         });
     },
+    async fetchComments() {
+      let apiURL = "https://localhost:7034/api/Comment/listall";
+      axios
+        .get(apiURL)
+        .then((response) => {
+          this.comments = response.data;
+        })
+        .catch((error) => {
+          console.error("There has been a problem");
+        });
+    },
     async fetchDoctor() {
       let apiURL = "https://localhost:7034/api/User/doctor/list";
       axios
@@ -291,13 +308,23 @@ export default {
           console.error("There has been a problem");
         });
     },
+    async getUserById() {
+      let apiURL = "https://localhost:7034/api/User/" + this.UserId;
+      axios
+        .get(apiURL)
+        .then((response) => {
+          this.userName = response.data.user.name;
+        })
+        .catch((error) => {
+          console.error("There has been a problem");
+        });
+    },
     async fetchMaterial() {
       let apiURL = "https://localhost:7034/api/Material/listall";
       axios
         .get(apiURL)
         .then((response) => {
           this.countMaterial = response.data.length;
-          console.log(this.countMaterial);
         })
         .catch((error) => {
           console.error("There has been a problem");
@@ -310,7 +337,6 @@ export default {
         .then((response) => {
           this.services = response.data;
           this.countService = this.services.length;
-          console.log(this.countService);
         })
         .catch((error) => {
           console.error("There has been a problem");
@@ -318,6 +344,7 @@ export default {
     },
     CheckRole() {
       this.role = localStorage.getItem("userRole");
+      this.UserId = localStorage.getItem("UserId");
     },
     logIn() {
       this.role = null;
@@ -350,6 +377,18 @@ export default {
       localStorage.setItem("ServiceId", id);
       this.$router.push({ name: "Service" });
     },
+    addComment() {
+      let apiURL = "https://localhost:7034/api/Comment";
+      axios
+        .post(apiURL, {
+          patientId: this.UserId,
+          commentDetail: this.commentDetail,
+        })
+        .then((response) => {
+          alert("Thêm bình luận thành công!");
+          this.fetchComments();
+        });
+    },
   },
   computed: {
     filteredServices() {
@@ -363,11 +402,65 @@ export default {
     this.fetchDoctor();
     this.fetchMaterial();
     this.fetchNews();
+    this.getUserById();
+    this.fetchComments();
   },
 };
 </script>
 
 <style scoped>
+.comment-section {
+  max-width: 600px;
+  margin: 40px auto;
+  padding: 20px;
+  background: #f9f9f9;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  border-radius: 4px;
+}
+
+.comment-section h2 {
+  text-align: center;
+  margin-bottom: 20px;
+  color: #333;
+}
+
+.form-group {
+  margin-bottom: 15px;
+}
+
+.form-group label {
+  display: block;
+  margin-bottom: 5px;
+}
+
+.form-group input,
+.form-group textarea {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.form-group textarea {
+  resize: vertical;
+}
+
+button[type="submit"] {
+  display: block;
+  width: 100%;
+  padding: 10px 15px;
+  background-color: rgb(194, 161, 104);
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 16px;
+}
+
+button[type="submit"]:hover {
+  background-color: #4cae4c;
+}
+
 .navbar-expand-lg {
   background-color: rgb(204, 204, 204);
   color: rgb(74, 85, 110);
@@ -498,6 +591,24 @@ li .li-service {
 .nav-item-service {
   margin-left: 500px;
 }
+.customer-testimonial {
+  margin-left: 10%;
+  margin-bottom: 10%;
+}
+
+.customer-name {
+  font-size: 36px;
+  text-transform: uppercase;
+  font-weight: bold;
+  margin-bottom: 10px;
+  color: rgb(194, 161, 104);
+}
+
+.customer-feedback {
+  font-size: 18px;
+  color: #666;
+}
+
 @media (max-width: 1300px) {
   .dropdown-menu {
     margin-top: auto;

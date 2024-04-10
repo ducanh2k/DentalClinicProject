@@ -4,40 +4,41 @@
     <div class="container">
       <div class="TeamDoc-picture"></div>
       <div class="TeamDoc-Content">
-        <p style="font-size: 16px">Ph.D, Doctor Nguyen Van A</p>
+        <p style="font-size: 16px">Ts, Bác sĩ Nguyễn Văn A</p>
         <p style="font-size: 16px">
-          One of the highly trained surgeons in dental implant surgery in Japan,
-          who presides over in-depth studies on implant implants such as sinus
-          lift, bone grafting, and the use of new materials in dentistry. In
-          particular, Dr. A has successfully performed many dental implant
-          transplants for patients with microsurgery to reconstruct the lower
-          jaw bone, and at the same time brought a new look to patients with
-          protruding jaw, underbite, gummy smile… through orthodontic surgery.
+          Một trong những bác sĩ phẫu thuật được đào tạo bài bản về phẫu thuật
+          cấy ghép nha khoa tại Nhật Bản, người chủ trì các nghiên cứu chuyên
+          sâu về cấy ghép implant như xoang nâng cơ, ghép xương và sử dụng vật
+          liệu mới trong nha khoa. TRONG Đặc biệt, bác sĩ A đã thực hiện thành
+          công nhiều ca trồng răng implant cấy ghép cho bệnh nhân được phẫu
+          thuật vi phẫu để tái tạo lại phần dưới xương hàm, đồng thời mang lại
+          diện mạo mới cho bệnh nhân hàm hô, móm, cười hở lợi… qua phẫu thuật
+          chỉnh nha.
         </p>
         <p style="font-size: 16px">
-          <i class="fa-solid fa-circle-check"></i> Director of Vietnam – Cuba
-          Hospital, Hanoi
+          <i class="fa-solid fa-circle-check"></i> Giám đốc Việt Nam – Cuba Bệnh
+          viện, Hà Nội
         </p>
         <p style="font-size: 16px">
-          <i class="fa-solid fa-circle-check"></i> Professional advisor of
-          Dental Implant Dentium, Korea
+          <i class="fa-solid fa-circle-check"></i> Cố vấn chuyên môn của Cấy
+          ghép Implant Dentium, Hàn Quốc
         </p>
         <p style="font-size: 16px">
-          <i class="fa-solid fa-circle-check"></i> Member of Japan Dental
-          Surgeons Association
+          <i class="fa-solid fa-circle-check"></i> Thành viên Nha khoa Nhật Bản
+          Hiệp hội bác sĩ phẫu thuật
         </p>
         <p style="font-size: 16px">
-          <i class="fa-solid fa-circle-check"></i> Member of the American Dental
-          Association (ADA)
+          <i class="fa-solid fa-circle-check"></i> Thành viên Nha khoa Hoa Kỳ
+          Hiệp hội (ADA)
         </p>
         <p style="font-size: 16px">
-          <i class="fa-solid fa-circle-check"></i> Member of the International
-          Implant Association (ITI)
+          <i class="fa-solid fa-circle-check"></i> Thành viên của Quốc tế Hiệp
+          hội cấy ghép (ITI)
         </p>
       </div>
     </div>
-    <button type="button" class="btn btn-primary">
-      <strong>See All</strong>
+    <button type="button" class="btn btn-primary" @click="goDoctor()">
+      <strong>Xem tất cả</strong>
     </button>
   </div>
 </template>
@@ -45,6 +46,11 @@
 <script>
 export default {
   name: "TeamDoctor",
+  methods: {
+    goDoctor() {
+      this.$router.push({ name: "TeamDoctor" });
+    },
+  },
 };
 </script>
 

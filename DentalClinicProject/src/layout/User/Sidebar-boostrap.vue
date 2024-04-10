@@ -31,7 +31,7 @@
                   >
                 </li>
                 <li class="li-service">
-                  <a class="a-service" href="#">Cơ sở vật chất hiện đại</a>
+                  <a class="a-service" @click="Modern()">Cơ sở vật chất hiện đại</a>
                 </li>
                 <li class="li-service">
                   <a class="a-service" @click="teamDoctor()">Đội ngũ bác sĩ</a>
@@ -63,14 +63,14 @@
                 >Bảng giá</a
               >
             </li>
-
-            <li class="nav-item">
-              <a class="nav-link active" aria-current="page" href="#"
-                >Khách hàng</a
-              >
+            <li class="nav-item" @click="DentalKnowledge()">
+              <a class="nav-link active" aria-current="page" href="#">Tin Tức</a>
             </li>
-            <li class="nav-item">
-              <a class="nav-link active" aria-current="page" href="#">News</a>
+            <li class="nav-item" @click="CKEditor()">
+              <a class="nav-link active" aria-current="page" href="#">Tạo trang dịch vụ</a>
+            </li>
+            <li class="nav-item" @click="CKEditor1()">
+              <a class="nav-link active" aria-current="page" href="#">Tạo trang tin tức</a>
             </li>
           </ul>
           <div v-if="role != null" class="log-out" @click="logOut()">
@@ -89,6 +89,7 @@
 </template>
 
 <script>
+import DentalKnowledge from "./News/DentalKnowledge.vue";
 import Overview from "./OverviewClinic/Overview.vue";
 import axios from "axios";
 
@@ -134,6 +135,16 @@ export default {
     teamDoctor() {
       this.$router.push({ name: "TeamDoctor" });
     },
+    CKEditor(){
+      this.$router.push({ name: "CKEditor" });
+    },
+    CKEditor1(){
+      this.$router.push({ name: "CKEditor1" });
+      
+    },
+    Modern(){
+      this.$router.push({ name: "Infrastructure" });
+    },
     Overview() {
       this.$router.push({ name: "Overview" });
     },
@@ -145,6 +156,9 @@ export default {
     },
     backHome() {
       this.$router.push({ name: "Home" });
+    },
+    DentalKnowledge() {
+      this.$router.push({ name: "DentalKnowledge" });
     },
     goService(id) {
       localStorage.setItem("ServiceId", id);

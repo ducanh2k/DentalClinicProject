@@ -2,103 +2,105 @@
   <div>
     <div class="dentalHeader">
       <div class="headerDental">
-        <h2><strong>DENTAL SERVICES</strong></h2>
+        <h1><strong>DỊCH VỤ NHA KHOA</strong></h1>
       </div>
       <div class="headerDental1">
         <h4>
-          We provide top service with the philosophy of "Optimal solution,
-          minimal interference"
+          &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Chúng tôi cung cấp dịch vụ hàng
+          đầu với triết lý “Giải pháp tối ưu, sự can thiệp tối thiểu"
         </h4>
       </div>
     </div>
     <div class="dentalservice-row1">
-      <div class="service-card">
+      <div class="service-card" @click="goService(1)">
         <div class="icon-container">
           <img src="" alt="" />
         </div>
-        <h3><strong>Implant</strong></h3>
+        <h3><strong>Cấy ghép Implant</strong></h3>
         <p>
-          The solution to restore aesthetic function and optimal chewing
-          function for people who have lost teeth
+          Giải pháp phục hồi chức năng thẩm mỹ và ăn nhai tối ưu chức năng cho
+          người bị mất răng
         </p>
       </div>
-      <div class="service-card">
+      <div class="service-card" @click="goService(6)">
         <div class="icon-container">
           <img src="" alt="" />
         </div>
-        <h3><strong>Orthodontic braces</strong></h3>
-        <p>Orthodontic treatment is an effective method for healthy teeth</p>
+        <h3><strong>Chỉnh nha mắc cài</strong></h3>
+        <p>Nắn chỉnh răng là phương pháp hiệu quả cho một hàm răng khỏe mạnh</p>
       </div>
-      <div class="service-card">
+      <div class="service-card" @click="goService(7)">
         <div class="icon-container">
           <img src="" alt="" />
         </div>
-        <h3><strong>Children’s Dentistry</strong></h3>
-        <p>Give your child a healthy set of teeth for a bright smile</p>
+        <h3><strong>Nha khoa trẻ em</strong></h3>
+        <p>
+          Mang đến cho trẻ em một hàm răng khỏe mạnh để nụ cười luôn rạng rỡ
+        </p>
       </div>
     </div>
     <div class="dentalservice-row1">
-      <div class="service-card">
+      <div class="service-card" @click="goService(17)">
         <div class="icon-container">
           <img src="" alt="" />
         </div>
-        <h3><strong>Orthodontic jaw surgery</strong></h3>
+        <h3><strong>Phẫu thuật chỉnh hình xương hàm</strong></h3>
         <p>
-          Solve both functional and aesthetic problems for patients, improve
-          quality of life
+          Giải quyết cả vấn đề chức năng và thẩm mỹ cho bệnh nhân, nâng cao chất
+          lượng cuộc sống
         </p>
       </div>
-      <div class="service-card">
+      <div class="service-card" @click="goService(16)">
         <div class="icon-container">
           <img src="" alt="" />
         </div>
-        <h3><strong>Orthodontic jaw surgery</strong></h3>
+        <h3><strong>Nha khoa thẩm mỹ</strong></h3>
         <p>
-          Solve both functional and aesthetic problems for patients, improve
-          quality of life
+          Mang đến cho bạn những nụ cười bạn mà luôn luôn mơ ước và tặng bạn sự
+          tự tin bạn mong muốn
         </p>
       </div>
-      <div class="service-card">
+      <div class="service-card" @click="goService(3)">
         <div class="icon-container">
           <img src="" alt="" />
         </div>
-        <h3><strong>Wisdom tooth extration</strong></h3>
+        <h3><strong>Nhổ răng khôn</strong></h3>
         <p>
-          Safe and gentle minor surgery with modern machinery and a team of
-          highly skilled doctors
+          Tiểu phẫu an toàn,nhẹ nhàng với hệ thống máy móc hiện đại và đội ngũ
+          bác sĩ tay nghề cao
         </p>
       </div>
     </div>
-    <button type="button" class="btn btn-primary">
+    <!-- <button type="button" class="btn btn-primary">
       <strong>View All &nbsp;&nbsp;&nbsp;</strong>>
-    </button>
+    </button> -->
     <div class="parallax">
       <div class="stats-container">
         <div class="stat-item">
           <span class="stat-icon">📈</span>
           <h3 class="stat-number">14+</h3>
           <p class="stat-description">
-            Forming and developing the iMed Dental brand
+            Sự hình thành và phát triển thương hiệu
           </p>
         </div>
         <div class="stat-item">
           <span class="stat-icon">👥</span>
           <h3 class="stat-number">20,560+</h3>
-          <p class="stat-description">
-            Customers are treated at iMed Dental Clinic
-          </p>
+          <p class="stat-description">Khách hàng được điều trị</p>
         </div>
         <div class="stat-item">
           <span class="stat-icon">🏥</span>
           <h3 class="stat-number">7,489,000+</h3>
           <p class="stat-description">
-            The surgical treatment is performed by the dental team
+            Quá trình điều trị phẫu thuật được thực hiện bởi đội ngũ nha khoa
           </p>
         </div>
         <div class="stat-item">
           <span class="stat-icon">💡</span>
           <h3 class="stat-number">3327+</h3>
-          <p class="stat-description">The surgical treatment is performed by the dental team</p>
+          <p class="stat-description">
+            Quá trình điều trị phẫu thuật được thực hiện bởi đội ngũ nha khoa
+          </p>
         </div>
       </div>
     </div>
@@ -108,6 +110,12 @@
 <script>
 export default {
   name: "DentalService",
+  methods: {
+    goService(id) {
+      localStorage.setItem("ServiceId", id);
+      this.$router.push({ name: "Service" });
+    },
+  },
 };
 </script>
 
@@ -173,7 +181,7 @@ export default {
   font-size: 14px;
   margin-bottom: 0;
 }
-.btn-primary{
+.btn-primary {
   margin-left: 35%;
 }
 @media (max-width: 1500px) {
@@ -232,9 +240,9 @@ export default {
   justify-content: space-around;
   align-items: center;
   padding: 20px;
-  background-color: #fff; 
-  border-radius: 10px; 
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); 
+  background-color: #fff;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
 .stat-item {
@@ -248,24 +256,24 @@ export default {
   max-width: 300px;
   margin: 20px;
   text-align: center;
-  flex-basis: 25%; 
+  flex-basis: 25%;
 }
 
 .stat-icon {
   display: block;
-  margin: 0 auto 10px; 
-  font-size: 24px; 
+  margin: 0 auto 10px;
+  font-size: 24px;
 }
 
 .stat-number {
   font-size: 24px;
   font-weight: bold;
-  margin-bottom: 5px; 
+  margin-bottom: 5px;
 }
 
 .stat-description {
-  font-size: 16px; 
-  color: #666; 
+  font-size: 16px;
+  color: #666;
 }
 
 /* Add responsive design as needed */
@@ -275,7 +283,7 @@ export default {
   }
   .stat-item {
     height: 65%;
-    margin-bottom: 20px; 
+    margin-bottom: 20px;
   }
 }
 </style>

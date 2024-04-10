@@ -12,7 +12,7 @@
           equipment used in the clinic stand is imported from Japan, Europe and
           the US.
         </p>
-        <a href="#" class="feature-link"><strong>More</strong></a>
+        <a href="#" class="feature-link" @click="goPage()"><strong>More</strong></a>
       </div>
     </div>
     
@@ -22,6 +22,11 @@
 <script>
 export default {
   name: "Facilities",
+  methods: {
+    goPage(){
+      this.$router.push({ name: "Infrastructure" });
+    }
+  },
 };
 </script>
 

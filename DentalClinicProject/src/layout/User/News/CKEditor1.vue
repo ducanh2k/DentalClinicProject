@@ -6,17 +6,15 @@
       :config="editorConfig"
     ></ckeditor>
     <div>
-      <span class="input-group-text"><strong>Nhập mã dịch vụ</strong></span>
+      <span class="input-group-text"><strong>Nhập mã tin tức</strong></span>
       <input
         type="text"
         class="form-control"
-        placeholder="mã dịch vụ"
+        placeholder="mã tin tức"
         v-model="ID"
       />
     </div>
-    <button class="editorButton" @click="fetchDataClick()">
-      Lấy dữ liệu
-    </button>
+    <button class="editorButton" @click="fetchDataClick()">Lấy dữ liệu.</button>
     <button class="editorButton" @click="updateClick()">Lưu</button>
     <button class="editorButton" @click="backHome()">Trở về</button>
   </div>
@@ -28,22 +26,24 @@ import ClassicEditor from "@ckeditor/ckeditor5-build-classic";
 import axios from "axios";
 
 export default {
-  name: "CKEditor",
+  name: "CKEditor1",
   components: {
     ckeditor: CKEditor.component,
   },
   data() {
     return {
       ID: 0,
-      serviceName: "",
+      tittle: "",
       briefInfo: "",
       price: 0,
       deleteFlag: false,
       editor: ClassicEditor,
       description: "",
-      editorConfig: {
-        // Cấu hình CKEditor ở đây
-      },
+      author: 0,
+      createdAt: "",
+      featured: true,
+      img: "",
+      editorConfig: {},
     };
   },
   methods: {
@@ -51,31 +51,39 @@ export default {
       this.role = localStorage.getItem("userRole");
     },
     fetchDataClick() {
-      let apiURL = "https://localhost:7034/api/Service/" + this.ID;
+      let apiURL = "https://localhost:7034/api/News/" + this.ID;
       axios
         .get(apiURL)
         .then((response) => {
-          this.serviceName = response.data.serviceName;
+          this.tittle = response.data.tittle;
           this.briefInfo = response.data.briefInfo;
-          this.price = response.data.price;
-          this.deleteFlag = response.data.deleteFlag;
+          this.author = response.data.author;
+          this.createdAt = response.data.createdAt;
+          this.featured = response.data.featured;
+          this.img = response.data.img;
+          
+          alert("Lấy dữ liệu thành công!");
         })
         .catch((error) => {
           console.error("There has been a problem");
         });
-      alert("fetch successful");
     },
     updateClick() {
       axios
-        .put("https://localhost:7034/api/Service/" + this.ID, {
+        .put("https://localhost:7034/api/News/" + this.ID, {
           description: this.description,
-          serviceName: this.serviceName,
+          tittle: this.tittle,
           briefInfo: this.briefInfo,
           price: this.price,
-          deleteFlag: this.deleteFlag,
+          author: this.author,
+          authorName: "Hệ thống nha khoa",
+          createdAt: this.createdAt,
+          featured: this.featured,
+          img: this.img,
+          deleteFlag: false,
         })
         .then((response) => {
-          alert("Update thành công!");
+          alert("Cập nhật thành công!");
         });
     },
     backHome() {
@@ -90,7 +98,7 @@ export default {
 <style scoped>
 .editorButton {
   width: 7%;
-  height: 4% ;
+  height: 2%;
   display: flex;
   bottom: 0;
 }

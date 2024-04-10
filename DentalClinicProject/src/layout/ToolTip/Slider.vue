@@ -15,7 +15,7 @@
         <div class="container">
           <div id="myCarousel" class="carousel slide" data-ride="carousel">
             <!-- Indicators -->
-            <ol class="carousel-indicators">
+            <!-- <ol class="carousel-indicators">
               <li
                 data-target="#myCarousel"
                 data-slide-to="0"
@@ -23,7 +23,7 @@
               ></li>
               <li data-target="#myCarousel" data-slide-to="1"></li>
               <li data-target="#myCarousel" data-slide-to="2"></li>
-            </ol>
+            </ol> -->
 
             <!-- Wrapper for slides -->
             <div class="carousel-inner">
@@ -64,7 +64,6 @@
               </div>
             </div>
 
-            <!-- Left and right controls -->
             <a
               class="left carousel-control"
               href="#myCarousel"
@@ -86,29 +85,31 @@
             <div class="about-us-content">
               <h3><strong>ABOUT US</strong></h3>
               <p style="font-size: 16px">
-                Born in mid-2009, it can be said that iMed Dental Clinic is one
-                of the few dental clinics in Hanoi with a team of doctors who
-                are fluent in English and Japanese (trained in Germany and
-                Japan). Equipped with modern machinery and applying high-quality
-                dental techniques in general dental services, cosmetic
-                dentistry, children’s dentistry, orthodontics with brackets and
-                Invisalign, implant…
+                Ra đời từ giữa năm 2009, có thể nói Nha khoa của chúng tôi là
+                một trong số ít phòng khám nha khoa tại Hà Nội có đội ngũ bác sĩ
+                thông thạo tiếng Anh và tiếng Nhật (được đào tạo tại Đức và Nhật
+                Bản). Được trang bị máy móc hiện đại và áp dụng các kỹ thuật nha
+                khoa chất lượng cao trong các dịch vụ nha khoa tổng quát, nha
+                khoa thẩm mỹ, nha khoa trẻ em, chỉnh nha bằng mắc cài và
+                Invisalign, cấy ghép implant…
               </p>
-            <br>
+              <br />
               <p style="font-size: 16px">
-                In 2019, iMed Dental was a Platinum supplier and was at the top
-                of the best suppliers of INVISALIGN bracketless orthodontic
-                procedures in Vietnam. The practice principle of iMed Dental is
-                to treat patients as family members.
+                Năm 2019, phòng khám chúng tôi là nhà cung cấp Bạch Kim và nằm
+                trong top nhà cung cấp dịch vụ chỉnh nha không mắc cài
+                INVISALIGN tốt nhất tại Việt Nam. Nguyên tắc hành nghề của iMed
+                Dental là coi bệnh nhân như người nhà.
               </p>
-            <br>
+              <br />
               <p style="font-size: 16px">
-                “Optimal solution, minimal intervention” – is also the slogan
-                and goal that iMed Dental has been pursuing throughout its
-                operation.
+                “Giải pháp tối ưu, can thiệp tối thiểu” – cũng là khẩu hiệu và
+                mục tiêu mà iMed Dental đã và đang theo đuổi trong suốt quá
+                trình hoạt động của mình.
               </p>
               <div class="btnlearn"></div>
-              <button type="button" class="btn btn-primary"><strong>Learn about our clinic</strong></button>
+              <button type="button" class="btn btn-primary">
+                <strong>Tìm hiểu về chúng tôi</strong>
+              </button>
             </div>
             <div class="about-us-picture"></div>
           </div>
@@ -152,12 +153,12 @@ export default {
   margin-right: 2%;
   font-size: 10px;
   font-family: sans-serif;
-  width: 35%; 
+  width: 35%;
   height: 100%;
   transition: width 0.3s ease;
 }
 .about-us-picture {
-  width: 25%; 
+  width: 25%;
   transition: width 0.3s ease;
   /* background-color: rgb(224, 196, 140); */
   background-image: url("../../imgs/about-us.jpg");
@@ -167,7 +168,7 @@ export default {
   background-position: center;
   height: 100%;
 }
-h3{
+h3 {
   color: rgb(224, 196, 140);
   font-size: 30px;
 }
@@ -175,33 +176,34 @@ h3{
   .about-us-content {
     /* background-color: black; */
     height: 100%;
-    width: 100%; 
+    width: 100%;
   }
   .about-us-picture {
-    margin-top:50px;
+    margin-top: 50px;
     height: 80%;
     width: 100%;
   }
   .about-us-container {
-  height: 70vh;
+    height: 70vh;
   }
 }
 
-.btn-primary{
+.btn-primary {
   background-color: #fff;
   color: rgb(224, 196, 140);
   border-radius: 6px;
   border: 0.5px solid rgb(201, 201, 201);
 }
 
-.btn-primary:hover ,.btn-primary:focus{
+.btn-primary:hover,
+.btn-primary:focus {
   transition: background-color 0.5s ease, color 0.5s ease;
   background-color: #e3e3e3;
   border: 1px solid rgb(224, 196, 140);
   color: rgb(74, 85, 110);
 }
 
-.item{
+.item {
   background-color: black;
   height: 70vh;
 }

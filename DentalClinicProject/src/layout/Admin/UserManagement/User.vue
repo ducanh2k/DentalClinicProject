@@ -996,7 +996,6 @@ export default {
     },
     async fetchUsers() {
       let apiURL = "https://localhost:7034/api/User/list";
-      console.log(this.currentPage);
       apiURL =
         "https://localhost:7034/api/User/list?pageNumber=" + this.currentPage;
       axios

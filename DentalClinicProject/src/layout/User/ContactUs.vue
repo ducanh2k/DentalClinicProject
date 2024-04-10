@@ -2,7 +2,7 @@
   <div class="container">
     <div class="dentalHeader">
       <div class="certi-header">
-        <h2 ><strong>CONTACT US</strong></h2>
+        <h2><strong>LIÊN HỆ VỚI CHÚNG TÔI</strong></h2>
       </div>
     </div>
     <div class="container-picture">
@@ -12,10 +12,9 @@
         </div>
         <br />
         <div class="contact-content">
-          Dental consultation +84 972 435 008 Working schedule: 09:00 - 20:00 on
-          Tuesdays - Thursdays; 14:00 - 20:00 Monday, Friday; 08:00 - 17:00
-          Saturday. Closed on Sunday and public holidays. Please make an
-          appointment before coming
+          Tư vấn nha khoa +84 972 435 008 Lịch làm việc: 09:00 - 20:00 các ngày
+          thứ 3 - thứ 5; 14:00 - 20:00 thứ 2, thứ 6; 08:00 - 17:00 thứ 7. Nghỉ
+          chủ nhật và các ngày lễ tết. Vui lòng đặt lịch hẹn trước khi đến.
         </div>
       </div>
       <div class="picture pic2">
@@ -24,28 +23,30 @@
         </div>
         <br />
         <div class="contact-content">
-          Always respond to the fastest information through Facebook responses.
+          Luôn trả lời các thông tin nhanh nhất thông qua các phản hồi trên
+          Facebook.
         </div>
       </div>
       <div class="picture pic3">
         <div class="contact-title" style="font-size: 2rem">
-          <i class="fa-solid fa-book"></i> <strong> Dental Knowledge</strong>
+          <i class="fa-solid fa-book"></i>
+          <strong> Hiểu biết về nha khoa</strong>
         </div>
         <br />
         <div class="contact-content">
-          Always update the basic knowledge to remember to have healthy and
-          beautiful teeth
+          Luôn cập nhật những kiến thức cơ bản cần nhớ để có hàm răng khoẻ và
+          đẹp
         </div>
       </div>
       <div class="picture pic4">
         <div class="contact-title" style="font-size: 2rem">
           <i class="fa-solid fa-comment-dots"></i
-          ><strong> Chat in web & mobile</strong>
+          ><strong> Chat trên web và điện thoại</strong>
         </div>
         <br />
         <div class="contact-content">
-          There is always someone on chat to answer your questions quickly and
-          effectively 365 days a year.
+          Luôn có người trực chat để trả lời câu hỏi của các bạn nhanh và hiệu
+          quả nhất suốt 365 ngày/năm.
         </div>
       </div>
     </div>

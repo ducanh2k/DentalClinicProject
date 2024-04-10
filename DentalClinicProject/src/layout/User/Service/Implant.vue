@@ -71,12 +71,7 @@
               >
             </li>
 
-            <li class="nav-item">
-              <a class="nav-link active" aria-current="page" href="#"
-                >Khách hàng</a
-              >
-            </li>
-            <li class="nav-item">
+            <li class="nav-item" @click="DentalKnowledge()">
               <a class="nav-link active" aria-current="page" href="#"
                 >Tin tức</a
               >
@@ -159,12 +154,12 @@
           <h4><strong>Thông tin</strong></h4>
 
           <p>
-            Dentistry focuses on building a dedicated, caring, friendly service
-            model, giving customers a feeling of peace of mind and comfort as if
-            they were in their own home. Our goal is to become a top quality
-            dentist in Vietnam Operation License No. 196/HNO/GPHD issued by
-            Hanoi Department of Health Practice certificate number
-            000119/HNO-CCHN issued by Hanoi Department of Health
+            Nha khoa chú trọng xây dựng dịch vụ tận tình, chu đáo, thân thiện
+            mẫu mã, mang đến cho khách hàng cảm giác an tâm, thoải mái như thể
+            họ đã ở trong nhà riêng của họ. Mục tiêu của chúng tôi là trở thành
+            một công ty có chất lượng hàng đầu Giấy phép hoạt động nha khoa tại
+            Việt Nam số 196/HNO/GPHD do Số chứng chỉ hành nghề của Sở Y tế Hà
+            Nội 000119/HNO-CCHN do Sở Y tế Hà Nội cấp
           </p>
           <div class="pic"></div>
         </div>
@@ -172,36 +167,36 @@
         <div class="footer-block" style="margin-left: 7%">
           <h4><strong>Thông tin</strong></h4>
           <ul class="footer-list">
-            <li class="list-inner">Owner Information</li>
-            <li class="list-inner">General trading conditions</li>
-            <li class="list-inner">Payments</li>
-            <li class="list-inner">Protecty personal Information</li>
+            <li class="list-inner">Thông tin của chủ sở hữu</li>
+            <li class="list-inner">Điều kiện giao dịch chung</li>
+            <li class="list-inner">Các phương thức thanh toán</li>
+            <li class="list-inner">Bảo vệ thông tin cá nhân</li>
           </ul>
         </div>
         <div class="footer-block" style="margin-left: 7%">
           <h4 class="service-footer"><strong>Dịch vụ</strong></h4>
           <ul class="footer-list">
-            <li class="list-inner1">Implant</li>
-            <li class="list-inner1">Invisalign orthodontics without braces</li>
-            <li class="list-inner1">Traditional braces orthodontics</li>
-            <li class="list-inner1">Orthopedic porcelain teeth</li>
-            <li class="list-inner1">Cosmetic porcelain teeth</li>
-            <li class="list-inner1">Wisdom tooth extraction</li>
-            <li class="list-inner1">Children's Dentistry</li>
-            <li class="list-inner1">General Dentistry</li>
-            <li class="list-inner1">Removal dentures</li>
+            <li class="list-inner1">Cấy ghép Implant</li>
+            <li class="list-inner1">Chỉnh nha không mắc cài Invisalign</li>
+            <li class="list-inner1">Nhổ răng khôn</li>
+            <li class="list-inner1">Chỉnh nha mắc cài truyền thống</li>
+            <li class="list-inner1">Nha khoa trẻ em</li>
+            <li class="list-inner1">Nha khoa tổng quát</li>
+            <li class="list-inner1">Nha khoa thẩm mĩ</li>
+            <li class="list-inner1">Phẫu thuật chỉnh hình xương hàm</li>
+            <li class="list-inner1">Răng giả tháo lắp</li>
           </ul>
         </div>
         <div class="footer-block" style="margin-left: 7%">
           <h4><strong>Contact</strong></h4>
           <address>
-            <i class="fa-solid fa-map-location-dot"></i>&nbsp; 3rd floor, 125
-            Hoang Ngan building, Cau Giay, Hanoi<br />
+            <i class="fa-solid fa-map-location-dot"></i>&nbsp; Tầng 3, 125 Tòa
+            nhà Hoàng Ngân, Cầu Giấy, Hà Nội<br />
             <i class="fa-solid fa-phone"></i>&nbsp; 972 435 008<br />
             <i class="fa-regular fa-envelope"></i>&nbsp;
             imednhakhoa@gmail.com<br />
-            <i class="fa-solid fa-calendar-days"></i>&nbsp; 9am - 8pm Monday to
-            Friday, 8am to 5pm Saturday
+            <i class="fa-solid fa-calendar-days"></i>&nbsp; 9 giờ sáng - 8 giờ
+            tối Thứ Hai đến Thứ Sáu, 8 giờ sáng - 5 giờ chiều Thứ Bảy
           </address>
         </div>
       </div>
@@ -215,6 +210,7 @@ import ClassicEditor from "@ckeditor/ckeditor5-build-classic";
 import "../../../css/User/contactUs.css";
 import "../../../css/User/footerMain.css";
 import axios from "axios";
+import DentalKnowledge from "../News/DentalKnowledge.vue";
 export default {
   name: "Implant",
   data() {
@@ -290,6 +286,9 @@ export default {
     },
     backHome() {
       this.$router.push({ name: "Home" });
+    },
+    DentalKnowledge() {
+      this.$router.push({ name: "DentalKnowledge" });
     },
   },
   // beforeRouteUpdate(to, from, next) {

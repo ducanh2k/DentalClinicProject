@@ -2,15 +2,15 @@
   <div class="container">
     <div class="dentalHeader">
       <div class="certi-header">
-        <h2><strong>DENTAL KNOWLEDGE</strong></h2>
+        <h2><strong>Hiểu biết về nha khoa</strong></h2>
       </div>
       <div class="certi-description">
-        <h4>Basic knowledge to remember to have healthy and beautiful teeth</h4>
+        <h4>Những kiến thức cơ bản cần nhớ để có hàm răng khỏe đẹp</h4>
       </div>
     </div>
     <div class="container-picture">
       <div class="magazine1">
-        <div class="maga-container">
+        <div class="maga-container" @click="goNews(1)">
           <div class="picture pic1"></div>
           <div class="date">24/10/2022</div>
           <div class="content">
@@ -20,7 +20,7 @@
             >
           </div>
         </div>
-        <div class="maga-container">
+        <div class="maga-container" @click="goNews(2)">
           <div class="picture pic2"></div>
           <div class="date1">24/10/2022</div>
           <div class="content1">
@@ -29,13 +29,13 @@
         </div>
       </div>
       <div class="magazine2">
-        <div class="maga-container1">
+        <div class="maga-container1" @click="goNews(3)">
           <div class="picture1 pic3"></div>
           <div class="content2">
             <strong>Treatment of white spots on teeth</strong>
           </div>
         </div>
-        <div class="maga-container1">
+        <div class="maga-container1" @click="goNews(4)">
           <div class="picture1 pic4"></div>
           <div class="content2">
             <strong
@@ -44,7 +44,7 @@
             >
           </div>
         </div>
-        <div class="maga-container1">
+        <div class="maga-container1" @click="goNews(5)">
           <div class="picture1 pic5"></div>
           <div class="content2">
             <strong>Invisalign orthodontic cases at iMed Dental</strong>
@@ -52,7 +52,7 @@
         </div>
       </div>
     </div>
-    <button type="button" class="btn btn-primary">
+    <button type="button" class="btn btn-primary" @click="goDental()">
       <strong>More</strong>&nbsp; >
     </button>
   </div>
@@ -61,6 +61,15 @@
 <script>
 export default {
   name: "DentalKnowledge",
+  methods: {
+    goNews(id) {
+      localStorage.setItem("NewsId", id);
+      this.$router.push({ name: "NewsEdit" });
+    },
+    goDental() {
+      this.$router.push({ name: "DentalKnowledge" });
+    },
+  },
 };
 </script>
 
@@ -84,11 +93,13 @@ export default {
   height: 100%;
 }
 .maga-container {
+  cursor: pointer;
   width: 100%;
   height: 70%;
   /* background-color: black; */
 }
 .maga-container1 {
+  cursor: pointer;
   display: flex;
   width: 100%;
   height: 30%;
