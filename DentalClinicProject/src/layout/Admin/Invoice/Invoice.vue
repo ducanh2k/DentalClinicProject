@@ -45,7 +45,6 @@
                 <th scope="col">Tên khách hàng</th>
                 <th scope="col">Tên nhân viên</th>
                 <th scope="col">Ngày xuất</th>
-                <th scope="col">Khuyến mãi</th>
                 <th scope="col">Trạng thái</th>
                 <th scope="col">Ghi chú</th>
                 <th scope="col">Phương thức thanh toán</th>
@@ -58,9 +57,14 @@
                 <th scope="row">{{ index + 1 }}</th>
                 <td>{{ invoice.customerName }}</td>
                 <td>{{ invoice.staffName }}</td>
-                <td>{{ invoice.date }}</td>
-                <td>{{ invoice.discount }}</td>
-                <td>{{ invoice.status }}</td>
+                <td>{{ formatDateString(invoice.date) }}</td>
+                <td v-if="invoice.status === 1" style="color: burlywood">
+                  Bản nháp
+                </td>
+                <td v-if="invoice.status === 2" style="color: green">
+                  Đã thanh toán
+                </td>
+                <td v-if="invoice.status === 3" style="color: brown">Đã huỷ</td>
                 <td>{{ invoice.comment }}</td>
                 <td>{{ invoice.paymentType }}</td>
                 <td>
@@ -254,6 +258,7 @@
 </template>
 
 <script>
+import { format, parseISO } from "date-fns";
 import "/src/css/Admin/main.css";
 import axios from "axios";
 import TheSidebar from "../TheSidebar.vue";
@@ -280,6 +285,9 @@ export default {
     };
   },
   methods: {
+    formatDateString(isoString) {
+      return format(parseISO(isoString), "dd-MM-yyyy");
+    },
     openSideBar() {
       if (this.isClicked === true) this.isClicked = false;
       else if (this.isClicked === false) this.isClicked = true;
@@ -446,5 +454,8 @@ export default {
 .btn-primary {
   width: 150px;
   margin-right: 20px;
+}
+.addnew {
+  margin-left: -5%;
 }
 </style>
