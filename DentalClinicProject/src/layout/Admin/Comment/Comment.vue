@@ -54,7 +54,9 @@
                 <th scope="row">{{ p.id }}</th>
                 <td class="data-from-db">{{ p.patientName }}</td>
                 <td class="data-from-db">{{ p.commentDetail }}</td>
-                <td class="data-from-db">{{ p.createdAt }}</td>
+                <td class="data-from-db">
+                  {{ formatDateString(p.createdAt) }}
+                </td>
                 <!-- <td>
                   <button
                     type="button"
@@ -197,6 +199,7 @@
 </template>
 
 <script>
+import { format, parseISO } from "date-fns";
 import TheSidebar from "../TheSidebar.vue";
 import "/src/css/Admin/main.css";
 import axios from "axios";
@@ -218,7 +221,6 @@ export default {
       totalPages: 0,
       searchText: "",
       isClicked: true,
-
     };
   },
   computed: {
@@ -240,6 +242,15 @@ export default {
     },
   },
   methods: {
+    formatDateString(isoString) {
+      if (isoString != null) {
+        return format(parseISO(isoString), "dd-MM-yyyy");
+      }
+      return null;
+    },
+    formatDateString2(isoString) {
+      return format(parseISO(isoString), "yyyy-MM-dd");
+    },
     openSideBar() {
       if (this.isClicked === true) this.isClicked = false;
       else if (this.isClicked === false) this.isClicked = true;

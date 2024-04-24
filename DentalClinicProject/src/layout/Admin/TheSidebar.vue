@@ -42,21 +42,21 @@
           <div class="item1-inner">Thuốc</div>
         </router-link>
       </div>
-      <div class="item1" tabindex="8" v-if="role === 'Admin'">
+      <!-- <div class="item1" tabindex="8" v-if="role === 'Admin'">
         <router-link to="/invoice" class="item1__content">
           <div class="item1-inner">Hóa đơn</div>
         </router-link>
-      </div>
+      </div> -->
       <div class="item1" tabindex="9">
         <router-link to="/news" class="item1__content">
           <div class="item1-inner">Tin tức</div>
         </router-link>
       </div>
-      <div class="item1" tabindex="10">
+      <!-- <div class="item1" tabindex="10">
         <router-link to="/pre" class="item1__content">
           <div class="item1-inner">Đơn thuốc</div>
         </router-link>
-      </div>
+      </div> -->
       <div class="item1" tabindex="11">
         <router-link to="/comment" class="item1__content">
           <div class="item1-inner">Bình luận</div>

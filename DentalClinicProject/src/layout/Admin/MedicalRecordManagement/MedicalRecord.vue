@@ -64,10 +64,8 @@
                 <td class="data-from-db">
                   {{ formatDateString(mRecord.dob) }}
                 </td>
-                <td class="data-from-db" v-if="mRecord.gender == true">Male</td>
-                <td class="data-from-db" v-if="mRecord.gender == false">
-                  Female
-                </td>
+                <td class="data-from-db" v-if="mRecord.gender == true">Nam</td>
+                <td class="data-from-db" v-if="mRecord.gender == false">Nữ</td>
                 <td class="data-from-db">{{ mRecord.address }}</td>
                 <!-- Medicine -->
                 <td v-if="role === 'Admin'">
@@ -280,6 +278,14 @@
                   </option>
                 </select>
               </div>
+              <div>
+                <span class="input-group-text"><strong>Mô tả </strong></span>
+                <input
+                  type="text"
+                  class="form-control"
+                  v-model="descriptionMdr"
+                />
+              </div>
             </div>
             <div>
               <button
@@ -389,7 +395,9 @@
                   v-for="m in listSelectedMedicine"
                   :key="m.id"
                 >
-                  {{ m.name }}
+                  Tên thuốc: {{ m.name }} || Liều lượng:
+                  {{ m.dosageInstruction }}
+
                   <button
                     type="button"
                     @click="removeMedicine(m.id)"
@@ -494,7 +502,7 @@
                     class="btn-role"
                     v-model="status"
                     value="1"
-                  />&nbsp; Bản nháp
+                  />&nbsp; Chưa thanh toán
                   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                   <input
                     type="radio"
@@ -502,13 +510,6 @@
                     v-model="status"
                     value="2"
                   />&nbsp; Đã thanh toán
-                  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                  <input
-                    type="radio"
-                    class="btn-role"
-                    v-model="status"
-                    value="3"
-                  />&nbsp; Đã hủy
                 </div>
               </div>
               <div style="display: flex">
@@ -825,6 +826,7 @@ export default {
       preId: 0,
       listPres: [],
       ListPres2: [],
+      descriptionMdr: "",
     };
   },
   computed: {
@@ -1205,6 +1207,7 @@ export default {
         .post("https://localhost:7034/api/MedicalRecord", {
           patientId: this.patientId,
           serviceId: this.serviceId,
+          
         })
         .then((response) => {
           alert(response.data);
