@@ -961,10 +961,7 @@ export default {
       } else {
         this.preId = mRecord.prescriptionId;
         this.fetchPreById();
-        this.fetchAllMedicine();
-        if (this.listPres.details) {
-          this.listSelectedMedicine = this.listPres.details;
-        }
+
         $("#exampleModalMedicine").modal("show");
       }
     },
@@ -983,6 +980,18 @@ export default {
     AddMedicine() {
       this.listSelectedMedicine.push(this.listMedicine);
     },
+    AddMedicine() {
+      const alreadyExists = this.listSelectedMedicine.some(
+        (med) => med.id === this.listMedicine.id
+      );
+
+      if (!alreadyExists) {
+        this.listSelectedMedicine.push(this.listMedicine);
+      } else {
+        alert("Thuốc đã tồn tại trong danh sách!");
+      }
+    },
+
     removeMedicine(itemId) {
       this.listSelectedMedicine = this.listSelectedMedicine.filter(
         (item) => item.id !== itemId
@@ -1112,6 +1121,10 @@ export default {
           {}
         );
         this.listPres = response.data;
+        this.fetchAllMedicine();
+        if (this.listPres.details) {
+          this.listSelectedMedicine = this.listPres.details;
+        }
       } catch (error) {
         console.error("Lỗi lấy dữ liệu:", error);
       }
@@ -1213,7 +1226,6 @@ export default {
       const details = this.listSelectedMedicine.map((item) => {
         return { id: item.id };
       });
-      console.log(this.preId);
       axios
         .put("https://localhost:7034/api/Prescription/" + this.preId, {
           note: this.notePrescription,
