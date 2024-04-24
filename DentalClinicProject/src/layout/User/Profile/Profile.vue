@@ -190,7 +190,7 @@
                       class="dropdown-menu"
                       aria-labelledby="dropdownMenuButton1"
                     >
-                      <li>
+                      <li style="height: 200px; overflow-y: auto">
                         <a
                           class="dropdown-item"
                           v-for="user in users"

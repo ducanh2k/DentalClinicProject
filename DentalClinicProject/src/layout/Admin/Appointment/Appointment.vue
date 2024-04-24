@@ -42,10 +42,10 @@
             <thead>
               <tr>
                 <th scope="col">#</th>
-                <th scope="col">Nhân viên</th>
                 <th scope="col">Bệnh nhân</th>
+                <th scope="col">Số điện thoại</th>
                 <th scope="col">Bác sĩ</th>
-                <th scope="col">Ngày tiếp nhận</th>
+                <th scope="col">Ngày khám</th>
                 <th scope="col">Ghi chú</th>
                 <th scope="col">Trạng thái</th>
                 <th
@@ -58,12 +58,34 @@
             <tbody>
               <tr v-for="(a, index) in appointments" :key="a.appointmentId">
                 <th scope="row">{{ index + 1 }}</th>
-                <td class="data-from-db">{{ a.employeeName }}</td>
                 <td class="data-from-db">{{ a.patientName }}</td>
+                <td class="data-from-db">{{ a.phone }}</td>
                 <td class="data-from-db">{{ a.doctorName }}</td>
-                <td class="data-from-db">{{ a.datetime }}</td>
+                <td class="data-from-db">
+                  {{ formatDateString(a.bookingDate) }}
+                </td>
                 <td class="data-from-db">{{ a.note }}</td>
-                <td class="data-from-db">{{ a.status }}</td>
+                <td
+                  class="data-from-db"
+                  style="color: blue"
+                  v-if="a.status == '2'"
+                >
+                  Kết thúc
+                </td>
+                <td
+                  class="data-from-db"
+                  style="color: green"
+                  v-if="a.status == '1'"
+                >
+                  Đang chờ
+                </td>
+                <td
+                  class="data-from-db"
+                  style="color: red"
+                  v-if="a.status == '3'"
+                >
+                  Hủy
+                </td>
                 <td v-if="role === 'Admin' || role === 'Staff'">
                   <button
                     type="button"
@@ -115,12 +137,44 @@
           </table>
         </div>
         <div class="under-table">
-          <div class="sum__staff">Tổng số lịch hẹn: <strong> 10 </strong></div>
+          <div class="sum__staff">
+            Tổng số lịch hẹn: <strong> {{ numOfApp }} </strong>
+          </div>
           <div class="pagination">
-            <li><a @click="changPageNumber(1)" class="page-1">1</a></li>
-            <li><a @click="changPageNumber(2)" class="page-2">2</a></li>
-            <li><a @click="changPageNumber(3)" class="page-3">3</a></li>
-            <li><a @click="changPageNumber(0)" class="Next-page">Next</a></li>
+            <a @click="decreasePage()" class="page-link" v-if="currentPage > 1"
+              >Previous</a
+            >
+
+            <a
+              @click="changPageNumber(Page1)"
+              v-if="Page1 <= totalPages"
+              class="page-link"
+              :class="{ 'active-page': currentPage === Page1 }"
+              >{{ Page1 }}</a
+            >
+
+            <a
+              @click="changPageNumber(Page2)"
+              v-if="Page2 <= totalPages"
+              class="page-link"
+              :class="{ 'active-page': currentPage === Page2 }"
+              >{{ Page2 }}</a
+            >
+
+            <a
+              @click="changPageNumber(Page3)"
+              v-if="Page3 <= totalPages"
+              class="page-link"
+              :class="{ 'active-page': currentPage === Page3 }"
+              >{{ Page3 }}</a
+            >
+
+            <a
+              @click="increasePage()"
+              class="page-link"
+              v-if="currentPage < totalPages"
+              >Next</a
+            >
           </div>
         </div>
       </div>
@@ -145,74 +199,89 @@
             <div class="input-group md-3">
               <div>
                 <span class="input-group-text"
-                  ><strong>Mã nhân viên</strong></span
+                  ><strong>Số điện thoại bệnh nhân</strong></span
                 >
                 <input
                   type="text"
                   class="form-control"
-                  v-model="employeeId"
-                  placeholder="Nhập mã nhân viên"
+                  v-model="patientPhone"
+                  placeholder="Nhập số điện thoại"
+                  @input="fetchSuggestions"
                 />
+                <select
+                  v-if="suggestions !== null"
+                  class="form-control"
+                  @click="fillPhoneNumber($event)"
+                >
+                  <option
+                    v-for="patient in suggestions"
+                    :value="patient.phone"
+                    :key="patient.userId"
+                  >
+                    {{ patient.name }}
+                  </option>
+                </select>
+              </div>
+
+              <div>
+                <span class="input-group-text"><strong>Bác sĩ</strong></span>
+                <div class="dropdown100">
+                  <button
+                    class="btn btn-secondary dropdown-toggle"
+                    type="button"
+                    id="dropdownMenuButton1"
+                    data-bs-toggle="dropdown"
+                    aria-expanded="false"
+                    @click="filterResultsUser"
+                  >
+                    <input
+                      type="text"
+                      placeholder="Chọn bác sĩ"
+                      class="search-box2"
+                      v-model="searchText2"
+                      @input="filterResultsUser"
+                    />
+                  </button>
+                  <ul
+                    class="dropdown-menu"
+                    aria-labelledby="dropdownMenuButton1"
+                  >
+                    <li
+                      style="height: 200px; overflow-y: auto"
+                      v-if="users.length != 0"
+                    >
+                      <a
+                        class="dropdown-item"
+                        v-for="user in users"
+                        :key="user.userId"
+                        @click.prevent="addUser(user)"
+                      >
+                        {{ user.name }}</a
+                      >
+                    </li>
+                  </ul>
+                </div>
               </div>
 
               <div>
                 <span class="input-group-text"
-                  ><strong>Mã bệnh nhân</strong></span
+                  ><strong>Ngày đặt lịch</strong></span
                 >
                 <input
-                  type="text"
-                  class="form-control"
-                  v-model="patientId"
-                  placeholder="Nhập mã bệnh nhân"
-                />
-              </div>
-
-              <div>
-                <span class="input-group-text"><strong>Mã bác sĩ</strong></span>
-                <input
-                  type="text"
-                  class="form-control"
-                  v-model="doctorId"
-                  placeholder="Nhập mã bệnh nhân"
-                />
-              </div>
-
-              <div>
-                <span class="input-group-text"
-                  ><strong>Ngày tiếp nhận</strong></span
-                >
-                <input
-                  type="text"
+                  type="date"
                   class="form-control"
                   v-model="datetime"
-                  placeholder="Nhập ngày tiếp nhận"
+                  placeholder="Nhập ngày đặt lịch"
                 />
               </div>
               <div>
                 <span class="input-group-text"><strong>Ghi chú</strong></span>
                 <input
                   type="text"
-                  class="form-control"
+                  class="form-control form-Des"
                   v-model="note"
                   placeholder="Nhập ghi chú"
                 />
-              </div>
-              <div>
-                <span class="input-group-text"
-                  ><strong>Trạng thái</strong></span
-                >
-                <input
-                  type="text"
-                  class="form-control"
-                  v-model="status"
-                  placeholder="Nhập trạng thái"
-                />
-              </div>
-              <div>
-                <span class="input-group-text"
-                  ><strong>Delete Flag</strong></span
-                >
-                <input type="text" class="form-control" v-model="deleteFlag" />
               </div>
             </div>
             <div>
@@ -242,6 +311,17 @@
               >
                 Hủy
               </button>
+              <button
+                type="button"
+                @click="CancelClick()"
+                v-if="status == 1"
+                class="btn btn-primary"
+                data-bs-dismiss="modal"
+                aria-label="Close"
+                style="background-color: rgb(77, 75, 75)"
+              >
+                Hủy lịch hẹn
+              </button>
             </div>
           </div>
         </div>
@@ -252,6 +332,7 @@
 
 <script>
 import "/src/css/Admin/main.css";
+import { format, parseISO } from "date-fns";
 import axios from "axios";
 import TheSidebar from "../TheSidebar.vue";
 export default {
@@ -261,9 +342,12 @@ export default {
   },
   data() {
     return {
+      patientId: "",
+      patients: [],
+      suggestions: [],
       isClicked: true,
       role: "",
-      appointments: [], // Data property to store the servicers data
+      appointments: [],
       modalTitle: "",
       appointmentId: 0,
       employeeId: 0,
@@ -279,11 +363,22 @@ export default {
       totalItems: 0,
       totalPages: 0,
       searchText: "",
+      searchText2: "",
+      suggestions: [],
+      users: [],
+      patientPhone: 0,
+      Patient: null,
+      numOfApp: 0,
+      flag: 0,
+      Page1: 1,
+      Page2: 2,
+      Page3: 3,
+      flagNext: 0,
     };
   },
   computed: {
-    totalPage() {
-      return Math.cell(this.users.length / this.pageSize);
+    totalPages() {
+      return Math.ceil(this.numOfApp / 10);
     },
     paginatedUsers() {
       const start = (this.currentPage - 1) * this.pageSize;
@@ -291,7 +386,60 @@ export default {
       return this.appointments.slice(start, end);
     },
   },
+  watch: {
+    patientId(newValue) {
+      if (newValue.length >= 3) {
+        this.fetchSuggestions(newValue);
+      } else {
+        this.suggestions = [];
+      }
+    },
+  },
   methods: {
+    formatDateString(isoString) {
+      return format(parseISO(isoString), "dd-MM-yyyy");
+    },
+    formatDateString2(isoString) {
+      return format(parseISO(isoString), "yyyy-MM-dd");
+    },
+    fetchSuggestions() {
+      let apiURL =
+        "https://localhost:7034/api/User/searchphonge?phone=" +
+        this.patientPhone;
+      axios
+        .get(apiURL)
+        .then((response) => {
+          this.suggestions = response.data;
+        })
+        .catch((error) => {
+          this.suggestions = null;
+          console.error("There has been a problem");
+        });
+    },
+    fillPhoneNumber(event) {
+      const selectedUserId = event.target.value;
+      this.patientPhone = selectedUserId;
+      const selectedPatient = this.suggestions.find(
+        (patient) => patient.phone === selectedUserId
+      );
+      this.Patient = selectedPatient;
+    },
+    filterResultsUser() {
+      if (this.users.length == 0) {
+        this.fetchListUsers();
+      }
+      if (this.searchText2) {
+        this.users = this.users.filter((user) =>
+          user.name.toLowerCase().includes(this.searchText2.toLowerCase())
+        );
+      } else {
+        this.fetchListUsers();
+      }
+    },
+    addUser(user) {
+      this.doctorId = user.userId;
+      this.searchText2 = user.name;
+    },
     openSideBar() {
       if (this.isClicked === true) this.isClicked = false;
       else if (this.isClicked === false) this.isClicked = true;
@@ -299,17 +447,55 @@ export default {
     CheckRole() {
       this.role = localStorage.getItem("userRole");
     },
-    changPageNumber(page) {
-      if (page == 1) {
-        this.currentPage = 1;
-      } else if (page == 2) {
-        this.currentPage = 2;
-      } else if (page == 3) {
-        this.currentPage = 3;
-      } else {
-        this.currentPage++;
-      }
+    changPageNumber(number) {
+      this.currentPage = number;
       this.fetchAppointment();
+    },
+    decreasePage() {
+      if (this.currentPage > 1) {
+        this.currentPage--;
+        if (this.currentPage % 3 === 0) {
+          this.Page1 = this.currentPage - 2;
+          this.Page2 = this.currentPage - 1;
+          this.Page3 = this.currentPage;
+        }
+        this.fetchAppointment();
+      }
+    },
+    increasePage() {
+      const total = this.numOfApp / 10;
+      if (this.currentPage < total) {
+        if (this.currentPage % 3 === 0) {
+          this.Page1 += 3;
+          this.Page2 += 3;
+          this.Page3 += 3;
+        }
+        this.flag = this.currentPage;
+        this.currentPage++;
+        this.fetchAppointment();
+      }
+    },
+    async fetchListUsers() {
+      let apiURL = "https://localhost:7034/api/User/doctor/list";
+      axios
+        .get(apiURL)
+        .then((response) => {
+          this.users = response.data;
+        })
+        .catch((error) => {
+          console.error("There has been a problem");
+        });
+    },
+    async getAllAppointment() {
+      let apiURL = "https://localhost:7034/api/Appointment/listall";
+      axios
+        .get(apiURL)
+        .then((response) => {
+          this.numOfApp = response.data.length;
+        })
+        .catch((error) => {
+          console.error("There has been a problem");
+        });
     },
     async fetchAppointment() {
       let apiURL = "https://localhost:7034/api/Appointment/list";
@@ -328,33 +514,48 @@ export default {
     addClick() {
       this.modalTitle = "Thêm lịch hẹn";
       this.ID = 0;
-      this.employeeId = 0;
       this.patientId = 0;
-      (this.doctorId = 0), (this.datetime = "");
+      this.doctorId = 0;
+      this.datetime = "";
       this.note = "";
-      this.status = "";
       this.deleteFlag = false;
+    },
+    changeValue() {
+      if (this.status === "1") {
+        this.status === 1;
+      } else if (this.status == "2") {
+        this.status === 2;
+      } else if (this.status == "3") {
+        this.status === 3;
+      }
     },
     editClick(u) {
       this.modalTitle = "Sửa thông tin lich hẹn";
       this.ID = u.appointmentId;
-      this.employeeId = u.employeeId;
       this.patientId = u.patientId;
-      (this.doctorId = u.doctorId), (this.datetime = u.datetime);
-      this.note = u.note;
+      this.patientPhone = u.phone;
+      this.searchText2 = u.doctorName;
+      this.doctorId = u.doctorId;
+      this.datetime = this.formatDateString2(u.bookingDate);
       this.status = u.status;
-      this.deleteFlag = u.deleteFlag;
+      this.note = u.note;
     },
     createClick() {
+      const bookingDate = new Date(this.datetime);
+      const currentDate = new Date();
+      bookingDate.setHours(0, 0, 0, 0);
+      currentDate.setHours(0, 0, 0, 0);
+
+      if (bookingDate <= currentDate) {
+        alert("Ngày đặt lịch phải là hôm nay hoặc ngày sau đó!");
+        return;
+      }
       axios
         .post("https://localhost:7034/api/Appointment", {
-          employeeId: this.employeeId,
-          patientId: this.patientId,
+          patientId: this.Patient.userId,
           doctorId: this.doctorId,
-          datetime: this.datetime,
+          bookingDate: this.datetime,
           note: this.note,
-          status: this.status,
-          deleteFlag: false,
         })
         .then((response) => {
           alert(response.data);
@@ -362,18 +563,36 @@ export default {
         });
     },
     updateClick() {
+      const bookingDate = new Date(this.datetime);
+      const currentDate = new Date();
+      bookingDate.setHours(0, 0, 0, 0);
+      currentDate.setHours(0, 0, 0, 0);
+
+      if (bookingDate <= currentDate) {
+        alert("Ngày đặt lịch phải là hôm nay hoặc ngày sau đó!");
+        return;
+      }
+      const idPatient = this.patientId;
+      if (this.Patient !== null) {
+        idPatient = this.Patient.userId;
+      }
       axios
         .put("https://localhost:7034/api/Appointment/" + this.ID, {
-          employeeId: this.employeeId,
-          patientId: this.patientId,
+          patientId: idPatient,
           doctorId: this.doctorId,
-          datetime: this.datetime,
+          bookingDate: this.datetime,
           note: this.note,
-          status: this.status,
-          deleteFlag: this.deleteFlag,
         })
         .then((response) => {
-          alert("Update thành công!");
+          alert(response.data);
+          this.fetchAppointment();
+        });
+    },
+    CancelClick() {
+      axios
+        .put("https://localhost:7034/api/Appointment/cancel/" + this.ID, {})
+        .then((response) => {
+          alert(response.data);
           this.fetchAppointment();
         });
     },
@@ -412,15 +631,28 @@ export default {
       this.$router.push({ name: "Login" });
       localStorage.removeItem("userRole");
     },
+    navigateToCurrentRoute() {
+      this.$router.push("Appointment");
+    },
   },
   mounted: function () {
+    this.navigateToCurrentRoute();
+    this.getAllAppointment();
     this.fetchAppointment();
     this.CheckRole();
+    this.fetchListUsers();
   },
 };
 </script>
 
 <style scoped>
+.pagination {
+  cursor: pointer;
+}
+.page-link.active-page {
+  background-color: rgb(77, 75, 75);
+  color: white;
+}
 .input-group-text {
   background-color: rgb(255, 255, 255);
   margin-right: 20%;
@@ -430,9 +662,10 @@ export default {
   width: 80%;
 }
 .form-Des {
-  width: 80%;
-  height: 50%;
+  width: 320%;
+  height: 80%;
   word-wrap: break-word;
+  margin-bottom: 80%;
 }
 .btn-primary {
   margin-top: 3%;
@@ -463,5 +696,8 @@ export default {
 .btn-primary {
   width: 150px;
   margin-right: 20px;
+}
+.addnew {
+  margin-left: -5%;
 }
 </style>

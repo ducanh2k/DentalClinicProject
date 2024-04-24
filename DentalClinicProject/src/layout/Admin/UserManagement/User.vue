@@ -140,12 +140,42 @@
           </table>
         </div>
         <div class="under-table">
-          <div class="sum__staff">Tổng số User: <strong>10</strong></div>
+          <div class="sum__staff">Tổng số người dùng: <strong>10</strong></div>
           <div class="pagination">
-            <li><a @click="changPageNumber(1)" class="page-1">1</a></li>
-            <li><a @click="changPageNumber(2)" class="page-2">2</a></li>
-            <li><a @click="changPageNumber(3)" class="page-3">3</a></li>
-            <li><a @click="changPageNumber(0)" class="Next-page">Next</a></li>
+            <a @click="decreasePage()" class="page-link" v-if="currentPage > 1"
+              >Previous</a
+            >
+
+            <a
+              @click="changPageNumber(Page1)"
+              v-if="Page1 <= totalPages"
+              class="page-link"
+              :class="{ 'active-page': currentPage === Page1 }"
+              >{{ Page1 }}</a
+            >
+
+            <a
+              @click="changPageNumber(Page2)"
+              v-if="Page2 <= totalPages"
+              class="page-link"
+              :class="{ 'active-page': currentPage === Page2 }"
+              >{{ Page2 }}</a
+            >
+
+            <a
+              @click="changPageNumber(Page3)"
+              v-if="Page3 <= totalPages"
+              class="page-link"
+              :class="{ 'active-page': currentPage === Page3 }"
+              >{{ Page3 }}</a
+            >
+
+            <a
+              @click="increasePage()"
+              class="page-link"
+              v-if="currentPage < totalPages"
+              >Next</a
+            >
           </div>
         </div>
       </div>
@@ -790,12 +820,18 @@ export default {
       action: "",
       empId: 0,
       status: 0,
+      flag: 0,
+      Page1: 1,
+      Page2: 2,
+      Page3: 3,
+      flagNext: 0,
+      totalUsers: 0,
       isClicked: true,
     };
   },
   computed: {
     totalPage() {
-      return Math.cell(this.users.length / this.pageSize);
+      return Math.cell(this.users.length / 10);
     },
     paginatedUsers() {
       const start = (this.currentPage - 1) * this.pageSize;
@@ -983,16 +1019,42 @@ export default {
         });
     },
     changPageNumber(page) {
-      if (page == 1) {
-        this.currentPage = 1;
-      } else if (page == 2) {
-        this.currentPage = 2;
-      } else if (page == 3) {
-        this.currentPage = 3;
-      } else {
-        this.currentPage++;
-      }
+      this.currentPage = number;
       this.fetchUsers();
+    },
+    decreasePage() {
+      if (this.currentPage > 1) {
+        this.currentPage--;
+        if (this.currentPage % 3 === 0) {
+          this.Page1 = this.currentPage - 2;
+          this.Page2 = this.currentPage - 1;
+          this.Page3 = this.currentPage;
+        }
+        this.fetchUsers();
+      }
+    },
+    increasePage() {
+      if (this.currentPage < this.totalPages) {
+        if (this.currentPage % 3 === 0) {
+          this.Page1 += 3;
+          this.Page2 += 3;
+          this.Page3 += 3;
+        }
+        this.flag = this.currentPage;
+        this.currentPage++;
+        this.fetchUsers();
+      }
+    },
+    async getAllUsers() {
+      let apiURL = "https://localhost:7034/api/User/listall";
+      axios
+        .get(apiURL)
+        .then((response) => {
+          this.totalUsers = response.data.length;
+        })
+        .catch((error) => {
+          console.error("There has been a problem");
+        });
     },
     async fetchUsers() {
       let apiURL = "https://localhost:7034/api/User/list";
@@ -1145,6 +1207,13 @@ export default {
 </script>
 
 <style scoped>
+.pagination {
+  cursor: pointer;
+}
+.page-link.active-page {
+  background-color: rgb(77, 75, 75);
+  color: white;
+}
 .input-group-text {
   background-color: rgb(255, 255, 255);
   margin-right: 20%;

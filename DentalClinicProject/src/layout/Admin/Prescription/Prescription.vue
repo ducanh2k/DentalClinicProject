@@ -47,7 +47,7 @@
                 <th scope="col">Ghi chú</th>
                 <th scope="col"></th>
                 <th scope="col"></th>
-                <th scope="col"></th>
+                <!-- <th scope="col"></th> -->
               </tr>
             </thead>
             <tbody>
@@ -102,7 +102,7 @@
                     </svg>
                   </button>
                 </td>
-                <td>
+                <!-- <td>
                   <button
                     type="button"
                     class="btn btn-light mr-1"
@@ -126,7 +126,7 @@
                       />
                     </svg>
                   </button>
-                </td>
+                </td> -->
               </tr>
             </tbody>
           </table>

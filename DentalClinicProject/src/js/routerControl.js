@@ -176,8 +176,7 @@ const routes = [
   },
   {
     path: "/",
-    name: "Home",
-    component: HomePage,
+    redirect: "/home",
   },
   {
     path: "/cKEditor",
@@ -196,4 +195,10 @@ const router = createRouter({
   routes,
 });
 
+router.beforeEach((to, from, next) => {
+  if (to.path !== "/home") {
+    localStorage.setItem("currentPath", to.path);
+  }
+  next();
+});
 export default router;

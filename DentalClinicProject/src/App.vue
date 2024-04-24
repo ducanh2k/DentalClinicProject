@@ -90,6 +90,12 @@ export default {
   created() {
     this.$router.push("");
   },
+  mounted() {
+    const currentPath = localStorage.getItem("currentPath");
+    if (currentPath) {
+      this.$router.push(currentPath);
+    }
+  },
 };
 </script>
 

@@ -26,35 +26,103 @@
             @input="filterResults"
           />
           <button class="search-button" @click="filterResults">Tìm kiếm</button>
-          <div class="addnew"></div>
+          <div class="addnew" style="margin-left: -5%">
+            <button
+              class="button-create"
+              data-bs-toggle="modal"
+              data-bs-target="#exampleModalAddNew"
+              @click="addClick()"
+            >
+              Thêm mới hồ sơ
+            </button>
+          </div>
         </div>
         <div class="range">
           <table class="table table-striped table-hover" style="height: 30%">
             <thead>
               <tr>
-                <th scope="col">#</th>
-                <th scope="col">Tên bệnh nhân</th>
-                <th
-                  scope="col"
-                  v-if="role === 'Admin' || role === 'Doctor'"
-                ></th>
-                <th
-                  scope="col"
-                  v-if="role === 'Admin' || role === 'Doctor'"
-                ></th>
+                <th scope="col">Mã hồ sơ</th>
+                <th scope="col">Bệnh nhân</th>
+                <th scope="col">Mô tả</th>
+                <th scope="col">Số điện thoại</th>
+                <th scope="col">Ngày sinh</th>
+                <th scope="col">Giới tính</th>
+                <th scope="col">Địa chỉ</th>
+                <th scope="col"></th>
+                <th scope="col"></th>
+                <th scope="col"></th>
+                <th scope="col"></th>
                 <th scope="col"></th>
               </tr>
             </thead>
             <tbody>
               <tr v-for="mRecord in mRecords" :key="mRecord.medicalRecordId">
-                <th scope="row">{{ mRecord.medicalRecordId }}</th>
+                <td class="data-from-db">{{ mRecord.medicalRecordId }}</td>
                 <td class="data-from-db">{{ mRecord.patientName }}</td>
-                <td v-if="role === 'Admin' || role === 'Doctor'">
+                <td class="data-from-db">{{ mRecord.description }}</td>
+                <td class="data-from-db">{{ mRecord.phone }}</td>
+                <td class="data-from-db">
+                  {{ formatDateString(mRecord.dob) }}
+                </td>
+                <td class="data-from-db" v-if="mRecord.gender == true">Male</td>
+                <td class="data-from-db" v-if="mRecord.gender == false">
+                  Female
+                </td>
+                <td class="data-from-db">{{ mRecord.address }}</td>
+                <!-- Medicine -->
+                <td v-if="role === 'Admin'">
                   <button
                     type="button"
                     class="btn btn-light mr-1"
                     data-bs-toggle="modal"
-                    data-bs-target="#exampleModal"
+                    data-bs-target="#exampleModalMedicine"
+                    @click="CheckPre(mRecord)"
+                  >
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      width="16"
+                      height="16"
+                      fill="currentColor"
+                      class="bi bi-capsule"
+                      viewBox="0 0 16 16"
+                    >
+                      <path
+                        d="M1.828 8.9 8.9 1.827a4 4 0 1 1 5.657 5.657l-7.07 7.071A4 4 0 1 1 1.827 8.9Zm9.128.771 2.893-2.893a3 3 0 1 0-4.243-4.242L6.713 5.429z"
+                      />
+                    </svg>
+                  </button>
+                </td>
+                <!-- Invoice -->
+                <td v-if="role === 'Admin'">
+                  <button
+                    type="button"
+                    class="btn btn-light mr-1"
+                    data-bs-toggle="modal"
+                    data-bs-target="#exampleModalInvoice"
+                    @click="editInvoiceClick(mRecord)"
+                  >
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      width="16"
+                      height="16"
+                      fill="currentColor"
+                      class="bi bi-cash"
+                      viewBox="0 0 16 16"
+                    >
+                      <path d="M8 10a2 2 0 1 0 0-4 2 2 0 0 0 0 4" />
+                      <path
+                        d="M0 4a1 1 0 0 1 1-1h14a1 1 0 0 1 1 1v8a1 1 0 0 1-1 1H1a1 1 0 0 1-1-1zm3 0a2 2 0 0 1-2 2v4a2 2 0 0 1 2 2h10a2 2 0 0 1 2-2V6a2 2 0 0 1-2-2z"
+                      />
+                    </svg>
+                  </button>
+                </td>
+                <!-- Edit  -->
+                <td v-if="role === 'Admin'">
+                  <button
+                    type="button"
+                    class="btn btn-light mr-1"
+                    data-bs-toggle="modal"
+                    data-bs-target="#exampleModalAddNew"
                     @click="editClick(mRecord)"
                   >
                     <svg
@@ -75,6 +143,7 @@
                     </svg>
                   </button>
                 </td>
+                <!-- Delete  -->
                 <td v-if="role === 'Admin'">
                   <button
                     type="button"
@@ -95,6 +164,7 @@
                     </svg>
                   </button>
                 </td>
+                <!-- Details  -->
                 <td>
                   <button
                     type="button"
@@ -135,9 +205,10 @@
         </div>
       </div>
     </div>
+    <!-- Addnew  -->
     <div
       class="modal fade"
-      id="exampleModal"
+      id="exampleModalAddNew"
       tabindex="-1"
       aria-labelledby="exampleModalLabel"
       aria-hidden="true"
@@ -147,7 +218,7 @@
           <div class="modal-header">
             <div class="modal-header1">
               <h5 class="modal-title" id="exampleModalLabel">
-                <strong>{{ modalTitle }}</strong>
+                <strong> {{ modalTitle }} </strong>
               </h5>
             </div>
           </div>
@@ -155,20 +226,59 @@
             <div class="input-group md-3">
               <div>
                 <span class="input-group-text"
-                  ><strong>Mã bệnh nhân</strong></span
+                  ><strong
+                    >Số điện thoại
+                    <b class="star" style="color: red">*</b></strong
+                  ></span
                 >
                 <input
                   type="text"
                   class="form-control"
-                  v-model="patientId"
-                  placeholder="Nhập mã bệnh nhân"
+                  v-model="phonePatient"
+                  placeholder="Nhập số điện thoại"
+                  @input="fetchSuggestions"
                 />
-              </div>
-              <div v-if="ID != 0">
-                <span class="input-group-text"
-                  ><strong>Delete Flag</strong></span
+                <select
+                  v-if="suggestions !== null"
+                  class="form-control"
+                  @click="fillPhoneNumber($event)"
                 >
-                <input type="text" class="form-control" v-model="deleteFlag" />
+                  <option
+                    v-for="patient in suggestions"
+                    :value="patient.phone"
+                    :key="patient.userId"
+                  >
+                    {{ patient.name }}
+                  </option>
+                </select>
+              </div>
+              <div>
+                <span class="input-group-text"
+                  ><strong
+                    >Tên dịch vụ
+                    <b class="star" style="color: red">*</b></strong
+                  ></span
+                >
+                <input
+                  type="text"
+                  class="form-control"
+                  v-model="service_name"
+                  placeholder="Nhập tên dịch vụ"
+                  @input="fetchSuggestionsService"
+                />
+                <select
+                  v-if="suggestionsService !== null"
+                  class="form-control"
+                  @click="fillServiceName($event)"
+                >
+                  <option
+                    v-for="ser in suggestionsService"
+                    :value="ser.serviceName"
+                    :key="ser.serviceId"
+                  >
+                    {{ ser.serviceName }}
+                  </option>
+                </select>
               </div>
             </div>
             <div>
@@ -203,6 +313,336 @@
         </div>
       </div>
     </div>
+    <!-- Medicine  -->
+    <div
+      class="modal fade"
+      id="exampleModalMedicine"
+      tabindex="-1"
+      aria-labelledby="exampleModalLabel"
+      style="width: 100%; overflow-y: auto"
+      aria-hidden="true"
+    >
+      <div
+        class="modal-dialog modal-lg modal-dialog-centered"
+        style="margin-left: 30%"
+      >
+        <div class="modal-content" style="width: 70%">
+          <div class="modal-header">
+            <div class="modal-header1">
+              <h5 class="modal-title" id="exampleModalLabel">
+                <strong>Đơn thuốc</strong>
+              </h5>
+            </div>
+          </div>
+          <div class="modal-body" style="width: 70%">
+            <div class="">
+              <div>
+                <span class="input-group-text"
+                  ><strong>Mã đơn thuốc: &nbsp;&nbsp;1 </strong>
+                </span>
+              </div>
+              <div>
+                <span class="input-group-text"
+                  ><strong
+                    >Tên thuốc <b class="star" style="color: red">*</b></strong
+                  ></span
+                >
+                <input
+                  type="text"
+                  class="form-control"
+                  v-model="medicineName"
+                  @input="fetchSuggestionsMedicine"
+                />
+                <select
+                  v-if="suggestionsMedicine !== null"
+                  class="form-control"
+                  @click="fillMedicineName($event)"
+                >
+                  <option
+                    v-for="m in suggestionsMedicine"
+                    :value="m.name"
+                    :key="m.id"
+                  >
+                    {{ m.name }}
+                  </option>
+                </select>
+                <button
+                  type="button"
+                  @click="AddMedicine()"
+                  class="btn btn-primary"
+                >
+                  Thêm vào danh sách
+                </button>
+              </div>
+              <span class="input-group-text"><strong>Đơn thuốc</strong></span>
+              <ul
+                class="list-group"
+                style="
+                  overflow-y: auto;
+                  height: 200px;
+                  width: 140%;
+                  border: 1px solid gray;
+                "
+              >
+                <li
+                  class="list-group-item"
+                  v-for="m in listSelectedMedicine"
+                  :key="m.id"
+                >
+                  {{ m.name }}
+                  <button
+                    type="button"
+                    @click="removeMedicine(m.id)"
+                    class="btn btn-light mr-1"
+                  >
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      width="16"
+                      height="16"
+                      fill="currentColor"
+                      class="bi bi-trash-fill"
+                      viewBox="0 0 16 16"
+                    >
+                      <path
+                        d="M2.5 1a1 1 0 0 0-1 1v1a1 1 0 0 0 1 1H3v9a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2V4h.5a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1H10a1 1 0 0 0-1-1H7a1 1 0 0 0-1 1zm3 4a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-1 0v-7a.5.5 0 0 1 .5-.5M8 5a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-1 0v-7A.5.5 0 0 1 8 5m3 .5v7a.5.5 0 0 1-1 0v-7a.5.5 0 0 1 1 0"
+                      />
+                    </svg>
+                  </button>
+                </li>
+              </ul>
+              <div>
+                <span class="input-group-text"><strong>Ghi chú</strong></span>
+                <textarea
+                  type="text"
+                  class="form-control"
+                  v-model="notePrescription"
+                  placeholder="Nhập ghi chú"
+                  style="height: 150px; width: 140%"
+                ></textarea>
+              </div>
+            </div>
+            <div>
+              <button
+                type="button"
+                @click="updatePreClick()"
+                class="btn btn-primary"
+              >
+                Lưu
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- Invoice -->
+    <div
+      class="modal fade"
+      id="exampleModalInvoice"
+      tabindex="-1"
+      aria-labelledby="exampleModalLabel"
+      style="width: 100%; overflow-y: auto"
+      aria-hidden="true"
+    >
+      <div
+        class="modal-dialog modal-lg modal-dialog-centered"
+        style="margin-left: 30%"
+      >
+        <div class="modal-content" style="width: 70%">
+          <div class="modal-header">
+            <div class="modal-header1">
+              <h5 class="modal-title" id="exampleModalLabel">
+                <strong>Hóa đơn</strong>
+              </h5>
+            </div>
+          </div>
+          <div class="modal-body" style="width: 70%">
+            <div class="">
+              <div>
+                <span class="input-group-text"
+                  ><strong>Mã hóa đơn: &nbsp;&nbsp;{{ invoiceId }} </strong>
+                </span>
+              </div>
+              <div>
+                <span class="input-group-text"
+                  ><strong>Tên bệnh nhân </strong></span
+                >
+                <input
+                  type="text"
+                  class="form-control"
+                  v-model="customer"
+                  readonly
+                />
+              </div>
+              <div>
+                <span class="input-group-text"
+                  ><strong>Tên dịch vụ </strong></span
+                >
+                <input
+                  type="text"
+                  class="form-control"
+                  v-model="service_name"
+                  readonly
+                />
+              </div>
+              <div style="width: 150%">
+                <span class="input-group-text"
+                  ><strong>Trạng thái</strong></span
+                >
+                <div class="btnRole-container">
+                  <input
+                    type="radio"
+                    class="btn-role"
+                    v-model="status"
+                    value="1"
+                  />&nbsp; Bản nháp
+                  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                  <input
+                    type="radio"
+                    class="btn-role"
+                    v-model="status"
+                    value="2"
+                  />&nbsp; Đã thanh toán
+                  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                  <input
+                    type="radio"
+                    class="btn-role"
+                    v-model="status"
+                    value="3"
+                  />&nbsp; Đã hủy
+                </div>
+              </div>
+              <div style="display: flex">
+                <div>
+                  <span class="input-group-text"
+                    ><strong>Phương thức thanh toán</strong></span
+                  >
+                  <input
+                    type="radio"
+                    class="btn-role"
+                    v-model="paymentId"
+                    value="1"
+                  />&nbsp; Tiền mặt
+                  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                  <input
+                    type="radio"
+                    class="btn-role"
+                    v-model="paymentId"
+                    value="2"
+                  />&nbsp; Chuyển khoản
+                </div>
+              </div>
+              <div>
+                <span class="input-group-text"><strong>Ghi chú</strong></span>
+                <textarea
+                  type="text"
+                  class="form-control"
+                  v-model="comment"
+                  placeholder="Nhập ghi chú"
+                  style="height: 150px; width: 140%"
+                ></textarea>
+              </div>
+            </div>
+            <div>
+              <button
+                type="button"
+                @click="updateInvoiceClick()"
+                class="btn btn-primary"
+              >
+                Lưu
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- Add new Process  -->
+    <div
+      class="modal fade"
+      id="exampleModal"
+      tabindex="-1"
+      aria-labelledby="exampleModalLabel"
+      style="width: 100%; overflow-y: auto"
+      aria-hidden="true"
+    >
+      <div
+        class="modal-dialog modal-lg modal-dialog-centered"
+        style="margin-left: 30%"
+      >
+        <div class="modal-content" style="width: 70%">
+          <div class="modal-header">
+            <div class="modal-header1">
+              <h5 class="modal-title" id="exampleModalLabel">
+                <strong>{{ modalTitle }}</strong>
+              </h5>
+            </div>
+          </div>
+          <div class="modal-body" style="width: 70%">
+            <div class="">
+              <div>
+                <span class="input-group-text"
+                  ><strong>Ngày đặt lịch</strong></span
+                >
+                <input
+                  type="date"
+                  class="form-control"
+                  v-model="examinationDay"
+                  placeholder="Nhập ngày đặt lịch"
+                />
+              </div>
+              <div>
+                <span class="input-group-text"><strong>Nội dung</strong></span>
+                <textarea
+                  type="text"
+                  class="form-control"
+                  v-model="examinationContent"
+                  placeholder="Nhập nội dung"
+                  style="height: 150px; width: 140%"
+                ></textarea>
+              </div>
+              <div>
+                <span class="input-group-text"><strong>Ghi chú</strong></span>
+                <textarea
+                  type="text"
+                  class="form-control"
+                  v-model="noteProcess"
+                  placeholder="Nhập ghi chú"
+                  style="height: 150px; width: 140%"
+                ></textarea>
+              </div>
+            </div>
+            <div>
+              <button
+                type="button"
+                @click="createProcessClick()"
+                v-if="ID === 0"
+                class="btn btn-primary"
+              >
+                Lưu
+              </button>
+
+              <button
+                type="button"
+                @click="updateProcessClick()"
+                v-if="ID != 0"
+                class="btn btn-primary"
+              >
+                Lưu
+              </button>
+              <button
+                type="button"
+                class="btn btn-primary"
+                data-bs-dismiss="modal"
+                aria-label="Close"
+                style="background-color: rgb(77, 75, 75)"
+              >
+                Hủy
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- Process  -->
     <div
       class="modal fade"
       id="exampleModal1"
@@ -215,8 +655,18 @@
           <div class="modal-header">
             <div class="modal-header1">
               <h5 class="modal-title" id="exampleModalLabel">
-                <strong>Thông tin chi tiết</strong>
+                <strong>Quy trình</strong>
               </h5>
+            </div>
+            <div class="addnew newProcess" v-if="role === 'Admin'">
+              <button
+                class="button-create"
+                data-bs-toggle="modal"
+                data-bs-target="#exampleModal"
+                @click="addProcessClick()"
+              >
+                Thêm mới quy trình
+              </button>
             </div>
           </div>
           <div class="modal-body">
@@ -229,26 +679,68 @@
                   <thead>
                     <tr>
                       <th scope="col">#</th>
-                      <th scope="col">Mã hồ sơ</th>
-                      <th scope="col">Mã lịch hẹn</th>
-                      <th scope="col">Dịch vụ</th>
-                      <th scope="col">Đơn thuốc</th>
-                      <th scope="col">Chẩn đoán</th>
+                      <th scope="col">Ngày khám</th>
+                      <th scope="col">Nội dung</th>
+                      <th scope="col">Ghi chú</th>
+                      <th scope="col"></th>
+                      <th scope="col"></th>
                     </tr>
                   </thead>
                   <tbody>
-                    <tr v-for="(a, index) in mrDetails" :key="a.mrDetailId">
-                      <th scope="row">{{ index + 1 }}</th>
-                      <td class="data-from-db">{{ a.medicalRecordId }}</td>
-                      <td
-                        class="data-from-db"
-                        @click="showAppointmentDetails(a.appointmentIds)"
-                      >
-                        {{ a.appointmentIds }}
+                    <tr v-for="a in process" :key="a.processId">
+                      <td class="data-from-db">{{ a.processId }}</td>
+
+                      <td class="data-from-db">
+                        {{ formatDateString(a.examinationDay) }}
                       </td>
-                      <td class="data-from-db">{{ a.serviceName }}</td>
-                      <td class="data-from-db">{{ a.prescriptionNote }}</td>
-                      <td class="data-from-db">{{ a.diagnosis }}</td>
+                      <td class="data-from-db">{{ a.examinationContent }}</td>
+                      <td class="data-from-db">{{ a.note }}</td>
+                      <td v-if="role === 'Admin'">
+                        <button
+                          type="button"
+                          class="btn btn-light mr-1"
+                          data-bs-toggle="modal"
+                          data-bs-target="#exampleModal"
+                          @click="editProcessClick(a)"
+                        >
+                          <svg
+                            xmlns="http://www.w3.org/2000/svg"
+                            width="16"
+                            height="16"
+                            fill="currentColor"
+                            class="bi bi-pencil-square"
+                            viewBox="0 0 16 16"
+                          >
+                            <path
+                              d="M15.502 1.94a.5.5 0 0 1 0 .706L14.459 3.69l-2-2L13.502.646a.5.5 0 0 1 .707 0l1.293 1.293zm-1.75 2.456-2-2L4.939 9.21a.5.5 0 0 0-.121.196l-.805 2.414a.25.25 0 0 0 .316.316l2.414-.805a.5.5 0 0 0 .196-.12l6.813-6.814z"
+                            />
+                            <path
+                              fill-rule="evenodd"
+                              d="M1 13.5A1.5 1.5 0 0 0 2.5 15h11a1.5 1.5 0 0 0 1.5-1.5v-6a.5.5 0 0 0-1 0v6a.5.5 0 0 1-.5.5h-11a.5.5 0 0 1-.5-.5v-11a.5.5 0 0 1 .5-.5H9a.5.5 0 0 0 0-1H2.5A1.5 1.5 0 0 0 1 2.5z"
+                            />
+                          </svg>
+                        </button>
+                      </td>
+                      <td v-if="role === 'Admin'">
+                        <button
+                          type="button"
+                          @click="deleteProcessClick(a.processId)"
+                          class="btn btn-light mr-1"
+                        >
+                          <svg
+                            xmlns="http://www.w3.org/2000/svg"
+                            width="16"
+                            height="16"
+                            fill="currentColor"
+                            class="bi bi-trash-fill"
+                            viewBox="0 0 16 16"
+                          >
+                            <path
+                              d="M2.5 1a1 1 0 0 0-1 1v1a1 1 0 0 0 1 1H3v9a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2V4h.5a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1H10a1 1 0 0 0-1-1H7a1 1 0 0 0-1 1zm3 4a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-1 0v-7a.5.5 0 0 1 .5-.5M8 5a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-1 0v-7A.5.5 0 0 1 8 5m3 .5v7a.5.5 0 0 1-1 0v-7a.5.5 0 0 1 1 0"
+                            />
+                          </svg>
+                        </button>
+                      </td>
                     </tr>
                   </tbody>
                 </table>
@@ -258,66 +750,12 @@
         </div>
       </div>
     </div>
-    <!-- Modal -->
-    <div
-      class="modal fade"
-      id="appointmentModal"
-      tabindex="-1"
-      aria-labelledby="modalLabel"
-      aria-hidden="true"
-    >
-  
-      <div class="modal-dialog">
-        <div class="modal-content">
-          <div class="modal-header">
-            <h5 class="modal-title" id="modalLabel">
-              Thông Tin Chi Tiết Lịch Hẹn
-            </h5>
-            <button
-              type="button"
-              class="btn-close"
-              data-bs-dismiss="modal"
-              aria-label="Close"
-            ></button>
-          </div>
-          <div class="modal-body">
-            <table class="table table-striped table-hover" style="height: 30%">
-              <thead>
-                <tr>
-                  <th scope="col">#</th>
-                  <th scope="col">Ngày nhận</th>
-                  <th scope="col">Bác sĩ</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr
-                  v-for="a in appointmentDetailsList"
-                  :key="a.medicalRecordId"
-                >
-                  <th scope="row">{{ a.medicalRecordId }}</th>
-                  <td class="data-from-db">{{ a.datetime }}</td>
-                  <td class="data-from-db">{{ a.doctorName }}</td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
-          <div class="modal-footer">
-            <button
-              type="button"
-              class="btn btn-secondary"
-              data-bs-dismiss="modal"
-            >
-              Đóng
-            </button>
-          </div>
-        </div>
-      </div>
-    </div>
   </div>
 </template>
 
 <script>
 import "/src/css/Admin/main.css";
+import { format, parseISO } from "date-fns";
 import axios from "axios";
 import TheSidebar from "../TheSidebar.vue";
 export default {
@@ -330,8 +768,6 @@ export default {
       mrDetails: [],
       modalTitle: "",
       medicalRecordId: 0,
-      patientId: 0,
-      doctorId: 0,
       ID: 0,
       currentPage: 1,
       pageSize: 10,
@@ -345,6 +781,7 @@ export default {
       patientName: "",
       doctorId: 0,
       doctorName: "",
+      serviceId: 0,
       serviceName: "",
       servicePay: "",
       prescriptionId: 0,
@@ -355,6 +792,39 @@ export default {
       appointmentDetailsList: [],
       appointmentIds: [],
       isClicked: true,
+      patientPhone: 0,
+      suggestions: [],
+      serviceName: "",
+      AllService: [],
+      service_name: "",
+      listServices: [],
+      suggestionsService: [],
+      invoices: [],
+      invoiceId: 0,
+      invoiceDate: "",
+      paymentId: 0,
+      payment: "",
+      status: 0,
+      comment: "",
+      customer: "",
+      phonePatient: 0,
+      Patient: [],
+      process: [],
+      mrId: 0,
+      noteProcess: "",
+      examinationDay: "",
+      examinationContent: "",
+      meId: 0,
+      medicineName: "",
+      suggestionsMedicine: [],
+      listMedicine: [],
+      listSelectedMedicine: [],
+      confirmation: 0,
+      notePrescription: "",
+      listPreId: [],
+      preId: 0,
+      listPres: [],
+      ListPres2: [],
     };
   },
   computed: {
@@ -368,6 +838,178 @@ export default {
     },
   },
   methods: {
+    formatDateString(isoString) {
+      if (isoString != null) {
+        return format(parseISO(isoString), "dd-MM-yyyy");
+      }
+      return null;
+    },
+    formatDateString2(isoString) {
+      return format(parseISO(isoString), "yyyy-MM-dd");
+    },
+    fetchSuggestions() {
+      let apiURL =
+        "https://localhost:7034/api/User/searchphonge?phone=" +
+        this.phonePatient;
+      axios
+        .get(apiURL)
+        .then((response) => {
+          this.suggestions = response.data;
+        })
+        .catch((error) => {
+          this.suggestions = null;
+          console.error("There has been a problem");
+        });
+    },
+    fetchProcess() {
+      let apiURL = "https://localhost:7034/api/Process/list?mrId=" + this.mrId;
+      axios
+        .get(apiURL)
+        .then((response) => {
+          this.process = response.data;
+        })
+        .catch((error) => {
+          console.error("There has been a problem");
+        });
+    },
+    fetchSuggestionsService() {
+      let apiURL = "https://localhost:7034/api/Service/listall";
+      axios
+        .get(apiURL)
+        .then((response) => {
+          this.suggestionsService = response.data.filter((ser) =>
+            ser.serviceName
+              .toLowerCase()
+              .includes(this.service_name.toLowerCase())
+          );
+        })
+        .catch((error) => {
+          this.suggestionsService = null;
+          console.error("There has been a problem");
+        });
+    },
+    // medicine
+    fetchSuggestionsMedicine() {
+      let apiURL = "https://localhost:7034/api/Medicine/listall";
+      axios
+        .get(apiURL)
+        .then((response) => {
+          this.suggestionsMedicine = response.data.filter((m) =>
+            m.name.toLowerCase().includes(this.medicineName.toLowerCase())
+          );
+        })
+        .catch((error) => {
+          this.suggestionsMedicine = null;
+          console.error("There has been a problem");
+        });
+    },
+    fetchAllMedicine: async function () {
+      try {
+        const response = await axios.get(
+          "https://localhost:7034/api/Medicine/listall",
+          {}
+        );
+        const allMedicines = response.data;
+        if (this.listPres.details) {
+          const detailsIds = this.listPres.details.map((detail) => detail.id);
+
+          this.ListPres2 = allMedicines.filter((medicine) =>
+            detailsIds.includes(medicine.id)
+          );
+        }
+      } catch (error) {
+        console.error("Lỗi lấy dữ liệu:", error);
+      }
+    },
+    // fetchAllMedicine() {
+    //   let apiURL = "https://localhost:7034/api/Medicine/listall";
+    //   axios
+    //     .get(apiURL)
+    //     .then((response) => {
+    //       const allMedicines = response.data;
+    //       if (this.listPres) {
+    //         const detailsIds = this.listPres.details.map((detail) => detail.id);
+
+    //         this.ListPres2 = allMedicines.filter((medicine) =>
+    //           detailsIds.includes(medicine.id)
+    //         );
+    //       }
+    //       if (Array.isArray(this.listPres.details)) {
+    //         alert("là array");
+    //       } else {
+    //         alert("không là array");
+    //       }
+    //     })
+    //     .catch((error) => {
+    //       this.ListPres2 = [];
+    //       console.error("There has been a problem:", error);
+    //     });
+    // },
+
+    CheckPre(mRecord) {
+      this.mrId = mRecord.medicalRecordId;
+      if (!mRecord.prescriptionId) {
+        if (
+          confirm(
+            "Bệnh nhân này chưa có đơn thuốc, bạn muốn tạo mới đơn thuốc không?"
+          )
+        ) {
+          this.createPreClick();
+          this.fetchMRecords();
+          this.preId = mRecord.prescriptionId;
+        }
+      } else {
+        this.preId = mRecord.prescriptionId;
+        this.fetchPreById();
+        this.fetchAllMedicine();
+        if (this.listPres.details) {
+          this.listSelectedMedicine = this.listPres.details;
+        }
+        $("#exampleModalMedicine").modal("show");
+      }
+    },
+    fillMedicineName(event) {
+      const selectedMedicine = event.target.value;
+      this.medicineName = selectedMedicine;
+      const selectedMedicineName = this.suggestionsMedicine.find(
+        (m) => m.name === selectedMedicine
+      );
+      this.listMedicine = selectedMedicineName;
+      if (this.listMedicine != null) {
+        this.meId = this.listMedicine.id;
+        this.medicineName = this.listMedicine.name;
+      }
+    },
+    AddMedicine() {
+      this.listSelectedMedicine.push(this.listMedicine);
+    },
+    removeMedicine(itemId) {
+      this.listSelectedMedicine = this.listSelectedMedicine.filter(
+        (item) => item.id !== itemId
+      );
+    },
+    fillPhoneNumber(event) {
+      const selectedUserId = event.target.value;
+      this.phonePatient = selectedUserId;
+      const selectedPatient = this.suggestions.find(
+        (patient) => patient.phone === selectedUserId
+      );
+      this.Patient = selectedPatient;
+      this.patientId = this.Patient.userId;
+      this.patientName = this.Patient.name;
+    },
+    fillServiceName(event) {
+      const selectedService = event.target.value;
+      this.service_name = selectedService;
+      const selectedServiceName = this.suggestionsService.find(
+        (ser) => ser.serviceName === selectedService
+      );
+      this.listServices = selectedServiceName;
+      if (this.listServices != null) {
+        this.serviceId = this.listServices.serviceId;
+        this.service_name = this.listServices.serviceName;
+      }
+    },
     openSideBar() {
       if (this.isClicked === true) this.isClicked = false;
       else if (this.isClicked === false) this.isClicked = true;
@@ -399,27 +1041,21 @@ export default {
         });
     },
     ViewDetail(mRecord) {
+      this.mrId = mRecord.medicalRecordId;
       let apiURL =
-        "https://localhost:7034/api/MedicalRecord/" + mRecord.medicalRecordId;
+        "https://localhost:7034/api/Process/list?mrId=" +
+        mRecord.medicalRecordId;
       axios
         .get(apiURL)
         .then((response) => {
-          this.mrDetails = response.data[0].medicalRecordDetails.map(
-            (detail) => {
-              let appointmentIds = detail.appointments.map(
-                (appointment) => appointment.appointmentId
-              );
-              return {
-                ...detail,
-                appointmentIds,
-              };
-            }
-          );
+          this.process = response.data;
         })
         .catch((error) => {
+          this.process = null;
           console.error("There has been a problem");
         });
     },
+
     fetchAppointmentDetailsForEach(appointmentIds) {
       const newArray = appointmentIds.map((a) => {
         return a; // Ví dụ: Nhân đôi giá trị của phần tử
@@ -462,40 +1098,195 @@ export default {
           console.error("There has been a problem");
         });
     },
+
     addClick() {
       this.modalTitle = "Thêm mới hồ sơ bệnh án";
       this.ID = 0;
       this.patientId = "";
       this.deleteFlag = false;
     },
+    fetchPreById: async function () {
+      try {
+        const response = await axios.get(
+          "https://localhost:7034/api/Prescription/" + this.preId,
+          {}
+        );
+        this.listPres = response.data;
+      } catch (error) {
+        console.error("Lỗi lấy dữ liệu:", error);
+      }
+    },
+
     editClick(u) {
       this.modalTitle = "Sửa thông tin hồ sơ";
       this.ID = u.medicalRecordId;
       this.patientId = u.patientId;
+      this.serviceId = u.serviceId;
+      this.phonePatient = u.phone;
+      this.service_name = u.serviceName;
+    },
+    editInvoiceClick: async function (u) {
+      this.ID = u.medicalRecordId;
+      this.invoiceId = u.invoiceId;
+      this.serviceId = u.serviceId;
+      this.patientId = u.patientId;
+      this.customer = u.patientName;
       this.deleteFlag = u.deleteFlag;
+      await this.fetchInvoice();
+      if (this.invoices.length > 0) {
+        this.status = this.invoices[0].status;
+        this.payment = this.invoices[0].paymentType;
+        this.paymentId = this.invoices[0].paymentId;
+        this.invoiceDate = this.invoices[0].date;
+        this.comment = this.invoices[0].comment;
+      } else {
+        console.log("No invoice found with the specified ID.");
+      }
+    },
+
+    fetchInvoice: async function () {
+      try {
+        const response = await axios.get(
+          "https://localhost:7034/api/Invoice/list",
+          {}
+        );
+        this.invoices = response.data.filter(
+          (invoice) => invoice.invoiceId === this.invoiceId
+        );
+        // console.log(this.invoices);
+      } catch (error) {
+        console.error("Error fetching invoices:", error);
+      }
+    },
+
+    // Invoice
+    updateInvoiceClick() {
+      axios
+        .put("https://localhost:7034/api/Invoice/" + this.invoiceId, {
+          status: this.status,
+          comment: this.comment,
+          paymentId: this.paymentId,
+          date: this.invoiceDate,
+          serviceId: this.serviceId,
+        })
+        .then((response) => {
+          alert("Cập nhât thành công!");
+        });
+    },
+    addProcessClick() {
+      this.modalTitle = "Thêm mới quy trình";
+      this.ID = 0;
+      this.examinationDay = "";
+      this.examinationContent = "";
+      this.noteProcess = "";
+    },
+    editProcessClick(u) {
+      this.modalTitle = "Sửa thông tin quy trình";
+      this.ID = u.processId;
+      this.examinationDay = this.formatDateString2(u.examinationDay);
+      this.examinationContent = u.examinationContent;
+      this.noteProcess = u.note;
     },
     createClick() {
       axios
         .post("https://localhost:7034/api/MedicalRecord", {
           patientId: this.patientId,
-          deleteFlag: false,
+          serviceId: this.serviceId,
         })
         .then((response) => {
           alert(response.data);
           this.fetchMRecords();
         });
     },
+    createPreClick() {
+      axios
+        .post("https://localhost:7034/api/Prescription?RecordId=" + this.mrId, {
+          note: "",
+          details: [],
+        })
+        .then((response) => {
+          alert("Tạo đơn thuốc thành công");
+          this.fetchMRecords();
+        });
+    },
+    updatePreClick() {
+      const details = this.listSelectedMedicine.map((item) => {
+        return { id: item.id };
+      });
+      console.log(this.preId);
+      axios
+        .put("https://localhost:7034/api/Prescription/" + this.preId, {
+          note: this.notePrescription,
+          details: details,
+        })
+        .then((response) => {
+          alert(response.data);
+          this.fetchMRecords();
+        });
+    },
+    createMedicine() {
+      axios
+        .post("https://localhost:7034/api/Prescription", {
+          note: "",
+        })
+        .then((response) => {
+          alert("Tạo đơn thuốc thành công");
+        });
+    },
+    createProcessClick() {
+      axios
+        .post("https://localhost:7034/api/Process", {
+          examinationDay: this.examinationDay,
+          examinationContent: this.examinationContent,
+          note: this.noteProcess,
+          medicalRecordId: this.mrId,
+        })
+        .then((response) => {
+          alert(response.data);
+          this.fetchProcess();
+        });
+    },
+    updateProcessClick() {
+      axios
+        .put("https://localhost:7034/api/Process/" + this.ID, {
+          examinationDay: this.examinationDay,
+          examinationContent: this.examinationContent,
+          note: this.noteProcess,
+          medicalRecordId: this.mrId,
+        })
+        .then((response) => {
+          alert("Cập nhật thành công!");
+          this.fetchProcess();
+        });
+    },
+    deleteProcessClick(id) {
+      if (!confirm("Bạn có chắc chắn muốn xóa không ?")) {
+        return;
+      }
+      axios
+        .delete("https://localhost:7034/api/Process/" + id)
+        .then((response) => {
+          this.fetchProcess();
+          alert("Xóa thành công!");
+        })
+        .catch((error) => {
+          // Handle errors
+          console.error("Error:", error);
+          this.message = "Lỗi xóa người dùng.";
+        });
+    },
     updateClick() {
       axios
         .put("https://localhost:7034/api/MedicalRecord/" + this.ID, {
           patientId: this.patientId,
-          deleteFlag: this.deleteFlag,
+          serviceId: this.serviceId,
         })
         .then((response) => {
-          alert("Update thành công!");
+          alert("Cập nhật thành công!");
           this.fetchMRecords();
         });
     },
+    //
     deleteClick(id) {
       if (!confirm("Bạn có chắc không ?")) {
         return;
@@ -557,7 +1348,7 @@ export default {
 }
 .table th,
 .table td {
-  min-width: 120px; /* Hoặc một giá trị phù hợp với nội dung của bạn */
+  min-width: 120px;
   word-wrap: break-word;
 }
 .detailUser {
@@ -598,5 +1389,7 @@ export default {
   color: black;
   font-size: large;
 }
-
+.newProcess {
+  margin-left: 60%;
+}
 </style>

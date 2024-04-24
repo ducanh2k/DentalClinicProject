@@ -170,39 +170,61 @@
               </div>
               <div>
                 <span class="input-group-text"
-                  ><strong>Khuyến mãi</strong></span
-                >
-                <input
-                  type="text"
-                  class="form-control"
-                  v-model="discount"
-                  placeholder="Nhập khuyến mãi"
-                />
-              </div>
-              <div>
-                <span class="input-group-text"
                   ><strong>Trạng thái</strong></span
                 >
-                <input
-                  type="text"
-                  class="form-control"
-                  v-model="status"
-                  placeholder="Nhập trạng thái"
-                />
+                <div class="btnRole-container">
+                  <input
+                    type="radio"
+                    class="btn-role"
+                    v-model="status"
+                    value="1"
+                  />&nbsp; Bản nháp
+                  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                  <input
+                    type="radio"
+                    class="btn-role"
+                    v-model="status"
+                    value="2"
+                  />&nbsp; Đã thanh toán
+                  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                  <input
+                    type="radio"
+                    class="btn-role"
+                    v-model="status"
+                    value="3"
+                  />&nbsp; Đã hủy
+                </div>
               </div>
-              <div>
+              <div style="margin-left: 20%;">
                 <span class="input-group-text"
-                  ><strong>Mã phương thức thanh toán</strong></span
+                  ><strong>Phương thức thanh toán</strong></span
                 >
-                <input
+                <!-- <input
                   type="text"
                   class="form-control"
                   v-model="paymentId"
                   placeholder="Nhập mã"
-                />
+                /> -->
+                <div class="btnRole-container">
+                  <input
+                    type="radio"
+                    class="btn-role"
+                    v-model="payment"
+                    value="true"
+                  />&nbsp; Tiền mặt
+                  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                  <input
+                    type="radio"
+                    class="btn-role"
+                    v-model="payment"
+                    value="false"
+                  />&nbsp; Chuyển khoản
+                </div>
               </div>
               <div>
-                <span class="input-group-text textEx"><strong>Ghi chú</strong></span>
+                <span class="input-group-text textEx"
+                  ><strong>Ghi chú</strong></span
+                >
                 <textarea
                   type="text"
                   class="form-control form-Des"
@@ -253,7 +275,6 @@
 
 <script>
 import { format, parseISO } from "date-fns";
-import { format, parseISO } from "date-fns";
 import "/src/css/Admin/main.css";
 import axios from "axios";
 import TheSidebar from "../TheSidebar.vue";
@@ -277,6 +298,7 @@ export default {
       currentPage: 1,
       searchText: "",
       isClicked: true,
+      payment: "",
     };
   },
   methods: {
@@ -332,6 +354,11 @@ export default {
       this.staffId = u.staffId;
       this.discount = u.discount;
       this.status = u.status;
+      if (this.type === "true") {
+        this.type = true;
+      } else {
+        this.type = false;
+      }
       this.comment = u.comment;
       this.paymentId = u.paymentId;
       this.deleteFlag = u.deleteFlag;
@@ -404,7 +431,8 @@ export default {
     logOut() {
       this.$router.push({ name: "Login" });
       localStorage.removeItem("userRole");
-    },formatDateString2(isoString) {
+    },
+    formatDateString2(isoString) {
       return format(parseISO(isoString), "dd-MM-yyyy");
     },
   },

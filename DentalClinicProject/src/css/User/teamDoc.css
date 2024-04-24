@@ -235,12 +235,13 @@
     top: 0px;
     width: 40%;
     height: 90%;
-    background-image: url("../../imgs/TS.BS.Nguyễn\ Khánh\ Long.jpg");
+    background-color: #a5a5a5;
     background-size: cover;
     background-repeat: no-repeat;
     background-position: center;
   }
   .doc-info {
+    margin-top: 1px;
     padding: 20px;
     display: flex;
     position: relative;
