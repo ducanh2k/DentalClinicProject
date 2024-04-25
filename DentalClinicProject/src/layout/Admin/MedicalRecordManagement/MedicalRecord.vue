@@ -193,12 +193,44 @@
           </table>
         </div>
         <div class="under-table">
-          <div class="sum__staff">Tổng số bệnh nhân: <strong>10</strong></div>
+          <div class="sum__staff">
+            Tổng số bệnh nhân: <strong>{{ totalRecords }}</strong>
+          </div>
           <div class="pagination">
-            <li><a @click="changPageNumber(1)" class="page-1">1</a></li>
-            <li><a @click="changPageNumber(2)" class="page-2">2</a></li>
-            <li><a @click="changPageNumber(3)" class="page-3">3</a></li>
-            <li><a @click="changPageNumber(0)" class="Next-page">Next</a></li>
+            <a @click="decreasePage()" class="page-link" v-if="currentPage > 1"
+              >Previous</a
+            >
+
+            <a
+              @click="changPageNumber(Page1)"
+              v-if="Page1 <= totalPages"
+              class="page-link"
+              :class="{ 'active-page': currentPage === Page1 }"
+              >{{ Page1 }}</a
+            >
+
+            <a
+              @click="changPageNumber(Page2)"
+              v-if="Page2 <= totalPages"
+              class="page-link"
+              :class="{ 'active-page': currentPage === Page2 }"
+              >{{ Page2 }}</a
+            >
+
+            <a
+              @click="changPageNumber(Page3)"
+              v-if="Page3 <= totalPages"
+              class="page-link"
+              :class="{ 'active-page': currentPage === Page3 }"
+              >{{ Page3 }}</a
+            >
+
+            <a
+              @click="increasePage()"
+              class="page-link"
+              v-if="currentPage < totalPages"
+              >Next</a
+            >
           </div>
         </div>
       </div>
@@ -489,6 +521,17 @@
                   type="text"
                   class="form-control"
                   v-model="service_name"
+                  readonly
+                />
+              </div>
+              <div>
+                <span class="input-group-text"
+                  ><strong>Tổng tiền </strong></span
+                >
+                <input
+                  type="text"
+                  class="form-control"
+                  v-model="price"
                   readonly
                 />
               </div>
@@ -827,11 +870,19 @@ export default {
       listPres: [],
       ListPres2: [],
       descriptionMdr: "",
+      price: 0,
+      flag: 0,
+      Page1: 1,
+      Page2: 2,
+      Page3: 3,
+      flagNext: 0,
+      totalRecords: 0,
     };
   },
   computed: {
-    totalPage() {
-      return Math.cell(this.mRecords.length / this.pageSize);
+    totalPages() {
+      if (this.totalRecords >= 10) return Math.ceil(this.totalRecords / 10);
+      else return 1;
     },
     paginatedUsers() {
       const start = (this.currentPage - 1) * this.pageSize;
@@ -1083,17 +1134,43 @@ export default {
           });
       });
     },
-    changPageNumber(page) {
-      if (page == 1) {
-        this.currentPage = 1;
-      } else if (page == 2) {
-        this.currentPage = 2;
-      } else if (page == 3) {
-        this.currentPage = 3;
-      } else {
-        this.currentPage++;
-      }
+    changPageNumber(number) {
+      this.currentPage = number;
       this.fetchMRecords();
+    },
+    decreasePage() {
+      if (this.currentPage > 1) {
+        this.currentPage--;
+        if (this.currentPage % 3 === 0) {
+          this.Page1 = this.currentPage - 2;
+          this.Page2 = this.currentPage - 1;
+          this.Page3 = this.currentPage;
+        }
+        this.fetchMRecords();
+      }
+    },
+    increasePage() {
+      if (this.currentPage < this.totalPages) {
+        if (this.currentPage % 3 === 0) {
+          this.Page1 += 3;
+          this.Page2 += 3;
+          this.Page3 += 3;
+        }
+        this.flag = this.currentPage;
+        this.currentPage++;
+        this.fetchMRecords();
+      }
+    },
+    async getTotalRecords() {
+      let apiURL = "https://localhost:7034/api/MedicalRecord/count";
+      axios
+        .get(apiURL)
+        .then((response) => {
+          this.totalRecords = response.data;
+        })
+        .catch((error) => {
+          console.error("There has been a problem");
+        });
     },
     async fetchMRecords() {
       let apiURL = "https://localhost:7034/api/MedicalRecord/list";
@@ -1115,6 +1192,9 @@ export default {
       this.ID = 0;
       this.patientId = "";
       this.deleteFlag = false;
+      this.phonePatient = 0;
+      this.serviceName = "";
+      this.descriptionMdr = "";
     },
     fetchPreById: async function () {
       try {
@@ -1139,6 +1219,7 @@ export default {
       this.serviceId = u.serviceId;
       this.phonePatient = u.phone;
       this.service_name = u.serviceName;
+      this.descriptionMdr = u.description;
     },
     editInvoiceClick: async function (u) {
       this.ID = u.medicalRecordId;
@@ -1154,6 +1235,7 @@ export default {
         this.paymentId = this.invoices[0].paymentId;
         this.invoiceDate = this.invoices[0].date;
         this.comment = this.invoices[0].comment;
+        this.price = this.invoices[0].price;
       } else {
         console.log("No invoice found with the specified ID.");
       }
@@ -1207,7 +1289,7 @@ export default {
         .post("https://localhost:7034/api/MedicalRecord", {
           patientId: this.patientId,
           serviceId: this.serviceId,
-          
+          description: this.descriptionMdr,
         })
         .then((response) => {
           alert(response.data);
@@ -1295,6 +1377,7 @@ export default {
         .put("https://localhost:7034/api/MedicalRecord/" + this.ID, {
           patientId: this.patientId,
           serviceId: this.serviceId,
+          description: this.descriptionMdr,
         })
         .then((response) => {
           alert("Cập nhật thành công!");
@@ -1340,6 +1423,7 @@ export default {
   mounted: function () {
     this.fetchMRecords();
     this.CheckRole();
+    this.getTotalRecords();
   },
 };
 </script>

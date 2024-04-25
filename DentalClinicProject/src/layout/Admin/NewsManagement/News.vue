@@ -111,12 +111,42 @@
           </table>
         </div>
         <div class="under-table">
-          <div class="sum__staff">Tổng số dịch vụ: <strong>10</strong></div>
+          <div class="sum__staff">Tổng số dịch vụ: <strong>{{ totalNews }}</strong></div>
           <div class="pagination">
-            <li><a @click="changPageNumber(1)" class="page-1">1</a></li>
-            <li><a @click="changPageNumber(2)" class="page-2">2</a></li>
-            <li><a @click="changPageNumber(3)" class="page-3">3</a></li>
-            <li><a @click="changPageNumber(0)" class="Next-page">Next</a></li>
+            <a @click="decreasePage()" class="page-link" v-if="currentPage > 1"
+              >Previous</a
+            >
+
+            <a
+              @click="changPageNumber(Page1)"
+              v-if="Page1 <= totalPages"
+              class="page-link"
+              :class="{ 'active-page': currentPage === Page1 }"
+              >{{ Page1 }}</a
+            >
+
+            <a
+              @click="changPageNumber(Page2)"
+              v-if="Page2 <= totalPages"
+              class="page-link"
+              :class="{ 'active-page': currentPage === Page2 }"
+              >{{ Page2 }}</a
+            >
+
+            <a
+              @click="changPageNumber(Page3)"
+              v-if="Page3 <= totalPages"
+              class="page-link"
+              :class="{ 'active-page': currentPage === Page3 }"
+              >{{ Page3 }}</a
+            >
+
+            <a
+              @click="increasePage()"
+              class="page-link"
+              v-if="currentPage < totalPages"
+              >Next</a
+            >
           </div>
         </div>
       </div>
@@ -260,7 +290,19 @@ export default {
       isClicked: true,
       UserId: 0,
       type: true,
+      flag: 0,
+      Page1: 1,
+      Page2: 2,
+      Page3: 3,
+      flagNext: 0,
+      totalNews: 0,
+      allNews: [],
     };
+  },
+  computed: {
+    totalPages() {
+      return Math.ceil(this.totalNews / 10);
+    },
   },
   methods: {
     formatDateString(isoString) {
@@ -274,17 +316,44 @@ export default {
       this.role = localStorage.getItem("userRole");
       this.UserId = localStorage.getItem("UserId");
     },
-    changPageNumber(page) {
-      if (page == 1) {
-        this.currentPage = 1;
-      } else if (page == 2) {
-        this.currentPage = 2;
-      } else if (page == 3) {
-        this.currentPage = 3;
-      } else {
-        this.currentPage++;
-      }
+    changPageNumber(number) {
+      this.currentPage = number;
       this.fetchNewss();
+    },
+    decreasePage() {
+      if (this.currentPage > 1) {
+        this.currentPage--;
+        if (this.currentPage % 3 === 0) {
+          this.Page1 = this.currentPage - 2;
+          this.Page2 = this.currentPage - 1;
+          this.Page3 = this.currentPage;
+        }
+        this.fetchNewss();
+      }
+    },
+    increasePage() {
+      if (this.currentPage < this.totalPages) {
+        if (this.currentPage % 3 === 0) {
+          this.Page1 += 3;
+          this.Page2 += 3;
+          this.Page3 += 3;
+        }
+        this.flag = this.currentPage;
+        this.currentPage++;
+        this.fetchNewss();
+      }
+    },
+    async getAllNews() {
+      let apiURL = "https://localhost:7034/api/News/listall";
+      axios
+        .get(apiURL)
+        .then((response) => {
+          this.allNewss = response.data;
+          this.totalNews = response.data.length;
+        })
+        .catch((error) => {
+          console.error("There has been a problem");
+        });
     },
     async fetchNewss() {
       let apiURL = "https://localhost:7034/api/News/list";
@@ -395,7 +464,7 @@ export default {
     },
     filterResults() {
       if (this.searchText) {
-        this.Newss = this.Newss.filter((News) =>
+        this.Newss = this.allNews.filter((News) =>
           Object.values(News).some((value) =>
             value
               .toString()
@@ -418,11 +487,19 @@ export default {
   mounted: function () {
     this.CheckRole();
     this.fetchNewss();
+    this.getAllNews();
   },
 };
 </script>
 
 <style scoped>
+.pagination {
+  cursor: pointer;
+}
+.page-link.active-page {
+  background-color: rgb(77, 75, 75);
+  color: white;
+}
 .input-group-text {
   background-color: rgb(255, 255, 255);
   margin-right: 20%;

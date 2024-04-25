@@ -315,6 +315,7 @@ export default {
       Page2: 2,
       Page3: 3,
       flagNext: 0,
+      allMaterial: [],
       totalMaterials: 0,
     };
   },
@@ -363,6 +364,7 @@ export default {
       axios
         .get(apiURL)
         .then((response) => {
+          this.allMaterial = response.data;
           this.totalMaterials = response.data.length;
         })
         .catch((error) => {
@@ -487,7 +489,7 @@ export default {
     filterResults() {
       console.log(this.searchText);
       if (this.searchText) {
-        this.materials = this.materials.filter((material) =>
+        this.materials = this.allMaterial.filter((material) =>
           Object.values(material).some((value) =>
             value
               .toString()

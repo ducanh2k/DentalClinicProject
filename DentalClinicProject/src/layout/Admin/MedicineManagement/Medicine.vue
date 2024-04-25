@@ -124,13 +124,43 @@
         </div>
         <div class="under-table">
           <div class="sum__staff">
-            Tổng số thuốc: <strong>{{ this.medicines.length }}</strong>
+            Tổng số thuốc: <strong>{{ totalMedicines }}</strong>
           </div>
           <div class="pagination">
-            <li><a @click="changPageNumber(1)" class="page-1">1</a></li>
-            <li><a @click="changPageNumber(2)" class="page-2">2</a></li>
-            <li><a @click="changPageNumber(3)" class="page-3">3</a></li>
-            <li><a @click="changPageNumber(0)" class="Next-page">Next</a></li>
+            <a @click="decreasePage()" class="page-link" v-if="currentPage > 1"
+              >Previous</a
+            >
+
+            <a
+              @click="changPageNumber(Page1)"
+              v-if="Page1 <= totalPages"
+              class="page-link"
+              :class="{ 'active-page': currentPage === Page1 }"
+              >{{ Page1 }}</a
+            >
+
+            <a
+              @click="changPageNumber(Page2)"
+              v-if="Page2 <= totalPages"
+              class="page-link"
+              :class="{ 'active-page': currentPage === Page2 }"
+              >{{ Page2 }}</a
+            >
+
+            <a
+              @click="changPageNumber(Page3)"
+              v-if="Page3 <= totalPages"
+              class="page-link"
+              :class="{ 'active-page': currentPage === Page3 }"
+              >{{ Page3 }}</a
+            >
+
+            <a
+              @click="increasePage()"
+              class="page-link"
+              v-if="currentPage < totalPages"
+              >Next</a
+            >
           </div>
         </div>
       </div>
@@ -318,7 +348,19 @@ export default {
       role: "",
       isClicked: true,
       type: true,
+      flag: 0,
+      Page1: 1,
+      Page2: 2,
+      Page3: 3,
+      flagNext: 0,
+      totalMedicines: 0,
+      allMedicines: [],
     };
+  },
+  computed: {
+    totalPages() {
+      return Math.ceil(this.totalMedicines / 10);
+    },
   },
   methods: {
     openSideBar() {
@@ -339,6 +381,41 @@ export default {
         this.currentPage++;
       }
       this.fetchMedicines();
+    },
+    decreasePage() {
+      if (this.currentPage > 1) {
+        this.currentPage--;
+        if (this.currentPage % 3 === 0) {
+          this.Page1 = this.currentPage - 2;
+          this.Page2 = this.currentPage - 1;
+          this.Page3 = this.currentPage;
+        }
+        this.fetchMedicines();
+      }
+    },
+    increasePage() {
+      if (this.currentPage < this.totalPages) {
+        if (this.currentPage % 3 === 0) {
+          this.Page1 += 3;
+          this.Page2 += 3;
+          this.Page3 += 3;
+        }
+        this.flag = this.currentPage;
+        this.currentPage++;
+        this.fetchMedicines();
+      }
+    },
+    async fetchAllMedicines() {
+      let apiURL = "https://localhost:7034/api/Medicine/listall";
+      axios
+        .get(apiURL)
+        .then((response) => {
+          this.allMedicines = response.data;
+          this.totalMedicines = this.allMedicines.length;
+        })
+        .catch((error) => {
+          console.error("There has been a problem");
+        });
     },
     async fetchMedicines() {
       let apiURL = "https://localhost:7034/api/Medicine/list";
@@ -454,7 +531,7 @@ export default {
     filterResults() {
       console.log(this.searchText);
       if (this.searchText) {
-        this.medicines = this.medicines.filter((medicine) =>
+        this.medicines = this.allMedicines.filter((medicine) =>
           Object.values(medicine).some((value) =>
             value
               .toString()
@@ -479,12 +556,20 @@ export default {
   },
   mounted: function () {
     this.fetchMedicines();
+    this.fetchAllMedicines();
     this.CheckRole();
   },
 };
 </script>
 
 <style scoped>
+.pagination {
+  cursor: pointer;
+}
+.page-link.active-page {
+  background-color: rgb(77, 75, 75);
+  color: white;
+}
 .input-group-text {
   background-color: rgb(255, 255, 255);
   margin-right: 20%;

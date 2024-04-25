@@ -373,6 +373,7 @@ export default {
       Page1: 1,
       Page2: 2,
       Page3: 3,
+      allApp: [],
       flagNext: 0,
     };
   },
@@ -491,6 +492,7 @@ export default {
       axios
         .get(apiURL)
         .then((response) => {
+          this.allApp = response.data;
           this.numOfApp = response.data.length;
         })
         .catch((error) => {
@@ -615,7 +617,7 @@ export default {
     filterResults() {
       console.log(this.appointments);
       if (this.searchText) {
-        this.appointments = this.appointments.filter((a) =>
+        this.appointments = this.allApp.filter((a) =>
           Object.values(a).some((value) =>
             value
               .toString()

@@ -140,7 +140,10 @@
           </table>
         </div>
         <div class="under-table">
-          <div class="sum__staff">Tổng số người dùng: <strong>10</strong></div>
+          <div class="sum__staff">
+            Tổng số người dùng:
+            <strong>{{ totalUsers }}</strong>
+          </div>
           <div class="pagination">
             <a @click="decreasePage()" class="page-link" v-if="currentPage > 1"
               >Previous</a
@@ -810,7 +813,6 @@ export default {
       currentPage: 1,
       pageSize: 10,
       totalItems: 0,
-      totalPages: 0,
       searchText: "",
       degrees: [],
       trainingCourse: [],
@@ -827,11 +829,12 @@ export default {
       flagNext: 0,
       totalUsers: 0,
       isClicked: true,
+      allUsers: [],
     };
   },
   computed: {
-    totalPage() {
-      return Math.cell(this.users.length / 10);
+    totalPages() {
+      return Math.ceil(this.totalUsers / 10);
     },
     paginatedUsers() {
       const start = (this.currentPage - 1) * this.pageSize;
@@ -1018,7 +1021,7 @@ export default {
           console.error("There has been a problem");
         });
     },
-    changPageNumber(page) {
+    changPageNumber(number) {
       this.currentPage = number;
       this.fetchUsers();
     },
@@ -1045,29 +1048,45 @@ export default {
         this.fetchUsers();
       }
     },
-    async getAllUsers() {
-      let apiURL = "https://localhost:7034/api/User/listall";
-      axios
-        .get(apiURL)
-        .then((response) => {
-          this.totalUsers = response.data.length;
-        })
-        .catch((error) => {
-          console.error("There has been a problem");
-        });
+    getAllUsers: async function () {
+      try {
+        let apiURL = "https://localhost:7034/api/User/count";
+        const response = await axios.get(apiURL, {});
+        this.totalUsers = response.data;
+      } catch (error) {
+        console.error("Lỗi lấy dữ liệu:", error);
+      }
+      // let apiURL = "https://localhost:7034/api/User/count";
+      // axios
+      //   .get(apiURL)
+      //   .then((response) => {
+      //     this.totalUsers = response.data;
+      //   })
+      //   .catch((error) => {
+      //     console.error("There has been a problem");
+      //   });
     },
-    async fetchUsers() {
-      let apiURL = "https://localhost:7034/api/User/list";
-      apiURL =
-        "https://localhost:7034/api/User/list?pageNumber=" + this.currentPage;
-      axios
-        .get(apiURL)
-        .then((response) => {
-          this.users = response.data;
-        })
-        .catch((error) => {
-          console.error("There has been a problem");
-        });
+    fetchUsers: async function () {
+      try {
+        let apiURL = "https://localhost:7034/api/User/list";
+        apiURL =
+          "https://localhost:7034/api/User/list?pageNumber=" + this.currentPage;
+        const response = await axios.get(apiURL, {});
+        this.users = response.data;
+      } catch (error) {
+        console.error("Lỗi lấy dữ liệu:", error);
+      }
+      // let apiURL = "https://localhost:7034/api/User/list";
+      // apiURL =
+      //   "https://localhost:7034/api/User/list?pageNumber=" + this.currentPage;
+      // axios
+      //   .get(apiURL)
+      //   .then((response) => {
+      //     this.users = response.data;
+      //   })
+      //   .catch((error) => {
+      //     console.error("There has been a problem");
+      //   });
     },
     addClick() {
       this.modalTitle = "Thêm mới người dùng";
@@ -1201,6 +1220,7 @@ export default {
     },
   },
   mounted: function () {
+    this.getAllUsers();
     this.fetchUsers();
   },
 };
@@ -1285,5 +1305,8 @@ export default {
 }
 .detail-container {
   /* display: flex; */
+}
+.addnew {
+  margin-left: -5%;
 }
 </style>

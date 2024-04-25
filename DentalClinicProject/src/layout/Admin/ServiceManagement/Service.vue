@@ -106,7 +106,9 @@
           </table>
         </div>
         <div class="under-table">
-          <div class="sum__staff">Tổng số dịch vụ: <strong>{{ totalServices }}</strong></div>
+          <div class="sum__staff">
+            Tổng số dịch vụ: <strong>{{ totalServices }}</strong>
+          </div>
           <div class="pagination">
             <a @click="decreasePage()" class="page-link" v-if="currentPage > 1"
               >Previous</a
@@ -282,6 +284,7 @@ export default {
       Page3: 3,
       flagNext: 0,
       totalServices: 0,
+      allServices: [],
     };
   },
   computed: {
@@ -329,6 +332,7 @@ export default {
       axios
         .get(apiURL)
         .then((response) => {
+          this.allServices = response.data;
           this.totalServices = response.data.length;
         })
         .catch((error) => {
@@ -428,12 +432,15 @@ export default {
     },
     filterResults() {
       if (this.searchText) {
-        this.services = this.services.filter((service) =>
-          Object.values(service).some((value) =>
-            value
-              .toString()
-              .toLowerCase()
-              .includes(this.searchText.toLowerCase())
+        this.services = this.allServices.filter((service) =>
+          Object.values(service).some(
+            (value) =>
+              value !== null &&
+              value !== undefined &&
+              value
+                .toString()
+                .toLowerCase()
+                .includes(this.searchText.toLowerCase().trim())
           )
         );
       } else {
