@@ -624,7 +624,10 @@
             <div class="">
               <div>
                 <span class="input-group-text"
-                  ><strong>Ngày đặt lịch</strong></span
+                  ><strong
+                    >Ngày đặt lịch
+                    <b class="star" style="color: red">*</b></strong
+                  ></span
                 >
                 <input
                   type="date"
@@ -634,7 +637,11 @@
                 />
               </div>
               <div>
-                <span class="input-group-text"><strong>Nội dung</strong></span>
+                <span class="input-group-text"
+                  ><strong
+                    >Nội dung <b class="star" style="color: red">*</b></strong
+                  ></span
+                >
                 <textarea
                   type="text"
                   class="form-control"
@@ -1120,7 +1127,7 @@ export default {
 
     fetchAppointmentDetailsForEach(appointmentIds) {
       const newArray = appointmentIds.map((a) => {
-        return a; // Ví dụ: Nhân đôi giá trị của phần tử
+        return a;
       });
       this.appointmentDetailsList = [];
       newArray.forEach((appointmentId) => {
@@ -1285,6 +1292,14 @@ export default {
       this.noteProcess = u.note;
     },
     createClick() {
+      if (this.patientId == 0) {
+        alert("Vui lòng nhập số điện thoại và chọn bệnh nhân tương ứng!");
+        return;
+      }
+      if (this.serviceId == 0) {
+        alert("Vui lòng nhập tên dịch vụ và chọn dịch vụ tương ứng!");
+        return;
+      }
       axios
         .post("https://localhost:7034/api/MedicalRecord", {
           patientId: this.patientId,
@@ -1292,7 +1307,7 @@ export default {
           description: this.descriptionMdr,
         })
         .then((response) => {
-          alert(response.data);
+          alert("Thêm mới hồ sơ thành công!");
           this.fetchMRecords();
         });
     },
@@ -1331,6 +1346,14 @@ export default {
         });
     },
     createProcessClick() {
+      if (this.examinationDay == "") {
+        alert("Ngày đặt lịch không được để trống!");
+        return;
+      }
+      if (this.examinationContent == "") {
+        alert("Nội dung không được để trống!");
+        return;
+      }
       axios
         .post("https://localhost:7034/api/Process", {
           examinationDay: this.examinationDay,
@@ -1339,11 +1362,19 @@ export default {
           medicalRecordId: this.mrId,
         })
         .then((response) => {
-          alert(response.data);
+          alert("Thêm mới quy trình thành công!");
           this.fetchProcess();
         });
     },
     updateProcessClick() {
+      if (this.examinationDay == "") {
+        alert("Ngày đặt lịch không được để trống!");
+        return;
+      }
+      if (this.examinationContent == "") {
+        alert("Nội dung không được để trống!");
+        return;
+      }
       axios
         .put("https://localhost:7034/api/Process/" + this.ID, {
           examinationDay: this.examinationDay,
@@ -1373,6 +1404,14 @@ export default {
         });
     },
     updateClick() {
+      if (this.patientId == 0) {
+        alert("Vui lòng nhập số điện thoại và chọn bệnh nhân tương ứng!");
+        return;
+      }
+      if (this.serviceId == 0) {
+        alert("Vui lòng nhập tên dịch vụ và chọn dịch vụ tương ứng!");
+        return;
+      }
       axios
         .put("https://localhost:7034/api/MedicalRecord/" + this.ID, {
           patientId: this.patientId,
@@ -1386,7 +1425,7 @@ export default {
     },
     //
     deleteClick(id) {
-      if (!confirm("Bạn có chắc không ?")) {
+      if (!confirm("Bạn có chắc chắn muốn xóa không ?")) {
         return;
       }
       axios

@@ -199,7 +199,10 @@
             <div class="input-group md-3">
               <div>
                 <span class="input-group-text"
-                  ><strong>Số điện thoại bệnh nhân</strong></span
+                  ><strong
+                    >Số điện thoại bệnh nhân
+                    <b class="star" style="color: red">*</b></strong
+                  ></span
                 >
                 <input
                   type="text"
@@ -224,7 +227,11 @@
               </div>
 
               <div>
-                <span class="input-group-text"><strong>Bác sĩ</strong></span>
+                <span class="input-group-text"
+                  ><strong
+                    >Bác sĩ <b class="star" style="color: red">*</b></strong
+                  ></span
+                >
                 <div class="dropdown100">
                   <button
                     class="btn btn-secondary dropdown-toggle"
@@ -265,7 +272,10 @@
 
               <div>
                 <span class="input-group-text"
-                  ><strong>Ngày đặt lịch</strong></span
+                  ><strong
+                    >Ngày đặt lịch
+                    <b class="star" style="color: red">*</b></strong
+                  ></span
                 >
                 <input
                   type="date"
@@ -514,7 +524,7 @@ export default {
         });
     },
     addClick() {
-      this.modalTitle = "Thêm lịch hẹn";
+      this.modalTitle = "Thêm mới lịch hẹn";
       this.ID = 0;
       this.patientId = 0;
       this.doctorId = 0;
@@ -532,7 +542,7 @@ export default {
       }
     },
     editClick(u) {
-      this.modalTitle = "Sửa thông tin lich hẹn";
+      this.modalTitle = "Sửa thông tin lịch hẹn";
       this.ID = u.appointmentId;
       this.patientId = u.patientId;
       this.patientPhone = u.phone;
@@ -543,6 +553,18 @@ export default {
       this.note = u.note;
     },
     createClick() {
+      if (this.Patient == null) {
+        alert("Vui lòng nhập số điện thoại và chọn bệnh nhân tương ứng!");
+        return;
+      }
+      if (this.doctorId == 0) {
+        alert("Vui lòng nhập tên bác si và chọn bác sĩ tương ứng!");
+        return;
+      }
+      if (this.datetime == "") {
+        alert("Ngày đặt lịch không được để trống!");
+        return;
+      }
       const bookingDate = new Date(this.datetime);
       const currentDate = new Date();
       bookingDate.setHours(0, 0, 0, 0);
@@ -565,6 +587,18 @@ export default {
         });
     },
     updateClick() {
+      if (this.Patient == null) {
+        alert("Vui lòng nhập số điện thoại và chọn bệnh nhân tương ứng!");
+        return;
+      }
+      if (this.doctorId == 0) {
+        alert("Vui lòng nhập tên bác si và chọn bác sĩ tương ứng!");
+        return;
+      }
+      if (this.datetime == "") {
+        alert("Ngày đặt lịch không được để trống!");
+        return;
+      }
       const bookingDate = new Date(this.datetime);
       const currentDate = new Date();
       bookingDate.setHours(0, 0, 0, 0);
@@ -599,7 +633,7 @@ export default {
         });
     },
     deleteClick(id) {
-      if (!confirm("Bạn có chắc không ?")) {
+      if (!confirm("Bạn có chắc chắn muốn xóa không ?")) {
         return;
       }
       axios

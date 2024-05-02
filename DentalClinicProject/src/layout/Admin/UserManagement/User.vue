@@ -202,7 +202,11 @@
           <div class="modal-body">
             <div class="input-group md-3">
               <div>
-                <span class="input-group-text"><strong>Họ và Tên</strong></span>
+                <span class="input-group-text"
+                  ><strong
+                    >Họ và Tên <b class="star" style="color: red">*</b></strong
+                  ></span
+                >
                 <input
                   type="text"
                   class="form-control"
@@ -215,14 +219,18 @@
                   ><strong>Số điện thoại</strong></span
                 >
                 <input
-                  type="text"
+                  type="number"
                   class="form-control"
                   v-model="phone"
                   placeholder="Nhập số điện thoại"
                 />
               </div>
               <div>
-                <span class="input-group-text"><strong>Email</strong></span>
+                <span class="input-group-text"
+                  ><strong
+                    >Email <b class="star" style="color: red">*</b></strong
+                  ></span
+                >
                 <input
                   type="text"
                   class="form-control"
@@ -242,7 +250,11 @@
                 />
               </div>
               <div v-if="ID == 0">
-                <span class="input-group-text"><strong>Mật khẩu</strong></span>
+                <span class="input-group-text"
+                  ><strong
+                    >Mật khẩu <b class="star" style="color: red">*</b></strong
+                  ></span
+                >
                 <input
                   type="text"
                   class="form-control"
@@ -254,34 +266,38 @@
               <div v-if="role != 'patient'">
                 <span class="input-group-text"><strong>Lương</strong></span>
                 <input
-                  type="text"
+                  type="number"
                   class="form-control"
                   placeholder="Nhập lương"
                   v-model="salary"
                 />
               </div>
-              <div>
-                <span class="input-group-text"><strong>Chức vụ</strong></span>
+              <div v-if="role != 'Admin'">
+                <span class="input-group-text"
+                  ><strong
+                    >Chức vụ <b class="star" style="color: red">*</b></strong
+                  ></span
+                >
                 <div class="btnRole-container">
                   <input
                     type="radio"
                     class="btn-role"
                     v-model="role"
-                    value="doctor"
+                    value="Doctor"
                   />&nbsp; Bác sĩ
                   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                   <input
                     type="radio"
                     class="btn-role"
                     v-model="role"
-                    value="staff"
+                    value="Staff"
                   />&nbsp; Nhân viên
                   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                   <input
                     type="radio"
                     class="btn-role"
                     v-model="role"
-                    value="patient"
+                    value="Patient"
                   />&nbsp; Bệnh nhân
                 </div>
               </div>
@@ -321,9 +337,13 @@
                 />&nbsp; Nữ
               </div>
               <div>
-                <span class="input-group-text"><strong>Ngày sinh</strong></span>
+                <span class="input-group-text"
+                  ><strong
+                    >Ngày sinh <b class="star" style="color: red">*</b></strong
+                  ></span
+                >
                 <input
-                  type="text"
+                  type="date"
                   class="form-control"
                   placeholder="Nhập ngày sinh"
                   v-model="dob"
@@ -782,6 +802,7 @@
 </template>
 
 <script>
+import { format, parseISO } from "date-fns";
 import "/src/css/Admin/main.css";
 import TheSidebar from "../TheSidebar.vue";
 import axios from "axios";
@@ -851,6 +872,12 @@ export default {
     },
   },
   methods: {
+    formatDateString(isoString) {
+      return format(parseISO(isoString), "dd-MM-yyyy");
+    },
+    formatDateString2(isoString) {
+      return format(parseISO(isoString), "yyyy-MM-dd");
+    },
     openSideBar() {
       if (this.isClicked === true) this.isClicked = false;
       else if (this.isClicked === false) this.isClicked = true;
@@ -1100,7 +1127,6 @@ export default {
       this.salary = "";
       this.roleId = 1;
       this.role = "";
-      this.deleteFlag = false;
       this.password = "";
       this.dob = "";
       this.address = "";
@@ -1118,8 +1144,7 @@ export default {
       this.salary = u.salary;
       this.roleId = u.roleId;
       this.role = u.roleName;
-      this.deleteFlag = false;
-      this.dob = u.dob;
+      this.dob = this.formatDateString2(u.dob);
       this.address = u.address;
       this.gender = u.gender;
     },
@@ -1136,19 +1161,35 @@ export default {
       } else {
         this.gender = false;
       }
+      console.log(this.role + " " + this.dob);
+      if (this.name == "") {
+        alert("Tên không được để trống!");
+        return;
+      } else if (this.email == "") {
+        alert("Email không được để trống!");
+        return;
+      } else if (this.password == "") {
+        alert("Mật khẩu không được để trống!");
+        return;
+      } else if (this.role == "") {
+        alert("Người dùng phải có vai trò trong hệ thống!");
+        return;
+      } else if (this.dob == "") {
+        alert("Người dùng phải có ngày sinh!");
+        return;
+      }
       axios
         .post("https://localhost:7034/api/User", {
+          email: this.email,
+          roleId: this.roleId,
+          password: this.password,
           name: this.name,
           phone: this.phone,
-          email: this.email,
           img: this.img,
           description: this.description,
-          roleId: this.roleId,
-          deleteFlag: false,
-          password: this.password,
           gender: this.gender,
-          dob: this.dob,
           addresss: this.address,
+          dob: this.formatDateString2(this.dob),
         })
         .then((response) => {
           alert(response.data);
@@ -1163,6 +1204,16 @@ export default {
       } else {
         this.roleId = 4;
       }
+      if (this.name == "") {
+        alert("Tên không được để trống!");
+        return;
+      } else if (this.email == "") {
+        alert("Email không được để trống!");
+        return;
+      } else if (this.role == "") {
+        alert("Người dùng phải có vai trò trong hệ thống!");
+        return;
+      }
       axios
         .put("https://localhost:7034/api/User/" + this.ID, {
           name: this.name,
@@ -1175,16 +1226,16 @@ export default {
           roleName: this.role,
           deleteFlag: false,
           gender: this.gender,
-          dob: this.dob,
+          dob: this.formatDateString2(this.dob),
           addresss: this.address,
         })
         .then((response) => {
-          alert("Update thành công!");
+          alert("Cập nhật thành công!");
           this.fetchUsers();
         });
     },
     deleteClick(id) {
-      if (!confirm("Bạn có chắc không ?")) {
+      if (!confirm("Bạn có chắc chắn muốn xóa không ?")) {
         return;
       }
       axios
