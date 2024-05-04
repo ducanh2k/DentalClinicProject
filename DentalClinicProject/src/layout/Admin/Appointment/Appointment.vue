@@ -205,7 +205,7 @@
                   ></span
                 >
                 <input
-                  type="text"
+                  type="number"
                   class="form-control"
                   v-model="patientPhone"
                   placeholder="Nhập số điện thoại"
@@ -282,6 +282,7 @@
                   class="form-control"
                   v-model="datetime"
                   placeholder="Nhập ngày đặt lịch"
+                  :disabled="status == 2 || status == 3"
                 />
               </div>
               <div>
@@ -298,7 +299,7 @@
               <button
                 type="button"
                 @click="createClick()"
-                v-if="ID === 0"
+                v-if="ID === 0 && status == 1"
                 class="btn btn-primary"
               >
                 Lưu
@@ -307,7 +308,7 @@
               <button
                 type="button"
                 @click="updateClick()"
-                v-if="ID != 0"
+                v-if="ID != 0 && status == 1"
                 class="btn btn-primary"
               >
                 Lưu
@@ -324,7 +325,7 @@
               <button
                 type="button"
                 @click="CancelClick()"
-                v-if="status == 1"
+                v-if="status == 1 && ID != 0"
                 class="btn btn-primary"
                 data-bs-dismiss="modal"
                 aria-label="Close"
@@ -526,9 +527,12 @@ export default {
     addClick() {
       this.modalTitle = "Thêm mới lịch hẹn";
       this.ID = 0;
+      this.patientPhone = 0;
+      this.searchText2 = "";
       this.patientId = 0;
       this.doctorId = 0;
       this.datetime = "";
+      this.status = 1;
       this.note = "";
       this.deleteFlag = false;
     },
@@ -553,7 +557,7 @@ export default {
       this.note = u.note;
     },
     createClick() {
-      if (this.Patient == null) {
+      if (this.patientPhone == 0 || this.patientPhone == "") {
         alert("Vui lòng nhập số điện thoại và chọn bệnh nhân tương ứng!");
         return;
       }
@@ -570,8 +574,8 @@ export default {
       bookingDate.setHours(0, 0, 0, 0);
       currentDate.setHours(0, 0, 0, 0);
 
-      if (bookingDate <= currentDate) {
-        alert("Ngày đặt lịch phải là hôm nay hoặc ngày sau đó!");
+      if (bookingDate < currentDate) {
+        alert("Ngày đặt lịch phải lớn hơn hoặc bằng ngày hiện tại!");
         return;
       }
       axios
@@ -582,12 +586,12 @@ export default {
           note: this.note,
         })
         .then((response) => {
-          alert(response.data);
+          alert("Thêm mới lịch hẹn thành công!");
           this.fetchAppointment();
         });
     },
     updateClick() {
-      if (this.Patient == null) {
+      if (this.patientPhone == 0 || this.patientPhone == "") {
         alert("Vui lòng nhập số điện thoại và chọn bệnh nhân tương ứng!");
         return;
       }
@@ -604,14 +608,17 @@ export default {
       bookingDate.setHours(0, 0, 0, 0);
       currentDate.setHours(0, 0, 0, 0);
 
-      if (bookingDate <= currentDate) {
-        alert("Ngày đặt lịch phải là hôm nay hoặc ngày sau đó!");
+      if (bookingDate < currentDate) {
+        alert("Ngày đặt lịch phải lớn hơn hoặc bằng ngày hiện tại!");
         return;
       }
-      const idPatient = this.patientId;
-      if (this.Patient !== null) {
+      let idPatient = this.patientId;
+      if (this.Patient != null) {
         idPatient = this.Patient.userId;
       }
+      console.log(
+        idPatient + " " + this.doctorId + " " + this.datetime + " " + this.note
+      );
       axios
         .put("https://localhost:7034/api/Appointment/" + this.ID, {
           patientId: idPatient,
@@ -620,7 +627,7 @@ export default {
           note: this.note,
         })
         .then((response) => {
-          alert(response.data);
+          alert("Cập nhật lịch hẹn thành công!");
           this.fetchAppointment();
         });
     },
@@ -628,7 +635,7 @@ export default {
       axios
         .put("https://localhost:7034/api/Appointment/cancel/" + this.ID, {})
         .then((response) => {
-          alert(response.data);
+          alert("Hủy lịch hẹn thành công!");
           this.fetchAppointment();
         });
     },

@@ -73,7 +73,6 @@
                     type="button"
                     class="btn btn-light mr-1"
                     data-bs-toggle="modal"
-                    data-bs-target="#exampleModalMedicine"
                     @click="CheckPre(mRecord)"
                   >
                     <svg
@@ -376,7 +375,7 @@
             <div class="">
               <div>
                 <span class="input-group-text"
-                  ><strong>Mã đơn thuốc: &nbsp;&nbsp;1 </strong>
+                  ><strong>Mã đơn thuốc: &nbsp;&nbsp;{{ preId }} </strong>
                 </span>
               </div>
               <div>
@@ -625,15 +624,14 @@
               <div>
                 <span class="input-group-text"
                   ><strong
-                    >Ngày đặt lịch
-                    <b class="star" style="color: red">*</b></strong
+                    >Ngày khám <b class="star" style="color: red">*</b></strong
                   ></span
                 >
                 <input
                   type="date"
                   class="form-control"
                   v-model="examinationDay"
-                  placeholder="Nhập ngày đặt lịch"
+                  placeholder="Nhập ngày khám"
                 />
               </div>
               <div>
@@ -981,31 +979,6 @@ export default {
         console.error("Lỗi lấy dữ liệu:", error);
       }
     },
-    // fetchAllMedicine() {
-    //   let apiURL = "https://localhost:7034/api/Medicine/listall";
-    //   axios
-    //     .get(apiURL)
-    //     .then((response) => {
-    //       const allMedicines = response.data;
-    //       if (this.listPres) {
-    //         const detailsIds = this.listPres.details.map((detail) => detail.id);
-
-    //         this.ListPres2 = allMedicines.filter((medicine) =>
-    //           detailsIds.includes(medicine.id)
-    //         );
-    //       }
-    //       if (Array.isArray(this.listPres.details)) {
-    //         alert("là array");
-    //       } else {
-    //         alert("không là array");
-    //       }
-    //     })
-    //     .catch((error) => {
-    //       this.ListPres2 = [];
-    //       console.error("There has been a problem:", error);
-    //     });
-    // },
-
     CheckPre(mRecord) {
       this.mrId = mRecord.medicalRecordId;
       if (!mRecord.prescriptionId) {
@@ -1243,6 +1216,7 @@ export default {
         this.invoiceDate = this.invoices[0].date;
         this.comment = this.invoices[0].comment;
         this.price = this.invoices[0].price;
+        this.price = this.price.toLocaleString("vi-VN") + ".000 VND";
       } else {
         console.log("No invoice found with the specified ID.");
       }
@@ -1274,7 +1248,7 @@ export default {
           serviceId: this.serviceId,
         })
         .then((response) => {
-          alert("Cập nhât thành công!");
+          alert("Cập nhật thành công!");
         });
     },
     addProcessClick() {
@@ -1318,7 +1292,7 @@ export default {
           details: [],
         })
         .then((response) => {
-          alert("Tạo đơn thuốc thành công");
+          alert("Tạo đơn thuốc thành công!");
           this.fetchMRecords();
         });
     },
@@ -1342,7 +1316,7 @@ export default {
           note: "",
         })
         .then((response) => {
-          alert("Tạo đơn thuốc thành công");
+          alert("Tạo đơn thuốc thành công!");
         });
     },
     createProcessClick() {
@@ -1404,11 +1378,11 @@ export default {
         });
     },
     updateClick() {
-      if (this.patientId == 0) {
+      if (this.phonePatient == "" || this.phonePatient == 0) {
         alert("Vui lòng nhập số điện thoại và chọn bệnh nhân tương ứng!");
         return;
       }
-      if (this.serviceId == 0) {
+      if (this.service_name == "") {
         alert("Vui lòng nhập tên dịch vụ và chọn dịch vụ tương ứng!");
         return;
       }
