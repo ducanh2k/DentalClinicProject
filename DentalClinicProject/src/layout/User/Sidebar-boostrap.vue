@@ -126,12 +126,12 @@ export default {
     },
     CheckRole() {
       this.role = localStorage.getItem("userRole");
-
-      // if (sessionStorage.getItem("firstRole")) {
+      // if (sessionStorage.getItem("firstRole") != null) {
+      //   // alert(sessionStorage.getItem("firstRole"));
       //   this.role = null;
-      //   sessionStorage.setItem("firstRole", "false");
-      // } else {
-      //   this.role = localStorage.getItem("userRole");
+      //   sessionStorage.removeItem("firstRole");
+      //   // alert(sessionStorage.getItem("firstRole"));
+      //   this.$router.push({ name: "Home" });
       // }
     },
     logIn() {
@@ -188,12 +188,12 @@ export default {
     },
   },
   mounted: function () {
-    this.fetchServices();
     this.CheckRole();
+    this.fetchServices();
   },
-  beforeDestroy() {
-    window.removeEventListener("beforeunload", this.handleBeforeUnload);
-  },
+  // beforeDestroy() {
+  //   window.removeEventListener("beforeunload", this.handleBeforeUnload);
+  // },
 };
 </script>
 

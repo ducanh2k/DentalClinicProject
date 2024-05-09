@@ -91,7 +91,7 @@ export default {
     this.$router.push("");
     // window.addEventListener("beforeunload", () => {
     //   sessionStorage.removeItem("firstLoadDone");
-    // });ee
+    // });
   },
   mounted() {
     // if (!sessionStorage.getItem("pageLoaded")) {
@@ -108,11 +108,11 @@ export default {
     //     alert("Trang được tải lại");
     //   }
     // });
-    localStorage.setItem("userRole", null);
+    localStorage.removeItem("userRole");
     if (!sessionStorage.getItem("firstLoadDone")) {
       localStorage.removeItem("currentPath");
       sessionStorage.setItem("firstLoadDone", "true");
-      sessionStorage.setItem("firstRole", "true");
+      sessionStorage.setItem("firstRole", true);
       this.$router.push({ name: "Home" });
     } else {
       const currentPath = localStorage.getItem("currentPath");
