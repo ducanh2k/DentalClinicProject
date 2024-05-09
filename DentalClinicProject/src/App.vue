@@ -89,11 +89,38 @@ export default {
   },
   created() {
     this.$router.push("");
+    // window.addEventListener("beforeunload", () => {
+    //   sessionStorage.removeItem("firstLoadDone");
+    // });ee
   },
   mounted() {
-    const currentPath = localStorage.getItem("currentPath");
-    if (currentPath) {
-      this.$router.push(currentPath);
+    // if (!sessionStorage.getItem("pageLoaded")) {
+    //   sessionStorage.setItem("pageLoaded", "true");
+    //   alert("ko co");
+    // }
+    // else{
+    //   alert("co'")
+    // }
+    // window.addEventListener("beforeunload", function (event) {
+    //   if (!sessionStorage.getItem("pageLoaded")) {
+    //     alert("Trang được đóng");
+    //   } else {
+    //     alert("Trang được tải lại");
+    //   }
+    // });
+    localStorage.setItem("userRole", null);
+    if (!sessionStorage.getItem("firstLoadDone")) {
+      localStorage.removeItem("currentPath");
+      sessionStorage.setItem("firstLoadDone", "true");
+      sessionStorage.setItem("firstRole", "true");
+      this.$router.push({ name: "Home" });
+    } else {
+      const currentPath = localStorage.getItem("currentPath");
+      if (currentPath) {
+        this.$router.push(currentPath);
+      } else {
+        // this.$router.push({ name: "Home" });
+      }
     }
   },
 };

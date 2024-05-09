@@ -63,7 +63,7 @@
         </router-link>
       </div>
       <div class="item1" tabindex="11" v-if="role !== 'Admin'">
-        <router-link to="/comment" class="item1__content">
+        <router-link to="/profileStaff" class="item1__content">
           <div class="item1-inner">Thông tin cá nhân</div>
         </router-link>
       </div>

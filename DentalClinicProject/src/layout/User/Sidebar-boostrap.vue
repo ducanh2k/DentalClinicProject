@@ -31,7 +31,9 @@
                   >
                 </li>
                 <li class="li-service">
-                  <a class="a-service" @click="Modern()">Cơ sở vật chất hiện đại</a>
+                  <a class="a-service" @click="Modern()"
+                    >Cơ sở vật chất hiện đại</a
+                  >
                 </li>
                 <li class="li-service">
                   <a class="a-service" @click="teamDoctor()">Đội ngũ bác sĩ</a>
@@ -64,13 +66,19 @@
               >
             </li>
             <li class="nav-item" @click="DentalKnowledge()">
-              <a class="nav-link active" aria-current="page" href="#">Tin Tức</a>
+              <a class="nav-link active" aria-current="page" href="#"
+                >Tin Tức</a
+              >
             </li>
             <li class="nav-item" @click="CKEditor()">
-              <a class="nav-link active" aria-current="page" href="#">Tạo trang dịch vụ</a>
+              <a class="nav-link active" aria-current="page" href="#"
+                >Tạo trang dịch vụ</a
+              >
             </li>
             <li class="nav-item" @click="CKEditor1()">
-              <a class="nav-link active" aria-current="page" href="#">Tạo trang tin tức</a>
+              <a class="nav-link active" aria-current="page" href="#"
+                >Tạo trang tin tức</a
+              >
             </li>
           </ul>
           <div v-if="role != null" class="log-out" @click="logOut()">
@@ -98,9 +106,10 @@ export default {
   components: {},
   data() {
     return {
-      role: "",
+      role: null,
       action: "",
       services: [],
+      checkRoleNull: null,
     };
   },
   methods: {
@@ -117,13 +126,19 @@ export default {
     },
     CheckRole() {
       this.role = localStorage.getItem("userRole");
+
+      // if (sessionStorage.getItem("firstRole")) {
+      //   this.role = null;
+      //   sessionStorage.setItem("firstRole", "false");
+      // } else {
+      //   this.role = localStorage.getItem("userRole");
+      // }
     },
     logIn() {
       this.role = null;
       localStorage.removeItem("userRole");
       this.$emit("log-in");
       this.$router.push({ name: "Login" });
-
     },
     logOut() {
       this.action = "log-out";
@@ -135,14 +150,13 @@ export default {
     teamDoctor() {
       this.$router.push({ name: "TeamDoctor" });
     },
-    CKEditor(){
+    CKEditor() {
       this.$router.push({ name: "CKEditor" });
     },
-    CKEditor1(){
+    CKEditor1() {
       this.$router.push({ name: "CKEditor1" });
-      
     },
-    Modern(){
+    Modern() {
       this.$router.push({ name: "Infrastructure" });
     },
     Overview() {
@@ -164,6 +178,9 @@ export default {
       localStorage.setItem("ServiceId", id);
       this.$router.push({ name: "Service" });
     },
+    handleBeforeUnload() {
+      this.role = null;
+    },
   },
   computed: {
     filteredServices() {
@@ -173,6 +190,9 @@ export default {
   mounted: function () {
     this.fetchServices();
     this.CheckRole();
+  },
+  beforeDestroy() {
+    window.removeEventListener("beforeunload", this.handleBeforeUnload);
   },
 };
 </script>

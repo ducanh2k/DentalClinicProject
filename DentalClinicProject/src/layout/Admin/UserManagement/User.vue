@@ -45,7 +45,7 @@
                 <th scope="col">Tên người dùng</th>
                 <th scope="col">Số điện thoại</th>
                 <th scope="col">Email</th>
-                <th scope="col">Ảnh</th>
+                <!-- <th scope="col">Ảnh</th> -->
                 <th scope="col">Mô tả</th>
                 <th scope="col">Lương</th>
                 <th scope="col">Vai trò</th>
@@ -60,9 +60,12 @@
                 <td class="data-from-db">{{ user.name }}</td>
                 <td class="data-from-db">{{ user.phone }}</td>
                 <td class="data-from-db">{{ user.email }}</td>
-                <td class="data-from-db">{{ user.img }}</td>
+                <!-- <td class="data-from-db">{{ user.img }}</td> -->
                 <td class="data-from-db">{{ user.description }}</td>
-                <td class="data-from-db">{{ user.salary }}</td>
+                <td class="data-from-db" v-if="user.salary != null">
+                  {{ user.salary.toLocaleString("vi-VN") }}.000 VND
+                </td>
+                <td class="data-from-db" v-if="user.salary == null">0</td>
                 <td class="data-from-db">{{ user.roleName }}</td>
                 <td>
                   <button
@@ -110,7 +113,9 @@
                     </svg>
                   </button>
                 </td>
-                <td>
+                <td
+                  v-if="user.roleName == 'Staff' || user.roleName == 'Doctor'"
+                >
                   <button
                     type="button"
                     class="btn btn-light mr-1"
@@ -216,10 +221,13 @@
               </div>
               <div>
                 <span class="input-group-text"
-                  ><strong>Số điện thoại</strong></span
+                  ><strong
+                    >Số điện thoại
+                    <b class="star" style="color: red">*</b></strong
+                  ></span
                 >
                 <input
-                  type="number"
+                  type="text"
                   class="form-control"
                   v-model="phone"
                   placeholder="Nhập số điện thoại"
@@ -238,7 +246,7 @@
                   v-model="email"
                 />
               </div>
-              <div>
+              <!-- <div>
                 <span class="input-group-text"
                   ><strong>Ảnh đại diện</strong></span
                 >
@@ -248,7 +256,7 @@
                   placeholder="Ảnh của người dùng"
                   v-model="img"
                 />
-              </div>
+              </div> -->
               <div v-if="ID == 0">
                 <span class="input-group-text"
                   ><strong
@@ -256,15 +264,16 @@
                   ></span
                 >
                 <input
-                  type="text"
+                  type="password"
                   class="form-control"
-                  placeholder="Nhập mật khẩu"
                   v-model="password"
                 />
               </div>
 
               <div v-if="role != 'patient'">
-                <span class="input-group-text"><strong>Lương</strong></span>
+                <span class="input-group-text"
+                  ><strong>Lương (.000 VND)</strong></span
+                >
                 <input
                   type="number"
                   class="form-control"
@@ -819,7 +828,9 @@ export default {
       name: "",
       dateCreated: "",
       phone: "",
+      rawPhone: "",
       email: "",
+      rawEmail: "",
       img: "",
       description: "",
       salary: 0,
@@ -850,6 +861,8 @@ export default {
       flagNext: 0,
       totalUsers: 0,
       isClicked: true,
+      allUsers: [],
+      tempSalary: 0,
       allUsers: [],
     };
   },
@@ -1075,6 +1088,15 @@ export default {
         this.fetchUsers();
       }
     },
+    getAllUsers1: async function () {
+      try {
+        let apiURL = "https://localhost:7034/api/User/doctor/list";
+        const response = await axios.get(apiURL, {});
+        this.allUsers = response.data;
+      } catch (error) {
+        console.error("Lỗi lấy dữ liệu:", error);
+      }
+    },
     getAllUsers: async function () {
       try {
         let apiURL = "https://localhost:7034/api/User/count";
@@ -1120,17 +1142,17 @@ export default {
       this.ID = 0;
       this.name = "";
       this.dateCreated = "";
-      this.phone = "";
+      this.phone = 0;
       this.email = "";
       this.img = "";
       this.description = "";
-      this.salary = "";
+      this.salary = 0;
       this.roleId = 1;
-      this.role = "";
+      this.role = "Patient";
       this.password = "";
       this.dob = "";
       this.address = "";
-      this.gender = "";
+      this.gender = true;
     },
     editClick(u) {
       this.modalTitle = "Sửa thông tin người dùng";
@@ -1138,7 +1160,9 @@ export default {
       this.name = u.name;
       this.dateCreated = u.dateCreated;
       this.phone = u.phone;
+      this.rawPhone = u.phone;
       this.email = u.email;
+      this.rawEmail = u.email;
       this.img = u.img;
       this.description = u.description;
       this.salary = u.salary;
@@ -1147,6 +1171,19 @@ export default {
       this.dob = this.formatDateString2(u.dob);
       this.address = u.address;
       this.gender = u.gender;
+    },
+    isNumber(value) {
+      return typeof value === "number" && !isNaN(value);
+    },
+    validateEmail(email) {
+      const re = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+      return re.test(email);
+    },
+    isEmailExists(email, userList) {
+      return userList.some((user) => user.email === email);
+    },
+    isPhoneExists(phone, userList) {
+      return userList.some((user) => user.phone == phone);
     },
     createClick() {
       if (this.role == "doctor") {
@@ -1165,8 +1202,26 @@ export default {
       if (this.name == "") {
         alert("Tên không được để trống!");
         return;
+      } else if (this.phone == "") {
+        alert("Số điện thoại không được để trống!");
+        return;
+      } else if (this.phone.trim().length !== 10) {
+        alert("Số điện thoại phải đủ 10 chữ số!");
+        return;
+      } else if (!/^\d+$/.test(this.phone)) {
+        alert("Số điện thoại không bao gồm kí tự khác ngoài số!");
+        return;
+        // } else if (this.isPhoneExists(this.phone, this.allUsers)) {
+        //   alert("Số điện thoại đã tồn tại!");
+        //   return;
+        // } else if (this.isEmailExists(this.email, this.allUsers)) {
+        //   alert("Địa chỉ email đã tồn tại!");
+        //   return;
       } else if (this.email == "") {
         alert("Email không được để trống!");
+        return;
+      } else if (!this.validateEmail(this.email)) {
+        alert("Email sai định dạng!");
         return;
       } else if (this.password == "") {
         alert("Mật khẩu không được để trống!");
@@ -1177,6 +1232,18 @@ export default {
       } else if (this.dob == "") {
         alert("Người dùng phải có ngày sinh!");
         return;
+      }
+      if (this.role == "Doctor") {
+        this.roleId = 3;
+      } else if (this.role == "Staff") {
+        this.roleId = 2;
+      } else if (this.role == "Patient") {
+        this.roleId = 4;
+      }
+      if (this.gender == "false") {
+        this.gender = false;
+      } else {
+        this.gender = true;
       }
       axios
         .post("https://localhost:7034/api/User", {
@@ -1194,6 +1261,15 @@ export default {
         .then((response) => {
           alert(response.data);
           this.fetchUsers();
+        })
+        .catch((error) => {
+          if (error.response) {
+            alert(error.response.data + "!");
+          } else if (error.request) {
+            alert("Error: No response received from the server");
+          } else {
+            alert(error.message);
+          }
         });
     },
     updateClick() {
@@ -1207,12 +1283,65 @@ export default {
       if (this.name == "") {
         alert("Tên không được để trống!");
         return;
+      } else if (this.phone == "") {
+        alert("Số điện thoại không được để trống!");
+        return;
+      } else if (this.phone.trim().length !== 10) {
+        alert("Số điện thoại phải đủ 10 chữ số!");
+        return;
+      } else if (!/^\d+$/.test(this.phone.trim())) {
+        alert("Số điện thoại không bao gồm kí tự khác ngoài số!");
+        return;
+        // } else if (this.phone != this.rawPhone) {
+        //   if (this.isPhoneExists(this.phone.trim(), this.allUsers)) {
+        //     alert("Số điện thoại đã tồn tại!");
+        //     return;
+        //   }
+        // } else if (this.email != this.rawEmail) {
+        //   console.log(this.allUserser);
+        //   if (this.isPhoneExists(this.email, this.allUsers)) {
+        //     alert("Địa chỉ email đã tồn tại!");
+        //     return;
+        //   }
+      } else if (!this.validateEmail(this.email)) {
+        alert("Email sai định dạng!");
+        return;
       } else if (this.email == "") {
         alert("Email không được để trống!");
         return;
       } else if (this.role == "") {
         alert("Người dùng phải có vai trò trong hệ thống!");
         return;
+      }
+      // let Salary = 0;
+      // if (this.isNumber(this.salary)) {
+      //   Salary = this.salary;
+      //   alert(this.salary);
+      // }
+      // // else Salary = this.tempSalary;
+      // console.log(
+      //   this.name +
+      //     " " +
+      //     this.email +
+      //     " " +
+      //     this.role +
+      //     " " +
+      //     this.dob +
+      //     " " +
+      //     this.salary
+      // );
+      // var numberString = this.salary.replace(/\./g, "");
+      if (this.role == "Doctor") {
+        this.roleId = 3;
+      } else if (this.role == "Staff") {
+        this.roleId = 2;
+      } else if (this.role == "Patient") {
+        this.roleId = 4;
+      }
+      if (this.gender == "false") {
+        this.gender = false;
+      } else {
+        this.gender = true;
       }
       axios
         .put("https://localhost:7034/api/User/" + this.ID, {
@@ -1230,8 +1359,17 @@ export default {
           addresss: this.address,
         })
         .then((response) => {
-          alert("Cập nhật thành công!");
+          alert(response.data);
           this.fetchUsers();
+        })
+        .catch((error) => {
+          if (error.response) {
+            alert(error.response.data + "!");
+          } else if (error.request) {
+            alert("Error: No response received from the server");
+          } else {
+            alert(error.message);
+          }
         });
     },
     deleteClick(id) {
@@ -1251,7 +1389,6 @@ export default {
         });
     },
     filterResults() {
-      console.log(this.searchText);
       if (this.searchText) {
         this.users = this.users.filter((user) =>
           Object.values(user).some((value) =>
@@ -1271,8 +1408,9 @@ export default {
     },
   },
   mounted: function () {
-    this.getAllUsers();
+    // this.getAllUsers1();
     this.fetchUsers();
+    this.getAllUsers();
   },
 };
 </script>

@@ -68,7 +68,7 @@
                 <td class="data-from-db" v-if="mRecord.gender == false">Nữ</td>
                 <td class="data-from-db">{{ mRecord.address }}</td>
                 <!-- Medicine -->
-                <td v-if="role === 'Admin'">
+                <td>
                   <button
                     type="button"
                     class="btn btn-light mr-1"
@@ -90,7 +90,7 @@
                   </button>
                 </td>
                 <!-- Invoice -->
-                <td v-if="role === 'Admin'">
+                <td>
                   <button
                     type="button"
                     class="btn btn-light mr-1"
@@ -114,7 +114,7 @@
                   </button>
                 </td>
                 <!-- Edit  -->
-                <td v-if="role === 'Admin'">
+                <td>
                   <button
                     type="button"
                     class="btn btn-light mr-1"
@@ -141,7 +141,7 @@
                   </button>
                 </td>
                 <!-- Delete  -->
-                <td v-if="role === 'Admin'">
+                <td>
                   <button
                     type="button"
                     @click="deleteClick(mRecord.medicalRecordId)"
@@ -193,7 +193,7 @@
         </div>
         <div class="under-table">
           <div class="sum__staff">
-            Tổng số bệnh nhân: <strong>{{ totalRecords }}</strong>
+            Tổng số hồ sơ: <strong>{{ totalRecords }}</strong>
           </div>
           <div class="pagination">
             <a @click="decreasePage()" class="page-link" v-if="currentPage > 1"
@@ -1306,7 +1306,7 @@ export default {
           details: details,
         })
         .then((response) => {
-          alert(response.data);
+          alert("Cập nhật đơn thuốc thành công!");
           this.fetchMRecords();
         });
     },

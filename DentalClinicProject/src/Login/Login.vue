@@ -58,7 +58,7 @@ export default {
   methods: {
     loginClick() {
       if (this.email === "" || this.password === "") {
-        alert("Email hoặc mật khẩu không được để trống.");
+        alert("Email hoặc mật khẩu không được để trống!");
         return;
       }
       axios
@@ -71,6 +71,7 @@ export default {
           const id = response.data.id;
           this.$emit("login-success", userRole);
           localStorage.setItem("userRole", userRole);
+          sessionStorage.setItem("firstRole", "false");
           localStorage.setItem("UserId", id);
           if (response.data.role === "Admin") {
             this.$router.push({ name: "Admin" });
