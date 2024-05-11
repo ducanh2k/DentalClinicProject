@@ -16,7 +16,7 @@
           </div>
         </div>
       </div>
-      <div class="main-body" style="width: 100%; overflow: auto; height: 100%;">
+      <div class="main-body" style="width: 100%; overflow: auto; height: 100%">
         <div class="container rounded bg-white mt-5 mb-5">
           <div class="row">
             <div class="col-md-3 border-right">
@@ -27,9 +27,51 @@
                   class="rounded-circle mt-5"
                   width="150px"
                   src="https://st3.depositphotos.com/15648834/17930/v/600/depositphotos_179308454-stock-illustration-unknown-person-silhouette-glasses-profile.jpg"
-                /><span class="font-weight-bold">Edogaru</span
-                ><span class="text-black-50">edogaru@mail.com.my</span
+                /><span class="font-weight-bold">{{ name }}</span
+                ><span class="text-black-50">{{ email }}</span
                 ><span> </span>
+                <br />
+
+                <span class="font-weight-bold">Đổi mật khẩu</span>
+                <div class="col-md-12">
+                  <label class="labels">Mật khẩu cũ</label
+                  ><input
+                    type="text"
+                    class="form-control"
+                    placeholder="Nhập mật khẩu cũ"
+                    value=""
+                    v-model="oldPass"
+                  />
+                </div>
+                <div class="col-md-12">
+                  <label class="labels">Mật khẩu mới</label
+                  ><input
+                    type="text"
+                    class="form-control"
+                    placeholder="Nhập mật khẩu mới"
+                    value=""
+                    v-model="newPass"
+                  />
+                </div>
+                <div class="col-md-12">
+                  <label class="labels">Mật khẩu mới</label
+                  ><input
+                    type="text"
+                    class="form-control"
+                    placeholder="Nhập lại mật khẩu mới"
+                    value=""
+                    v-model="newPass1"
+                  />
+                </div>
+                <div class="mt-5 text-center">
+                  <button
+                    class="btn btn-primary profile-button"
+                    @click="updatePassClick()"
+                    type="button"
+                  >
+                    Lưu mật khẩu
+                  </button>
+                </div>
               </div>
             </div>
             <div class="col-md-5 border-right">
@@ -37,56 +79,69 @@
                 <div
                   class="d-flex justify-content-between align-items-center mb-3"
                 >
-                  <h4 class="text-right">Profile Settings</h4>
+                  <h4 class="text-right">Cài đặt thông tin cá nhân</h4>
                 </div>
                 <div class="row mt-3">
                   <div class="col-md-12">
-                    <label class="labels">Số điện thoại</label
+                    <label class="labels"
+                      >Số điện thoại
+                      <b class="star" style="color: red">*</b></label
                     ><input
                       type="text"
                       class="form-control"
                       placeholder="Nhập số điện thoại"
                       value=""
+                      v-model="phone"
                     />
                   </div>
                   <div class="col-md-12">
                     <label class="labels">Mô tả</label
-                    ><input
+                    ><textarea
                       type="text"
                       class="form-control"
                       placeholder="Nhập Mô tả"
-
                       value=""
-                    />
+                      v-model="description"
+                    ></textarea>
                   </div>
-                  <div class="col-md-12">
-                    <label class="labels">Lương</label
+                  <!-- <div class="col-md-12">
+                    <label class="labels">Lương (.000 VND)</label
                     ><input
                       type="text"
                       class="form-control"
                       placeholder="Nhập Lương"
-
                       value=""
+                      v-model="salary"
+                      disabled
                     />
+                  </div> -->
+                  <div class="col-md-12">
+                    <span class="input-group-text"
+                      ><label class="labels">Giới tính</label></span
+                    >
+                    <input
+                      type="radio"
+                      class="btn-role"
+                      v-model="gender"
+                      value="true"
+                    />&nbsp; Nam
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                    <input
+                      type="radio"
+                      class="btn-role"
+                      v-model="gender"
+                      value="false"
+                    />&nbsp; Nữ
                   </div>
                   <div class="col-md-12">
-                    <label class="labels">Giới tính</label
+                    <label class="labels"
+                      >Ngày sinh <b class="star" style="color: red">*</b></label
                     ><input
-                      type="text"
-                      class="form-control"
-                      placeholder="Nhập Giới tính"
-
-                      value=""
-                    />
-                  </div>
-                  <div class="col-md-12">
-                    <label class="labels">Ngày sinh</label
-                    ><input
-                      type="text"
+                      type="date"
                       class="form-control"
                       placeholder="Nhập Ngày sinh"
-
                       value=""
+                      v-model="dob"
                     />
                   </div>
                   <div class="col-md-12">
@@ -95,19 +150,34 @@
                       type="text"
                       class="form-control"
                       placeholder="Nhập Địa chỉ"
-
                       value=""
+                      v-model="address"
                     />
                   </div>
                   <div class="col-md-12">
-                    <label class="labels">Vai trò</label
-                    ><input
-                      type="text"
-                      class="form-control"
-                      placeholder="Nhập Vai trò"
-
-                      value=""
-                    />
+                    <label class="labels">Vai trò</label>
+                    <div class="btnRole-container">
+                      <input
+                        type="radio"
+                        class="btn-role"
+                        v-model="role"
+                        value="Doctor"
+                      />&nbsp; Bác sĩ
+                      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                      <input
+                        type="radio"
+                        class="btn-role"
+                        v-model="role"
+                        value="Staff"
+                      />&nbsp; Nhân viên
+                      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                      <input
+                        type="radio"
+                        class="btn-role"
+                        v-model="role"
+                        value="Patient"
+                      />&nbsp; Bệnh nhân
+                    </div>
                   </div>
                 </div>
                 <!-- <div class="row mt-3">
@@ -131,8 +201,12 @@
                   </div>
                 </div> -->
                 <div class="mt-5 text-center">
-                  <button class="btn btn-primary profile-button" type="button">
-                    Save Profile
+                  <button
+                    class="btn btn-primary profile-button"
+                    @click="updateClick()"
+                    type="button"
+                  >
+                    Lưu thông tin
                   </button>
                 </div>
               </div>
@@ -177,6 +251,7 @@
 </template>
 
 <script>
+import { format, parseISO } from "date-fns";
 import "/src/css/Admin/main.css";
 import axios from "axios";
 import TheSidebar from "../TheSidebar.vue";
@@ -209,6 +284,22 @@ export default {
       flagNext: 0,
       allMaterial: [],
       totalMaterials: 0,
+      UserId: 0,
+      user: [],
+      name: "",
+      email: "",
+      phone: "",
+      description: "",
+      salary: "",
+      gender: "",
+      dob: "",
+      address: "",
+      role: "",
+      roleId: 0,
+      img: "",
+      oldPass: "",
+      newPass: "",
+      newPass1: "",
     };
   },
   computed: {
@@ -217,12 +308,19 @@ export default {
     },
   },
   methods: {
+    formatDateString(isoString) {
+      return format(parseISO(isoString), "dd-MM-yyyy");
+    },
+    formatDateString2(isoString) {
+      return format(parseISO(isoString), "yyyy-MM-dd");
+    },
     openSideBar() {
       if (this.isClicked === true) this.isClicked = false;
       else if (this.isClicked === false) this.isClicked = true;
     },
     CheckRole() {
       this.role = localStorage.getItem("userRole");
+      this.UserId = localStorage.getItem("UserId");
     },
     changPageNumber(number) {
       this.currentPage = number;
@@ -313,6 +411,24 @@ export default {
       this.quantityInStock = u.quantityInStock;
       this.deleteFlag = false;
     },
+    fetchUsers: async function () {
+      try {
+        let apiURL = "https://localhost:7034/api/User/" + this.UserId;
+        const response = await axios.get(apiURL, {});
+        this.user = response.data.user;
+        this.name = this.user.name;
+        this.email = this.user.email;
+        this.phone = this.user.phone;
+        this.description = this.user.description;
+        this.salary = this.user.salary;
+        this.gender = this.user.gender;
+        this.dob = this.formatDateString2(this.user.dob);
+        this.address = this.user.address;
+        this.role = this.user.roleName;
+      } catch (error) {
+        console.error("Lỗi lấy dữ liệu:", error);
+      }
+    },
     createClick() {
       if (this.materialName === "" || this.supplier === "") {
         alert("Tên vật liệu hoặc nhà cung cấp không được để trống!");
@@ -338,28 +454,93 @@ export default {
         });
     },
     updateClick() {
-      if (this.materialName === "" || this.supplier === "") {
-        alert("Tên vật liệu hoặc nhà cung cấp không được để trống!");
+      if (this.role == "doctor") {
+        this.roleId = 3;
+      } else if (this.role == "staff") {
+        this.roleId = 2;
+      } else {
+        this.roleId = 4;
+      }
+      if (this.phone == "") {
+        alert("Số điện thoại không được để trống!");
+        return;
+      } else if (this.phone.trim().length !== 10) {
+        alert("Số điện thoại phải đủ 10 chữ số!");
+        return;
+      } else if (!/^\d+$/.test(this.phone.trim())) {
+        alert("Số điện thoại không bao gồm kí tự khác ngoài số!");
+        return;
+      } else if (this.role == "") {
+        alert("Người dùng phải có vai trò trong hệ thống!");
         return;
       }
-      if (this.type === "true") {
-        this.type = true;
+      if (this.role == "Doctor") {
+        this.roleId = 3;
+      } else if (this.role == "Staff") {
+        this.roleId = 2;
+      } else if (this.role == "Patient") {
+        this.roleId = 4;
+      }
+      if (this.gender == "false") {
+        this.gender = false;
       } else {
-        this.type = false;
+        this.gender = true;
       }
       axios
-        .put("https://localhost:7034/api/Material/" + this.ID, {
-          materialId: this.ID,
-          materialName: this.materialName,
-          supplier: this.supplier,
-          unitPrice: this.unitPrice,
-          quantityInStock: this.quantityInStock,
-          type: this.type,
-          deleteFlag: this.deleteFlag,
+        .put("https://localhost:7034/api/User/" + this.UserId, {
+          name: this.name,
+          phone: this.phone,
+          email: this.email,
+          img: this.img,
+          description: this.description,
+          salary: this.salary,
+          roleId: this.roleId,
+          roleName: this.role,
+          deleteFlag: false,
+          gender: this.gender,
+          dob: this.dob,
+          address: this.address,
         })
         .then((response) => {
           alert(response.data);
-          this.fetchMaterial();
+          this.fetchUsers();
+        })
+        .catch((error) => {
+          if (error.response) {
+            alert(error.response.data + "!");
+          } else if (error.request) {
+            alert("Error: No response received from the server");
+          } else {
+            alert(error.message);
+          }
+        });
+    },
+    updatePassClick() {
+      if (this.newPass.trim() != this.newPass1.trim()) {
+        alert("Mật khẩu không khớp.Vui lòng nhập lại!");
+        return;
+      }
+      axios
+        .put(
+          "https://localhost:7034/api/User/changePassword/" +
+            this.UserId +
+            "?Oldpassword=" +
+            this.oldPass.trim() +
+            "&Newpassword=" +
+            this.newPass.trim()
+        )
+        .then((response) => {
+          alert(response.data);
+          this.fetchUsers();
+        })
+        .catch((error) => {
+          if (error.response) {
+            alert(error.response.data + "!");
+          } else if (error.request) {
+            alert("Error: No response received from the server");
+          } else {
+            alert(error.message);
+          }
         });
     },
     deleteClick(id) {
@@ -401,6 +582,7 @@ export default {
   mounted: function () {
     this.fetchMaterial();
     this.CheckRole();
+    this.fetchUsers();
     this.getAllMaterials();
   },
 };

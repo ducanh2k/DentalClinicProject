@@ -32,11 +32,17 @@ import Infrastructure from "../layout/User/Infrastructure/Infrastructure.vue";
 // import ProfileStaff from "../layout/Admin/RevenueManagement/Revenue.vue";
 // import ProfileStaff from "../layout/Admin/ProfileStaff/ProfileStaff.vue";
 import Material2 from "../layout/Admin/MaterialManagement2/Material2.vue";
+import ForgetPassword from "../ForgetPassword/ForgetPassword.vue";
 const routes = [
   {
     path: "/home",
     name: "Home",
     component: HomePage,
+  },
+  {
+    path: "/forgetPass",
+    name: "forgetPass",
+    component: ForgetPassword,
   },
   {
     path: "/profileStaff",

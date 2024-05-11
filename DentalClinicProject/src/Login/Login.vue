@@ -35,8 +35,10 @@
         </button>
         <br />
         <br />
-        <div class="lnkForget">
-          <a class="txtForget" href="" target="_blank">Quên mật khẩu?</a>
+        <div class="lnkForget" style="cursor: pointer">
+          <a class="txtForget" @click="forgetClick()" target="_blank"
+            >Quên mật khẩu?</a
+          >
         </div>
       </div>
     </div>
@@ -56,6 +58,9 @@ export default {
     };
   },
   methods: {
+    forgetClick() {
+      this.$router.push({ name: "forgetPass" });
+    },
     loginClick() {
       if (this.email === "" || this.password === "") {
         alert("Email hoặc mật khẩu không được để trống!");
