@@ -709,7 +709,7 @@
             </div>
             <div class="addnew newProcess" v-if="role === 'Admin'">
               <button
-                class="button-create"
+                class="createProcess"
                 data-bs-toggle="modal"
                 data-bs-target="#exampleModal"
                 @click="addProcessClick()"

@@ -45,6 +45,7 @@
                 <th scope="col">Tên người dùng</th>
                 <th scope="col">Số điện thoại</th>
                 <th scope="col">Email</th>
+                <th scope="col">Địa chỉ</th>
                 <!-- <th scope="col">Ảnh</th> -->
                 <th scope="col">Mô tả</th>
                 <th scope="col">Lương</th>
@@ -60,6 +61,7 @@
                 <td class="data-from-db">{{ user.name }}</td>
                 <td class="data-from-db">{{ user.phone }}</td>
                 <td class="data-from-db">{{ user.email }}</td>
+                <td class="data-from-db">{{ user.address }}</td>
                 <!-- <td class="data-from-db">{{ user.img }}</td> -->
                 <td class="data-from-db">{{ user.description }}</td>
                 <td class="data-from-db" v-if="user.salary != null">
@@ -581,7 +583,7 @@
                     <div class="new-detail">
                       <button
                         type="button"
-                        @click="CheckActivation('newExp')"
+                        @click="CheckActivation('-newExp')"
                         class="btn btn-light mr-1"
                         data-bs-toggle="modal"
                         data-bs-target="#exampleModal2"
@@ -952,7 +954,6 @@ export default {
       if (this.action === "newLang") {
         apiUrl = "https://localhost:7034/api/User/ForeignLanguages";
       }
-      console.log(apiUrl);
       axios
         .post(apiUrl, {
           employeeId: this.empId,

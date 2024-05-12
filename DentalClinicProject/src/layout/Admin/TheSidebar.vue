@@ -76,16 +76,23 @@ export default {
   data() {
     return {
       role: "",
+      id: 0,
     };
   },
   methods: {
     CheckRole() {
       this.role = localStorage.getItem("userRole");
+      if (this.role == null) {
+        this.id = localStorage.getItem("UserId");
+        if (this.id != null) {
+          this.role = "Admin";
+        }
+      }
     },
   },
   mounted() {
     this.CheckRole();
-  }
+  },
 };
 </script>
 
