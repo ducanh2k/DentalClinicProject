@@ -2,7 +2,7 @@
   <div class="profile-container">
     <div class="profile-info">
       <div class="info-picture"></div>
-      <div class="Char">
+      <div class="Char" style="margin-top: -100%; margin-left: -2%;">
         {{ firstChar }}
       </div>
       <div class="info-raw" v-if="userData !== null">
@@ -33,6 +33,7 @@
       <div class="profile-mdr">
         <div class="main-body">
           <div class="search-container">
+            v
             <input
               type="text"
               placeholder="Nhập từ khóa"
@@ -69,19 +70,49 @@
                 </tr>
               </thead>
               <tbody>
-                <tr v-for="p in profiles" :key="p.appointmentId">
+                <!-- <tr v-for="p in profiles" :key="p.appointmentId">
                   <th scope="row">{{ p.appointmentId }}</th>
                   <td class="data-from-db">{{ p.datetime }}</td>
                   <td class="data-from-db">
                     {{ p.serviceInfos[0].serviceName }}
                   </td>
-                  <td class="data-from-db" v-if="role !== 'Doctor'">{{ p.doctorName }}</td>
-                  <td class="data-from-db" v-if="role === 'Doctor'">{{ p.patientName }}</td>
-                  <td class="data-from-db" v-if="role !== 'Doctor'">{{ p.note }}</td>
+                  <td class="data-from-db" v-if="role !== 'Doctor'">
+                    {{ p.doctorName }}
+                  </td>
+                  <td class="data-from-db" v-if="role === 'Doctor'">
+                    {{ p.patientName }}
+                  </td>
+                  <td class="data-from-db" v-if="role !== 'Doctor'">
+                    {{ p.note }}
+                  </td>
                   <td class="data-from-db" v-if="role !== 'Doctor'">
                     {{ p.serviceInfos[0].servicePay }}
                   </td>
-                  <td class="data-from-db" v-if="role !== 'Doctor'">{{ p.status }}</td>
+                  <td class="data-from-db" v-if="role !== 'Doctor'">
+                    {{ p.status }}
+                  </td>
+                </tr> -->
+                <tr v-for="p in appointments" :key="p.appointmentId">
+                  <th scope="row">{{ p.appointmentId }}</th>
+                  <td class="data-from-db">{{ p.datetime }}</td>
+                  <td class="data-from-db">
+                    {{ p.phone }}
+                  </td>
+                  <td class="data-from-db" v-if="role !== 'Doctor'">
+                    {{ p.doctorName }}
+                  </td>
+                  <td class="data-from-db" v-if="role === 'Doctor'">
+                    {{ p.patientName }}
+                  </td>
+                  <td class="data-from-db" v-if="role !== 'Doctor'">
+                    {{ p.note }}
+                  </td>
+                  <td class="data-from-db" v-if="role !== 'Doctor'">
+                    {{ p.bookingDate }}
+                  </td>
+                  <td class="data-from-db" v-if="role !== 'Doctor'">
+                    {{ p.status }}
+                  </td>
                 </tr>
               </tbody>
             </table>
@@ -243,6 +274,7 @@ export default {
     return {
       role: "",
       profiles: [],
+      appointments: [],
       services: [],
       users: [],
       name: "",
@@ -345,6 +377,23 @@ export default {
           console.error("There has been a problem");
         });
     },
+    fetchAppointment() {
+      let apiURL =
+        "https://localhost:7034/api/Appointment/list/userId?userId=" +
+        this.UserId;
+
+      axios
+        .get(apiURL)
+        .then((response) => {
+          this.appointments = response.data;
+          // if (this.userData !== null) {
+          //   this.firstChar = this.userData.name.charAt(0);
+          // }
+        })
+        .catch((error) => {
+          console.error("There has been a problem");
+        });
+    },
     Booking() {
       let apiURL = "https://localhost:7034/api/Appointment";
       axios
@@ -414,6 +463,7 @@ export default {
     this.fetchProfiles();
     this.fetchServices();
     this.fetchListUsers();
+    this.fetchAppointment();
   },
 };
 </script>
