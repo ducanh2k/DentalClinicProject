@@ -62,9 +62,19 @@
           <div class="item1-inner">Bình luận</div>
         </router-link>
       </div>
-      <div class="item1" tabindex="11">
+      <div class="item1" tabindex="12">
         <router-link to="/profileStaff" class="item1__content">
           <div class="item1-inner">Thông tin cá nhân</div>
+        </router-link>
+      </div>
+      <div class="item1" tabindex="13">
+        <router-link to="/cKEditor" class="item1__content">
+          <div class="item1-inner">Tạo trang dịch vụ</div>
+        </router-link>
+      </div>
+      <div class="item1" tabindex="14">
+        <router-link to="/cKEditor1" class="item1__content">
+          <div class="item1-inner">Tạo trang tin tức</div>
         </router-link>
       </div>
     </div>

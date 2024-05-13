@@ -87,7 +87,7 @@ export default {
         });
     },
     backHome() {
-      this.$router.push({ name: "Home" });
+      this.$router.push({ name: "Service2" });
     },
   },
   mounted: function () {

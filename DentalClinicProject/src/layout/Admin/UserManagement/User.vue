@@ -68,7 +68,15 @@
                   {{ user.salary.toLocaleString("vi-VN") }}.000 VND
                 </td>
                 <td class="data-from-db" v-if="user.salary == null">0</td>
-                <td class="data-from-db">{{ user.roleName }}</td>
+                <td class="data-from-db" v-if="user.roleName == 'Staff'">Nhân viên</td>
+                <td class="data-from-db" v-if="user.roleName == 'Doctor'">Bác sĩ</td>
+                <td class="data-from-db" v-if="user.roleName == 'Patient'">Bệnh nhân</td>
+                <td class="data-from-db" v-if="user.roleName == 'Admin'">Quản trị viên</td>
+                <td class="data-from-db" v-if="user.roleName == null"></td>
+
+
+
+
                 <td>
                   <button
                     type="button"
@@ -1256,7 +1264,7 @@ export default {
           img: this.img,
           description: this.description,
           gender: this.gender,
-          addresss: this.address,
+          address: this.address,
           dob: this.formatDateString2(this.dob),
         })
         .then((response) => {
@@ -1357,7 +1365,7 @@ export default {
           deleteFlag: false,
           gender: this.gender,
           dob: this.formatDateString2(this.dob),
-          addresss: this.address,
+          address: this.address,
         })
         .then((response) => {
           alert(response.data);

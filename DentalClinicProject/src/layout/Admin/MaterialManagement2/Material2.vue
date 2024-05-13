@@ -154,7 +154,7 @@
                       v-model="address"
                     />
                   </div>
-                  <div class="col-md-12">
+                  <!-- <div class="col-md-12">
                     <label class="labels">Vai trò</label>
                     <div class="btnRole-container">
                       <input
@@ -178,7 +178,7 @@
                         value="Patient"
                       />&nbsp; Bệnh nhân
                     </div>
-                  </div>
+                  </div> -->
                 </div>
                 <!-- <div class="row mt-3">
                   <div class="col-md-6">

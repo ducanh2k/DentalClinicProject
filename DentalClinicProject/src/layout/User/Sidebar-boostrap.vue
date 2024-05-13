@@ -70,7 +70,7 @@
                 >Tin Tức</a
               >
             </li>
-            <li class="nav-item" @click="CKEditor()">
+            <!-- <li class="nav-item" @click="CKEditor()">
               <a class="nav-link active" aria-current="page" href="#"
                 >Tạo trang dịch vụ</a
               >
@@ -79,7 +79,7 @@
               <a class="nav-link active" aria-current="page" href="#"
                 >Tạo trang tin tức</a
               >
-            </li>
+            </li> -->
           </ul>
           <div v-if="role != null" class="log-out" @click="logOut()">
             Đăng xuất

@@ -1442,6 +1442,13 @@ export default {
 </script>
 
 <style scoped>
+.pagination {
+  cursor: pointer;
+}
+.page-link.active-page {
+  background-color: rgb(77, 75, 75);
+  color: white;
+}
 .input-group-text {
   background-color: rgb(255, 255, 255);
   margin-right: 20%;
