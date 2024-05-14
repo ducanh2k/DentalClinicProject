@@ -535,7 +535,7 @@ export default {
         })
         .catch((error) => {
           if (error.response) {
-            alert(error.response.data + "!");
+            alert("Đã xảy ra lỗi. Vui lòng kiểm tra lại thông tin" + "!");
           } else if (error.request) {
             alert("Error: No response received from the server");
           } else {

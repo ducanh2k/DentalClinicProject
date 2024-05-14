@@ -1,235 +1,263 @@
 <template>
-  <div class="container-Admin">
-    <TheSidebar v-if="isClicked === true"></TheSidebar>
-    <div class="main">
-      <div class="main-header">
-        <div class="title">
-          <div class="title__toggle" @click="openSideBar()">
-            <i class="fa-solid fa-bars fa-xl"></i>
-          </div>
-          <div class="title__company">Nha khoa Dentistry</div>
-          <div class="exit__button">
-            <i
-              class="fa-solid fa-right-from-bracket fa-xl"
-              @click="logOut()"
-            ></i>
-          </div>
+  <div class="profile-container">
+    <div class="profile-info">
+      <div class="info-picture"></div>
+      <div class="Char" style="margin-top: -100%; margin-left: -2%">
+        {{ firstChar }}
+      </div>
+      <div class="info-raw" v-if="userData !== null">
+        <p class="info-inner">Họ và tên: {{ userData.name }}</p>
+
+        <p class="info-inner">
+          Ngày sinh: {{ formatDateString(userData.dob) }}
+        </p>
+
+        <p class="info-inner" v-if="userData.gender == true">Giới tính: Nam</p>
+        <p class="info-inner" v-if="userData.gender == false">Giới tính: Nữ</p>
+
+        <p class="info-inner">Địa chỉ: {{ userData.address }}</p>
+
+        <p class="info-inner">Email: {{ userData.email }}</p>
+
+        <p class="info-inner">Số điện thoại: {{ userData.phone }}</p>
+
+        <p class="info-inner">Đổi mật khẩu</p>
+      </div>
+    </div>
+    <div class="profile-body">
+      <div class="profile-header">
+        <div class="mdr-name">Hồ sơ bệnh án</div>
+        <div class="go-homepage" @click="goHome()">Trang chủ</div>
+        <div class="log-out" @click="logOut()">Đăng xuất</div>
+        <div class="diagnose-button" @click="checkDiagnose()">
+          Danh sách lịch hẹn
         </div>
       </div>
-      <div class="main-body">
-        <div class="search-container">
-          <input
-            type="text"
-            placeholder="Nhập từ khóa"
-            class="search-box"
-            v-model="searchText"
-            @input="filterResults"
-          />
-          <button class="search-button" @click="filterResults">Tìm kiếm</button>
-          <div class="addnew" style="margin-left: -5%">
-            <button
-              class="button-create"
-              data-bs-toggle="modal"
-              data-bs-target="#exampleModalAddNew"
-              @click="addClick()"
-            >
-              Thêm mới hồ sơ
+      <div class="profile-mdr">
+        <div class="main-body">
+          <div class="search-container">
+            <input
+              type="text"
+              placeholder="Nhập từ khóa"
+              class="search-box"
+              v-model="searchText"
+              @input="filterResults"
+            />
+            <button class="search-button" @click="filterResults">
+              Tìm kiếm
             </button>
+            <div class="addnew" v-if="role === 'Patient'">
+              <button
+                class="button-create"
+                data-bs-toggle="modal"
+                data-bs-target="#exampleModal"
+                @click="addClick()"
+                style="margin-right: -250px"
+                v-if="role == 'Doctor'"
+              >
+                Thêm mới hồ sơ
+              </button>
+            </div>
           </div>
-        </div>
-        <div class="range">
-          <table class="table table-striped table-hover" style="height: 30%">
-            <thead>
-              <tr>
-                <th scope="col">Mã hồ sơ</th>
-                <th scope="col">Bệnh nhân</th>
-                <th scope="col">Mô tả</th>
-                <th scope="col">Số điện thoại</th>
-                <th scope="col">Ngày sinh</th>
-                <th scope="col">Giới tính</th>
-                <th scope="col">Địa chỉ</th>
-                <th scope="col"></th>
-                <th scope="col"></th>
-                <th scope="col"></th>
-                <th scope="col"></th>
-                <th scope="col"></th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr v-for="mRecord in mRecords" :key="mRecord.medicalRecordId">
-                <td class="data-from-db">{{ mRecord.medicalRecordId }}</td>
-                <td class="data-from-db">{{ mRecord.patientName }}</td>
-                <td class="data-from-db">{{ mRecord.description }}</td>
-                <td class="data-from-db">{{ mRecord.phone }}</td>
-                <td class="data-from-db">
-                  {{ formatDateString(mRecord.dob) }}
-                </td>
-                <td class="data-from-db" v-if="mRecord.gender == true">Nam</td>
-                <td class="data-from-db" v-if="mRecord.gender == false">Nữ</td>
-                <td class="data-from-db">{{ mRecord.address }}</td>
-                <!-- Medicine -->
-                <td>
-                  <button
-                    type="button"
-                    class="btn btn-light mr-1"
-                    data-bs-toggle="modal"
-                    @click="CheckPre(mRecord)"
-                  >
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      width="16"
-                      height="16"
-                      fill="currentColor"
-                      class="bi bi-capsule"
-                      viewBox="0 0 16 16"
+          <div class="range">
+            <table class="table table-striped table-hover" style="height: 30%">
+              <thead>
+                <tr>
+                  <th scope="col">Mã hồ sơ</th>
+                  <th scope="col">Bệnh nhân</th>
+                  <th scope="col">Mô tả</th>
+                  <th scope="col">Số điện thoại</th>
+                  <th scope="col">Ngày sinh</th>
+                  <th scope="col">Giới tính</th>
+                  <th scope="col">Địa chỉ</th>
+                  <th scope="col"></th>
+                  <th scope="col"></th>
+                  <th scope="col"></th>
+                  <th scope="col" v-if="role == 'Doctor'"></th>
+                  <th scope="col" v-if="role == 'Doctor'"></th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr v-for="mRecord in mRecords" :key="mRecord.medicalRecordId">
+                  <td class="data-from-db">{{ mRecord.medicalRecordId }}</td>
+                  <td class="data-from-db">{{ mRecord.patientName }}</td>
+                  <td class="data-from-db">{{ mRecord.description }}</td>
+                  <td class="data-from-db">{{ mRecord.phone }}</td>
+                  <td class="data-from-db">
+                    {{ formatDateString(mRecord.dob) }}
+                  </td>
+                  <td class="data-from-db" v-if="mRecord.gender == true">
+                    Nam
+                  </td>
+                  <td class="data-from-db" v-if="mRecord.gender == false">
+                    Nữ
+                  </td>
+                  <td class="data-from-db">{{ mRecord.address }}</td>
+                  <!-- Medicine -->
+                  <td>
+                    <button
+                      type="button"
+                      class="btn btn-light mr-1"
+                      data-bs-toggle="modal"
+                      @click="CheckPre(mRecord)"
                     >
-                      <path
-                        d="M1.828 8.9 8.9 1.827a4 4 0 1 1 5.657 5.657l-7.07 7.071A4 4 0 1 1 1.827 8.9Zm9.128.771 2.893-2.893a3 3 0 1 0-4.243-4.242L6.713 5.429z"
-                      />
-                    </svg>
-                  </button>
-                </td>
-                <!-- Invoice -->
-                <td>
-                  <button
-                    type="button"
-                    class="btn btn-light mr-1"
-                    data-bs-toggle="modal"
-                    data-bs-target="#exampleModalInvoice"
-                    @click="editInvoiceClick(mRecord)"
-                  >
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      width="16"
-                      height="16"
-                      fill="currentColor"
-                      class="bi bi-cash"
-                      viewBox="0 0 16 16"
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        width="16"
+                        height="16"
+                        fill="currentColor"
+                        class="bi bi-capsule"
+                        viewBox="0 0 16 16"
+                      >
+                        <path
+                          d="M1.828 8.9 8.9 1.827a4 4 0 1 1 5.657 5.657l-7.07 7.071A4 4 0 1 1 1.827 8.9Zm9.128.771 2.893-2.893a3 3 0 1 0-4.243-4.242L6.713 5.429z"
+                        />
+                      </svg>
+                    </button>
+                  </td>
+                  <!-- Invoice -->
+                  <td>
+                    <button
+                      type="button"
+                      class="btn btn-light mr-1"
+                      data-bs-toggle="modal"
+                      data-bs-target="#exampleModalInvoice"
+                      @click="editInvoiceClick(mRecord)"
                     >
-                      <path d="M8 10a2 2 0 1 0 0-4 2 2 0 0 0 0 4" />
-                      <path
-                        d="M0 4a1 1 0 0 1 1-1h14a1 1 0 0 1 1 1v8a1 1 0 0 1-1 1H1a1 1 0 0 1-1-1zm3 0a2 2 0 0 1-2 2v4a2 2 0 0 1 2 2h10a2 2 0 0 1 2-2V6a2 2 0 0 1-2-2z"
-                      />
-                    </svg>
-                  </button>
-                </td>
-                <!-- Edit  -->
-                <td>
-                  <button
-                    type="button"
-                    class="btn btn-light mr-1"
-                    data-bs-toggle="modal"
-                    data-bs-target="#exampleModalAddNew"
-                    @click="editClick(mRecord)"
-                  >
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      width="16"
-                      height="16"
-                      fill="currentColor"
-                      class="bi bi-pencil-square"
-                      viewBox="0 0 16 16"
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        width="16"
+                        height="16"
+                        fill="currentColor"
+                        class="bi bi-cash"
+                        viewBox="0 0 16 16"
+                      >
+                        <path d="M8 10a2 2 0 1 0 0-4 2 2 0 0 0 0 4" />
+                        <path
+                          d="M0 4a1 1 0 0 1 1-1h14a1 1 0 0 1 1 1v8a1 1 0 0 1-1 1H1a1 1 0 0 1-1-1zm3 0a2 2 0 0 1-2 2v4a2 2 0 0 1 2 2h10a2 2 0 0 1 2-2V6a2 2 0 0 1-2-2z"
+                        />
+                      </svg>
+                    </button>
+                  </td>
+                  <!-- Edit  -->
+                  <td v-if="role == 'Doctor'">
+                    <button
+                      type="button"
+                      class="btn btn-light mr-1"
+                      data-bs-toggle="modal"
+                      data-bs-target="#exampleModalAddNew"
+                      @click="editClick(mRecord)"
                     >
-                      <path
-                        d="M15.502 1.94a.5.5 0 0 1 0 .706L14.459 3.69l-2-2L13.502.646a.5.5 0 0 1 .707 0l1.293 1.293zm-1.75 2.456-2-2L4.939 9.21a.5.5 0 0 0-.121.196l-.805 2.414a.25.25 0 0 0 .316.316l2.414-.805a.5.5 0 0 0 .196-.12l6.813-6.814z"
-                      />
-                      <path
-                        fill-rule="evenodd"
-                        d="M1 13.5A1.5 1.5 0 0 0 2.5 15h11a1.5 1.5 0 0 0 1.5-1.5v-6a.5.5 0 0 0-1 0v6a.5.5 0 0 1-.5.5h-11a.5.5 0 0 1-.5-.5v-11a.5.5 0 0 1 .5-.5H9a.5.5 0 0 0 0-1H2.5A1.5 1.5 0 0 0 1 2.5z"
-                      />
-                    </svg>
-                  </button>
-                </td>
-                <!-- Delete  -->
-                <td>
-                  <button
-                    type="button"
-                    @click="deleteClick(mRecord.medicalRecordId)"
-                    class="btn btn-light mr-1"
-                  >
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      width="16"
-                      height="16"
-                      fill="currentColor"
-                      class="bi bi-trash-fill"
-                      viewBox="0 0 16 16"
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        width="16"
+                        height="16"
+                        fill="currentColor"
+                        class="bi bi-pencil-square"
+                        viewBox="0 0 16 16"
+                      >
+                        <path
+                          d="M15.502 1.94a.5.5 0 0 1 0 .706L14.459 3.69l-2-2L13.502.646a.5.5 0 0 1 .707 0l1.293 1.293zm-1.75 2.456-2-2L4.939 9.21a.5.5 0 0 0-.121.196l-.805 2.414a.25.25 0 0 0 .316.316l2.414-.805a.5.5 0 0 0 .196-.12l6.813-6.814z"
+                        />
+                        <path
+                          fill-rule="evenodd"
+                          d="M1 13.5A1.5 1.5 0 0 0 2.5 15h11a1.5 1.5 0 0 0 1.5-1.5v-6a.5.5 0 0 0-1 0v6a.5.5 0 0 1-.5.5h-11a.5.5 0 0 1-.5-.5v-11a.5.5 0 0 1 .5-.5H9a.5.5 0 0 0 0-1H2.5A1.5 1.5 0 0 0 1 2.5z"
+                        />
+                      </svg>
+                    </button>
+                  </td>
+                  <!-- Delete  -->
+                  <td v-if="role == 'Doctor'">
+                    <button
+                      type="button"
+                      @click="deleteClick(mRecord.medicalRecordId)"
+                      class="btn btn-light mr-1"
                     >
-                      <path
-                        d="M2.5 1a1 1 0 0 0-1 1v1a1 1 0 0 0 1 1H3v9a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2V4h.5a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1H10a1 1 0 0 0-1-1H7a1 1 0 0 0-1 1zm3 4a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-1 0v-7a.5.5 0 0 1 .5-.5M8 5a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-1 0v-7A.5.5 0 0 1 8 5m3 .5v7a.5.5 0 0 1-1 0v-7a.5.5 0 0 1 1 0"
-                      />
-                    </svg>
-                  </button>
-                </td>
-                <!-- Details  -->
-                <td>
-                  <button
-                    type="button"
-                    class="btn btn-light mr-1"
-                    data-bs-toggle="modal"
-                    data-bs-target="#exampleModal1"
-                    @click="ViewDetail(mRecord)"
-                  >
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      width="16"
-                      height="16"
-                      fill="currentColor"
-                      class="bi bi-card-text"
-                      viewBox="0 0 16 16"
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        width="16"
+                        height="16"
+                        fill="currentColor"
+                        class="bi bi-trash-fill"
+                        viewBox="0 0 16 16"
+                      >
+                        <path
+                          d="M2.5 1a1 1 0 0 0-1 1v1a1 1 0 0 0 1 1H3v9a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2V4h.5a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1H10a1 1 0 0 0-1-1H7a1 1 0 0 0-1 1zm3 4a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-1 0v-7a.5.5 0 0 1 .5-.5M8 5a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-1 0v-7A.5.5 0 0 1 8 5m3 .5v7a.5.5 0 0 1-1 0v-7a.5.5 0 0 1 1 0"
+                        />
+                      </svg>
+                    </button>
+                  </td>
+                  <!-- Details  -->
+                  <td>
+                    <button
+                      type="button"
+                      class="btn btn-light mr-1"
+                      data-bs-toggle="modal"
+                      data-bs-target="#exampleModal1"
+                      @click="ViewDetail(mRecord)"
                     >
-                      <path
-                        d="M14.5 3a.5.5 0 0 1 .5.5v9a.5.5 0 0 1-.5.5h-13a.5.5 0 0 1-.5-.5v-9a.5.5 0 0 1 .5-.5zm-13-1A1.5 1.5 0 0 0 0 3.5v9A1.5 1.5 0 0 0 1.5 14h13a1.5 1.5 0 0 0 1.5-1.5v-9A1.5 1.5 0 0 0 14.5 2z"
-                      />
-                      <path
-                        d="M3 5.5a.5.5 0 0 1 .5-.5h9a.5.5 0 0 1 0 1h-9a.5.5 0 0 1-.5-.5M3 8a.5.5 0 0 1 .5-.5h9a.5.5 0 0 1 0 1h-9A.5.5 0 0 1 3 8m0 2.5a.5.5 0 0 1 .5-.5h6a.5.5 0 0 1 0 1h-6a.5.5 0 0 1-.5-.5"
-                      />
-                    </svg>
-                  </button>
-                </td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
-        <div class="under-table">
-          <div class="sum__staff">
-            Tổng số hồ sơ: <strong>{{ totalRecords }}</strong>
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        width="16"
+                        height="16"
+                        fill="currentColor"
+                        class="bi bi-card-text"
+                        viewBox="0 0 16 16"
+                      >
+                        <path
+                          d="M14.5 3a.5.5 0 0 1 .5.5v9a.5.5 0 0 1-.5.5h-13a.5.5 0 0 1-.5-.5v-9a.5.5 0 0 1 .5-.5zm-13-1A1.5 1.5 0 0 0 0 3.5v9A1.5 1.5 0 0 0 1.5 14h13a1.5 1.5 0 0 0 1.5-1.5v-9A1.5 1.5 0 0 0 14.5 2z"
+                        />
+                        <path
+                          d="M3 5.5a.5.5 0 0 1 .5-.5h9a.5.5 0 0 1 0 1h-9a.5.5 0 0 1-.5-.5M3 8a.5.5 0 0 1 .5-.5h9a.5.5 0 0 1 0 1h-9A.5.5 0 0 1 3 8m0 2.5a.5.5 0 0 1 .5-.5h6a.5.5 0 0 1 0 1h-6a.5.5 0 0 1-.5-.5"
+                        />
+                      </svg>
+                    </button>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
           </div>
-          <div class="pagination">
-            <a @click="decreasePage()" class="page-link" v-if="currentPage > 1"
-              >Previous</a
-            >
+          <div class="under-table">
+            <div class="sum__staff">Tổng số hồ sơ: <strong>10</strong></div>
+            <div class="pagination">
+              <a
+                @click="decreasePage()"
+                class="page-link"
+                v-if="currentPage > 1"
+                >Previous</a
+              >
 
-            <a
-              @click="changPageNumber(Page1)"
-              v-if="Page1 <= totalPages"
-              class="page-link"
-              :class="{ 'active-page': currentPage === Page1 }"
-              >{{ Page1 }}</a
-            >
+              <a
+                @click="changPageNumber(Page1)"
+                v-if="Page1 <= totalPages"
+                class="page-link"
+                :class="{ 'active-page': currentPage === Page1 }"
+                >{{ Page1 }}</a
+              >
 
-            <a
-              @click="changPageNumber(Page2)"
-              v-if="Page2 <= totalPages"
-              class="page-link"
-              :class="{ 'active-page': currentPage === Page2 }"
-              >{{ Page2 }}</a
-            >
+              <a
+                @click="changPageNumber(Page2)"
+                v-if="Page2 <= totalPages"
+                class="page-link"
+                :class="{ 'active-page': currentPage === Page2 }"
+                >{{ Page2 }}</a
+              >
 
-            <a
-              @click="changPageNumber(Page3)"
-              v-if="Page3 <= totalPages"
-              class="page-link"
-              :class="{ 'active-page': currentPage === Page3 }"
-              >{{ Page3 }}</a
-            >
+              <a
+                @click="changPageNumber(Page3)"
+                v-if="Page3 <= totalPages"
+                class="page-link"
+                :class="{ 'active-page': currentPage === Page3 }"
+                >{{ Page3 }}</a
+              >
 
-            <a
-              @click="increasePage()"
-              class="page-link"
-              v-if="currentPage < totalPages"
-              >Next</a
-            >
+              <a
+                @click="increasePage()"
+                class="page-link"
+                v-if="currentPage < totalPages"
+                >Next</a
+              >
+            </div>
           </div>
         </div>
       </div>
@@ -534,7 +562,23 @@
                   readonly
                 />
               </div>
-              <div style="width: 150%">
+              <div style="width: 150%" v-if="role == 'Patient'">
+                <span class="input-group-text"
+                  ><strong>Trạng thái</strong></span
+                >
+                <p v-if="status == 1">&nbsp;&nbsp;Chưa thanh toán</p>
+                <p v-if="status == 0">&nbsp;&nbsp;Đã thanh toán</p>
+              </div>
+              <div style="display: flex" v-if="role == 'Patient'">
+                <div>
+                  <span class="input-group-text"
+                    ><strong>Phương thức thanh toán</strong></span
+                  >
+                  <p v-if="status == 1">&nbsp;&nbsp;Tiền mặt</p>
+                  <p v-if="status == 0">&nbsp;&nbsp;Chuyển khoản</p>
+                </div>
+              </div>
+              <div style="width: 150%" v-if="role == 'Doctor'">
                 <span class="input-group-text"
                   ><strong>Trạng thái</strong></span
                 >
@@ -554,7 +598,7 @@
                   />&nbsp; Đã thanh toán
                 </div>
               </div>
-              <div style="display: flex">
+              <div style="display: flex" v-if="role == 'Doctor'">
                 <div>
                   <span class="input-group-text"
                     ><strong>Phương thức thanh toán</strong></span
@@ -585,7 +629,7 @@
                 ></textarea>
               </div>
             </div>
-            <div>
+            <div v-if="role == 'Doctor'">
               <button
                 type="button"
                 @click="updateInvoiceClick()"
@@ -707,7 +751,7 @@
                 <strong>Quy trình</strong>
               </h5>
             </div>
-            <div class="addnew newProcess">
+            <div class="addnew newProcess" v-if="role == 'Doctor'">
               <button
                 class="createProcess"
                 data-bs-toggle="modal"
@@ -744,7 +788,7 @@
                       </td>
                       <td class="data-from-db">{{ a.examinationContent }}</td>
                       <td class="data-from-db">{{ a.note }}</td>
-                      <td v-if="role === 'Admin'">
+                      <td v-if="role == 'Doctor'">
                         <button
                           type="button"
                           class="btn btn-light mr-1"
@@ -770,7 +814,7 @@
                           </svg>
                         </button>
                       </td>
-                      <td v-if="role === 'Admin'">
+                      <td v-if="role == 'Doctor'">
                         <button
                           type="button"
                           @click="deleteProcessClick(a.processId)"
@@ -803,32 +847,53 @@
 </template>
 
 <script>
-import "/src/css/Admin/main.css";
 import { format, parseISO } from "date-fns";
 import axios from "axios";
-import TheSidebar from "../TheSidebar.vue";
+import "../../../css/Admin/main.css";
+import User from "../../Admin/UserManagement/User.vue";
 export default {
-  name: "MedicalRecord",
-  components: { TheSidebar },
+  name: "UserMedical",
+  components: {},
   data() {
     return {
       role: "",
+      profiles: [],
+      appointments: [],
+      services: [],
+      users: [],
+      listSelectedMedicine: [],
       mRecords: [],
-      mrDetails: [],
+      name: "",
+      datetime: "",
+      note: "",
       modalTitle: "",
-      medicalRecordId: 0,
+      roleId: 0,
+      role: "",
+      deleteFlag: false,
+      password: "",
       ID: 0,
+      selectedService: null,
       currentPage: 1,
       pageSize: 10,
       totalItems: 0,
       totalPages: 0,
       searchText: "",
+      UserId: 0,
+      userData: null,
+      docData: null,
+      firstChar: "",
+      searchText1: "",
+      searchText2: "",
+      serviceId: 0,
+      doctorId: 0,
+      mRecords: [],
+      mrDetails: [],
+      medicalRecordId: 0,
       medicalRecordDetailId: 0,
       employeeId: 0,
       employeeName: "",
       patientId: 0,
       patientName: "",
-      doctorId: 0,
       doctorName: "",
       serviceId: 0,
       serviceName: "",
@@ -897,13 +962,57 @@ export default {
   },
   methods: {
     formatDateString(isoString) {
-      if (isoString != null) {
-        return format(parseISO(isoString), "dd-MM-yyyy");
+      if (isoString == null) {
+        return;
       }
-      return null;
+      return format(parseISO(isoString), "dd-MM-yyyy");
     },
     formatDateString2(isoString) {
       return format(parseISO(isoString), "yyyy-MM-dd");
+    },
+    changPageNumber(number) {
+      this.currentPage = number;
+      this.fetchUsers();
+    },
+    decreasePage() {
+      if (this.currentPage > 1) {
+        this.currentPage--;
+        if (this.currentPage % 3 === 0) {
+          this.Page1 = this.currentPage - 2;
+          this.Page2 = this.currentPage - 1;
+          this.Page3 = this.currentPage;
+        }
+        this.fetchUsers();
+      }
+    },
+    increasePage() {
+      if (this.currentPage < this.totalPages) {
+        if (this.currentPage % 3 === 0) {
+          this.Page1 += 3;
+          this.Page2 += 3;
+          this.Page3 += 3;
+        }
+        this.flag = this.currentPage;
+        this.currentPage++;
+        this.fetchUsers();
+      }
+    },
+    addService(id) {
+      this.serviceId = id;
+    },
+    addUser(id) {
+      this.doctorId = id;
+      let apiURL = "https://localhost:7034/api/User/" + this.doctorId;
+
+      axios
+        .get(apiURL)
+        .then((response) => {
+          this.docData = response.data.user;
+          this.searchText2 = this.docData.name;
+        })
+        .catch((error) => {
+          console.error("There has been a problem");
+        });
     },
     fetchSuggestions() {
       let apiURL =
@@ -981,21 +1090,31 @@ export default {
     },
     CheckPre(mRecord) {
       this.mrId = mRecord.medicalRecordId;
-      if (!mRecord.prescriptionId) {
-        if (
-          confirm(
-            "Bệnh nhân này chưa có đơn thuốc, bạn muốn tạo mới đơn thuốc không?"
-          )
-        ) {
-          this.createPreClick();
-          this.fetchMRecords();
+      if (this.role == "Doctor") {
+        if (!mRecord.prescriptionId) {
+          if (
+            confirm(
+              "Bệnh nhân này chưa có đơn thuốc, bạn muốn tạo mới đơn thuốc không?"
+            )
+          ) {
+            this.createPreClick();
+            this.fetchMRecords();
+            this.preId = mRecord.prescriptionId;
+          }
+        } else {
           this.preId = mRecord.prescriptionId;
-        }
-      } else {
-        this.preId = mRecord.prescriptionId;
-        this.fetchPreById();
+          this.fetchPreById();
 
-        $("#exampleModalMedicine").modal("show");
+          $("#exampleModalMedicine").modal("show");
+        }
+      } else if (this.role == "Patient") {
+        if (!mRecord.prescriptionId) {
+          alert("Hồ sơ này chưa có đơn thuốc.");
+        } else {
+          this.preId = mRecord.prescriptionId;
+          this.fetchPreById();
+          $("#exampleModalMedicine").modal("show");
+        }
       }
     },
     fillMedicineName(event) {
@@ -1056,9 +1175,6 @@ export default {
       if (this.isClicked === true) this.isClicked = false;
       else if (this.isClicked === false) this.isClicked = true;
     },
-    CheckRole() {
-      this.role = localStorage.getItem("userRole");
-    },
     showAppointmentDetails(appointmentIds) {
       this.fetchAppointmentDetailsForEach(appointmentIds);
       console.log(appointmentIds);
@@ -1073,15 +1189,214 @@ export default {
           console.error("There has been a problem");
         });
     },
-    fetchAppointment(id) {
-      let apiURL = "https://localhost:7034/api/Appointment/" + id;
+    getDoctor() {
+      let apiURL = "https://localhost:7034/api/User/" + this.doctorId;
+
       axios
         .get(apiURL)
-        .then((response) => {})
+        .then((response) => {
+          this.docData = response.data.user;
+          this.searchText2 = this.docData.name;
+        })
         .catch((error) => {
           console.error("There has been a problem");
         });
     },
+    filterResultsService() {
+      if (this.searchText1) {
+        this.services = this.services.filter((service) =>
+          service.serviceName
+            .toLowerCase()
+            .includes(this.searchText1.toLowerCase())
+        );
+      } else {
+        this.fetchServices();
+      }
+    },
+    filterResultsUser() {
+      if (this.searchText1) {
+        this.users = this.users.filter((user) =>
+          user.userName.toLowerCase().includes(this.searchText2.toLowerCase())
+        );
+      } else {
+        this.fetchListUsers();
+      }
+    },
+    filterResults() {
+      if (this.searchText) {
+        const lowerSearchText = this.searchText.toLowerCase();
+        this.profiles = this.profiles.filter((profile) => {
+          const valuesToCheck = [
+            profile.datetime,
+            profile.note,
+            profile.serviceInfos[0].serviceName,
+            profile.doctorName,
+            profile.status,
+          ];
+          return valuesToCheck.some(
+            (value) => value && value.toLowerCase().includes(lowerSearchText)
+          );
+        });
+      } else {
+        this.fetchProfiles();
+      }
+    },
+    CheckRole() {
+      this.role = localStorage.getItem("userRole");
+      this.UserId = localStorage.getItem("UserId");
+    },
+    async fetchListUsers() {
+      let apiURL = "https://localhost:7034/api/User/doctor/list";
+      axios
+        .get(apiURL)
+        .then((response) => {
+          this.users = response.data;
+        })
+        .catch((error) => {
+          console.error("There has been a problem");
+        });
+    },
+    getDoctor() {
+      let apiURL = "https://localhost:7034/api/User/" + this.UserId;
+
+      axios
+        .get(apiURL)
+        .then((response) => {
+          this.userData = response.data.user;
+          if (this.userData !== null) {
+            this.firstChar = this.userData.name.charAt(0);
+          }
+        })
+        .catch((error) => {
+          console.error("There has been a problem");
+        });
+    },
+    fetchUsers() {
+      let apiURL = "https://localhost:7034/api/User/" + this.UserId;
+
+      axios
+        .get(apiURL)
+        .then((response) => {
+          this.userData = response.data.user;
+          if (this.userData !== null) {
+            this.firstChar = this.userData.name.charAt(0);
+          }
+        })
+        .catch((error) => {
+          console.error("There has been a problem");
+        });
+    },
+    fetchAppointment() {
+      let apiURL =
+        "https://localhost:7034/api/Appointment/list/userId?userId=" +
+        this.UserId;
+
+      axios
+        .get(apiURL)
+        .then((response) => {
+          this.appointments = response.data;
+          console.log(this.appointments);
+          // if (this.userData !== null) {
+          //   this.firstChar = this.userData.name.charAt(0);
+          // }
+        })
+        .catch((error) => {
+          console.error("There has been a problem");
+        });
+    },
+    Booking() {
+      let apiURL = "https://localhost:7034/api/Appointment";
+      axios
+        .post(apiURL, {
+          patientId: this.userData.userId,
+          doctorId: this.doctorId,
+          bookingDate: this.datetime,
+          note: this.note,
+        })
+        .then((response) => {
+          alert("Đặt lịch thành công.");
+          this.fetchProfiles();
+        });
+    },
+    async fetchProfiles() {
+      let apiURL =
+        "https://localhost:7034/api/Appointment/list/userId?userId=" +
+        this.UserId;
+      if (this.role === "Doctor") {
+        apiURL =
+          "https://localhost:7034/api/Appointment/list/doctorId?doctorId=" +
+          this.UserId;
+      }
+      axios
+        .get(apiURL)
+        .then((response) => {
+          this.profiles = response.data;
+        })
+        .catch((error) => {
+          console.error("There has been a problem");
+        });
+    },
+
+    async fetchServices() {
+      let apiURL = "https://localhost:7034/api/Service/list";
+      axios
+        .get(apiURL)
+        .then((response) => {
+          this.services = response.data;
+        })
+        .catch((error) => {
+          console.error("There has been a problem");
+        });
+    },
+    async fetchMRecords() {
+      let apiURL = "https://localhost:7034/api/MedicalRecord/list";
+      apiURL =
+        "https://localhost:7034/api/MedicalRecord/list?pageNumber=" +
+        this.currentPage;
+      axios
+        .get(apiURL)
+        .then((response) => {
+          if (this.role == "Patient") {
+            this.mRecords = response.data.filter(
+              (record) => record.patientId == this.UserId
+            );
+          } else if (this.role == "Doctor") {
+            this.mRecords = response.data;
+          }
+        })
+        .catch((error) => {
+          console.error("There has been a problem");
+        });
+    },
+    fetchPreById: async function () {
+      try {
+        const response = await axios.get(
+          "https://localhost:7034/api/Prescription/" + this.preId,
+          {}
+        );
+        this.listPres = response.data;
+        this.fetchAllMedicine();
+        if (this.listPres.details) {
+          this.listSelectedMedicine = this.listPres.details;
+        }
+      } catch (error) {
+        console.error("Lỗi lấy dữ liệu:", error);
+      }
+    },
+    selectService(service) {
+      this.selectedService = services;
+    },
+    goHome() {
+      this.$router.push({ name: "Home" });
+    },
+    checkDiagnose() {
+      this.$router.push({ name: "Profile" });
+    },
+    logOut() {
+      this.$router.push({ name: "Login" });
+      localStorage.removeItem("userRole");
+    },
+
     ViewDetail(mRecord) {
       this.mrId = mRecord.medicalRecordId;
       let apiURL =
@@ -1114,33 +1429,6 @@ export default {
           });
       });
     },
-    changPageNumber(number) {
-      this.currentPage = number;
-      this.fetchMRecords();
-    },
-    decreasePage() {
-      if (this.currentPage > 1) {
-        this.currentPage--;
-        if (this.currentPage % 3 === 0) {
-          this.Page1 = this.currentPage - 2;
-          this.Page2 = this.currentPage - 1;
-          this.Page3 = this.currentPage;
-        }
-        this.fetchMRecords();
-      }
-    },
-    increasePage() {
-      if (this.currentPage < this.totalPages) {
-        if (this.currentPage % 3 === 0) {
-          this.Page1 += 3;
-          this.Page2 += 3;
-          this.Page3 += 3;
-        }
-        this.flag = this.currentPage;
-        this.currentPage++;
-        this.fetchMRecords();
-      }
-    },
     async getTotalRecords() {
       let apiURL = "https://localhost:7034/api/MedicalRecord/count";
       axios
@@ -1152,21 +1440,6 @@ export default {
           console.error("There has been a problem");
         });
     },
-    async fetchMRecords() {
-      let apiURL = "https://localhost:7034/api/MedicalRecord/list";
-      apiURL =
-        "https://localhost:7034/api/MedicalRecord/list?pageNumber=" +
-        this.currentPage;
-      axios
-        .get(apiURL)
-        .then((response) => {
-          this.mRecords = response.data;
-        })
-        .catch((error) => {``
-          console.error("There has been a problem");
-        });
-    },
-
     addClick() {
       this.modalTitle = "Thêm mới hồ sơ bệnh án";
       this.ID = 0;
@@ -1415,28 +1688,15 @@ export default {
           this.message = "Lỗi xóa người dùng.";
         });
     },
-    filterResults() {
-      if (this.searchText) {
-        this.mRecords = this.mRecords.filter((mRecord) =>
-          Object.values(mRecord).some((value) =>
-            value
-              .toString()
-              .toLowerCase()
-              .includes(this.searchText.toLowerCase())
-          )
-        );
-      } else {
-        this.fetchMRecords();
-      }
-    },
-    logOut() {
-      this.$router.push({ name: "Login" });
-      localStorage.removeItem("userRole");
-    },
   },
   mounted: function () {
-    this.fetchMRecords();
     this.CheckRole();
+    this.fetchUsers();
+    this.fetchProfiles();
+    this.fetchServices();
+    this.fetchListUsers();
+    this.fetchAppointment();
+    this.fetchMRecords();
     this.getTotalRecords();
   },
 };
@@ -1450,66 +1710,90 @@ export default {
   background-color: rgb(77, 75, 75);
   color: white;
 }
-.input-group-text {
-  background-color: rgb(255, 255, 255);
-  margin-right: 20%;
+.profile-container {
+  margin: 0;
+  display: flex;
+  width: 100%;
+  height: 100vh;
 }
-.form-control {
-  margin-right: 30%;
-  width: 80%;
+.profile-info {
+  color: white;
+  background-color: brown;
+  padding: 20px;
+  width: 20%;
+  height: 100vh;
 }
-.form-Des {
-  width: 80%;
-  height: 50%;
-  word-wrap: break-word;
-}
-.btn-primary {
-  margin-top: 3%;
-}
-.table th,
-.table td {
-  min-width: 120px;
-  word-wrap: break-word;
-}
-.detailUser {
-  margin-right: 40px;
-  margin-bottom: 3px;
-}
-.input-group-text {
-  margin-top: 20px;
-  width: 200px;
-  margin-right: 100px;
-}
-.input-group-text {
-  border: none;
-}
-.form-control {
-  width: 400px;
-  margin-right: 80px;
-}
-.modal-content {
-  width: 1000px;
-}
-.modal-body {
-  width: 1000px;
-}
-.btnRole-container {
-  margin-right: 120px;
-}
-.btn-primary {
+.info-picture {
+  margin-left: 8%;
+  margin-bottom: 20px;
   width: 150px;
-  margin-right: 20px;
+  height: 150px;
+  border-radius: 50%;
+  background-color: bisque;
 }
-.modal-body {
-  height: auto;
+.profile-body {
+  width: 100%;
+  height: 100%;
 }
-.detailUser::before {
-  content: "•";
-  padding-right: 8px;
+.profile-header {
+  width: 100%;
+  height: 10%;
+  border-bottom: 1px solid gray;
+}
+.profile-header {
+  padding: 20px;
+  display: flex;
+  align-items: center;
+}
+.mdr-name {
+  cursor: pointer;
+}
+.log-out {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: rgb(205, 230, 230);
+  width: 100px;
+  height: 35px;
+  cursor: pointer;
+  margin-right: 10px;
+  position: absolute;
+  right: 0;
+}
+.go-homepage {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: rgb(205, 230, 230);
+  width: 100px;
+  height: 35px;
+  cursor: pointer;
+  position: absolute;
+  right: 120px;
+}
+.diagnose-button {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: rgb(205, 230, 230);
+  width: 200px;
+  height: 35px;
+  cursor: pointer;
+  position: absolute;
+  right: 230px;
+}
+.Char {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: -90%;
+  margin-left: -10%;
+  margin-bottom: 30%;
+  font-size: 6rem;
   color: black;
-  font-size: large;
 }
-.newProcess {
-  margin-left: 60%;
+.dropdown100 {
+  margin-left: 54% !important;
+  margin-top: -10%;
 }
 </style>

@@ -2,38 +2,40 @@
   <div class="profile-container">
     <div class="profile-info">
       <div class="info-picture"></div>
-      <div class="Char" style="margin-top: -100%; margin-left: -2%;">
+      <div class="Char" style="margin-top: -100%; margin-left: -2%">
         {{ firstChar }}
       </div>
       <div class="info-raw" v-if="userData !== null">
-        Họ và tên: {{ userData.name }}
-        <p class="info-inner"></p>
-        Tuổi: {{ userData.dob }}
-        <p class="info-inner"></p>
-        Giới tính: {{ userData.gender }}
-        <p class="info-inner"></p>
-        Địa chỉ: {{ userData.address }}
-        <p class="info-inner"></p>
-        Email: {{ userData.email }}
-        <p class="info-inner"></p>
-        Số điện thoại: {{ userData.phone }}
-        <p class="info-inner"></p>
+        <p class="info-inner">Họ và tên: {{ userData.name }}</p>
+
+        <p class="info-inner">
+          Ngày sinh: {{ formatDateString(userData.dob) }}
+        </p>
+
+        <p class="info-inner" v-if="userData.gender == true">Giới tính: Nam</p>
+        <p class="info-inner" v-if="userData.gender == false">Giới tính: Nữ</p>
+
+        <p class="info-inner">Địa chỉ: {{ userData.address }}</p>
+
+        <p class="info-inner">Email: {{ userData.email }}</p>
+
+        <p class="info-inner">Số điện thoại: {{ userData.phone }}</p>
+
         <p class="info-inner">Đổi mật khẩu</p>
       </div>
     </div>
     <div class="profile-body">
       <div class="profile-header">
-        <div class="mdr-name">Hồ sơ bệnh án</div>
+        <div class="mdr-name">Danh sách lịch hẹn</div>
         <div class="go-homepage" @click="goHome()">Trang chủ</div>
         <div class="log-out" @click="logOut()">Đăng xuất</div>
         <div class="diagnose-button" @click="checkDiagnose()">
-          Xem chẩn đoán của bạn
+          Hồ sơ bệnh án
         </div>
       </div>
       <div class="profile-mdr">
         <div class="main-body">
           <div class="search-container">
-            v
             <input
               type="text"
               placeholder="Nhập từ khóa"
@@ -63,9 +65,11 @@
                   <th scope="col">#</th>
                   <th scope="col">Ngày khám</th>
                   <th scope="col">Nội dung khám</th>
-                  <th scope="col">Bác sĩ</th>
-                  <th scope="col">Đơn thuốc</th>
-                  <th scope="col">Tổng thanh toán</th>
+                  <th scope="col" v-if="role !== 'Doctor'">Bác sĩ</th>
+                  <th scope="col" v-if="role == 'Doctor'">Bệnh nhân</th>
+                  <!-- <th scope="col">Đơn thuốc</th> -->
+                  <!-- <th scope="col">Hóa đơn</th> -->
+                  <th scope="col">Ghi chú</th>
                   <th scope="col">Trang thái</th>
                 </tr>
               </thead>
@@ -94,7 +98,9 @@
                 </tr> -->
                 <tr v-for="p in appointments" :key="p.appointmentId">
                   <th scope="row">{{ p.appointmentId }}</th>
-                  <td class="data-from-db">{{ p.datetime }}</td>
+                  <td class="data-from-db">
+                    {{ formatDateString(p.bookingDate) }}
+                  </td>
                   <td class="data-from-db">
                     {{ p.phone }}
                   </td>
@@ -104,14 +110,78 @@
                   <td class="data-from-db" v-if="role === 'Doctor'">
                     {{ p.patientName }}
                   </td>
-                  <td class="data-from-db" v-if="role !== 'Doctor'">
+                  <td class="data-from-db">
+                    {{ p.note }}
+                  </td>
+                  <!-- <td class="data-from-db" v-if="role !== 'Doctor'">
                     {{ p.note }}
                   </td>
                   <td class="data-from-db" v-if="role !== 'Doctor'">
                     {{ p.bookingDate }}
-                  </td>
-                  <td class="data-from-db" v-if="role !== 'Doctor'">
+                  </td> -->
+                  <!-- Medicine -->
+                  <!-- <td>
+                    <button
+                      type="button"
+                      class="btn btn-light mr-1"
+                      data-bs-toggle="modal"
+                      data-bs-target="#exampleModalMedicine"
+                      @click="CheckPre(mRecord)"
+                    >
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        width="16"
+                        height="16"
+                        fill="currentColor"
+                        class="bi bi-capsule"
+                        viewBox="0 0 16 16"
+                      >
+                        <path
+                          d="M1.828 8.9 8.9 1.827a4 4 0 1 1 5.657 5.657l-7.07 7.071A4 4 0 1 1 1.827 8.9Zm9.128.771 2.893-2.893a3 3 0 1 0-4.243-4.242L6.713 5.429z"
+                        />
+                      </svg>
+                    </button>
+                  </td> -->
+                  <!-- Invoice -->
+                  <!-- <td>
+                    <button
+                      type="button"
+                      class="btn btn-light mr-1"
+                      data-bs-toggle="modal"
+                      data-bs-target="#exampleModalInvoice"
+                      @click="editInvoiceClick(mRecord)"
+                    >
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        width="16"
+                        height="16"
+                        fill="currentColor"
+                        class="bi bi-cash"
+                        viewBox="0 0 16 16"
+                      >
+                        <path d="M8 10a2 2 0 1 0 0-4 2 2 0 0 0 0 4" />
+                        <path
+                          d="M0 4a1 1 0 0 1 1-1h14a1 1 0 0 1 1 1v8a1 1 0 0 1-1 1H1a1 1 0 0 1-1-1zm3 0a2 2 0 0 1-2 2v4a2 2 0 0 1 2 2h10a2 2 0 0 1 2-2V6a2 2 0 0 1-2-2z"
+                        />
+                      </svg>
+                    </button>
+                  </td> -->
+                  <!-- <td class="data-from-db" v-if="role !== 'Doctor'">
                     {{ p.status }}
+                  </td> -->
+                  <td
+                    class="data-from-db"
+                    v-if="role !== 'Doctor' && p.status != 1"
+                    style="color: red"
+                  >
+                    Kết thúc
+                  </td>
+                  <td
+                    class="data-from-db"
+                    v-if="role !== 'Doctor' && p.status == 1"
+                    style="color: green"
+                  >
+                    Đang chờ
                   </td>
                 </tr>
               </tbody>
@@ -120,10 +190,43 @@
           <div class="under-table">
             <div class="sum__staff">Tổng số lịch hẹn: <strong>10</strong></div>
             <div class="pagination">
-              <li><a @click="changPageNumber(1)" class="page-1">1</a></li>
-              <li><a @click="changPageNumber(2)" class="page-2">2</a></li>
-              <li><a @click="changPageNumber(3)" class="page-3">3</a></li>
-              <li><a @click="changPageNumber(0)" class="Next-page">Next</a></li>
+              <a
+                @click="decreasePage()"
+                class="page-link"
+                v-if="currentPage > 1"
+                >Previous</a
+              >
+
+              <a
+                @click="changPageNumber(Page1)"
+                v-if="Page1 <= totalPages"
+                class="page-link"
+                :class="{ 'active-page': currentPage === Page1 }"
+                >{{ Page1 }}</a
+              >
+
+              <a
+                @click="changPageNumber(Page2)"
+                v-if="Page2 <= totalPages"
+                class="page-link"
+                :class="{ 'active-page': currentPage === Page2 }"
+                >{{ Page2 }}</a
+              >
+
+              <a
+                @click="changPageNumber(Page3)"
+                v-if="Page3 <= totalPages"
+                class="page-link"
+                :class="{ 'active-page': currentPage === Page3 }"
+                >{{ Page3 }}</a
+              >
+
+              <a
+                @click="increasePage()"
+                class="page-link"
+                v-if="currentPage < totalPages"
+                >Next</a
+              >
             </div>
           </div>
         </div>
@@ -150,7 +253,7 @@
                       ><strong>Chọn ngày</strong></span
                     >
                     <input
-                      type="text"
+                      type="date"
                       class="form-control"
                       v-model="datetime"
                       placeholder="yyyy-MM-dd"
@@ -167,7 +270,7 @@
                       placeholder="Nhập ghi chú"
                     />
                   </div>
-                  <div class="dropdown">
+                  <!-- <div class="dropdown">
                     <button
                       class="btn btn-secondary dropdown-toggle"
                       type="button"
@@ -199,7 +302,7 @@
                         >
                       </li>
                     </ul>
-                  </div>
+                  </div> -->
                   <div class="dropdown100">
                     <button
                       class="btn btn-secondary dropdown-toggle"
@@ -258,12 +361,268 @@
             </div>
           </div>
         </div>
+        <!-- Medicine  -->
+        <div
+          class="modal fade"
+          id="exampleModalMedicine"
+          tabindex="-1"
+          aria-labelledby="exampleModalLabel"
+          style="width: 100%; overflow-y: auto"
+          aria-hidden="true"
+        >
+          <div
+            class="modal-dialog modal-lg modal-dialog-centered"
+            style="margin-left: 30%"
+          >
+            <div class="modal-content" style="width: 70%">
+              <div class="modal-header">
+                <div class="modal-header1">
+                  <h5 class="modal-title" id="exampleModalLabel">
+                    <strong>Đơn thuốc</strong>
+                  </h5>
+                </div>
+              </div>
+              <div class="modal-body" style="width: 70%">
+                <div class="">
+                  <div>
+                    <span class="input-group-text"
+                      ><strong>Mã đơn thuốc: &nbsp;&nbsp;{{ preId }} </strong>
+                    </span>
+                  </div>
+                  <!-- <div>
+                    <span class="input-group-text"
+                      ><strong
+                        >Tên thuốc
+                        <b class="star" style="color: red">*</b></strong
+                      ></span
+                    >
+                    <input
+                      type="text"
+                      class="form-control"
+                      v-model="medicineName"
+                      @input="fetchSuggestionsMedicine"
+                    />
+                    <select
+                      v-if="suggestionsMedicine !== null"
+                      class="form-control"
+                      @click="fillMedicineName($event)"
+                    >
+                      <option
+                        v-for="m in suggestionsMedicine"
+                        :value="m.name"
+                        :key="m.id"
+                      >
+                        {{ m.name }}
+                      </option>
+                    </select>
+                    <button
+                      type="button"
+                      @click="AddMedicine()"
+                      class="btn btn-primary"
+                    >
+                      Thêm vào danh sách
+                    </button>
+                  </div> -->
+                  <span class="input-group-text"
+                    ><strong>Đơn thuốc</strong></span
+                  >
+                  <ul
+                    class="list-group"
+                    style="
+                      overflow-y: auto;
+                      height: 200px;
+                      width: 140%;
+                      border: 1px solid gray;
+                    "
+                  >
+                    <li
+                      class="list-group-item"
+                      v-for="m in listSelectedMedicine"
+                      :key="m.id"
+                    >
+                      Tên thuốc: {{ m.name }} || Liều lượng:
+                      {{ m.dosageInstruction }}
+
+                      <button
+                        type="button"
+                        @click="removeMedicine(m.id)"
+                        class="btn btn-light mr-1"
+                      >
+                        <svg
+                          xmlns="http://www.w3.org/2000/svg"
+                          width="16"
+                          height="16"
+                          fill="currentColor"
+                          class="bi bi-trash-fill"
+                          viewBox="0 0 16 16"
+                        >
+                          <path
+                            d="M2.5 1a1 1 0 0 0-1 1v1a1 1 0 0 0 1 1H3v9a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2V4h.5a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1H10a1 1 0 0 0-1-1H7a1 1 0 0 0-1 1zm3 4a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-1 0v-7a.5.5 0 0 1 .5-.5M8 5a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-1 0v-7A.5.5 0 0 1 8 5m3 .5v7a.5.5 0 0 1-1 0v-7a.5.5 0 0 1 1 0"
+                          />
+                        </svg>
+                      </button>
+                    </li>
+                  </ul>
+                  <div>
+                    <span class="input-group-text"
+                      ><strong>Ghi chú</strong></span
+                    >
+                    <textarea
+                      type="text"
+                      class="form-control"
+                      v-model="notePrescription"
+                      placeholder="Nhập ghi chú"
+                      style="height: 150px; width: 140%"
+                    ></textarea>
+                  </div>
+                </div>
+                <div>
+                  <button
+                    type="button"
+                    @click="updatePreClick()"
+                    class="btn btn-primary"
+                  >
+                    Lưu
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- Invoice -->
+        <div
+          class="modal fade"
+          id="exampleModalInvoice"
+          tabindex="-1"
+          aria-labelledby="exampleModalLabel"
+          style="width: 100%; overflow-y: auto"
+          aria-hidden="true"
+        >
+          <div
+            class="modal-dialog modal-lg modal-dialog-centered"
+            style="margin-left: 30%"
+          >
+            <div class="modal-content" style="width: 70%">
+              <div class="modal-header">
+                <div class="modal-header1">
+                  <h5 class="modal-title" id="exampleModalLabel">
+                    <strong>Hóa đơn</strong>
+                  </h5>
+                </div>
+              </div>
+              <div class="modal-body" style="width: 70%">
+                <div class="">
+                  <div>
+                    <span class="input-group-text"
+                      ><strong>Mã hóa đơn: &nbsp;&nbsp;{{ invoiceId }} </strong>
+                    </span>
+                  </div>
+                  <div>
+                    <span class="input-group-text"
+                      ><strong>Tên bệnh nhân </strong></span
+                    >
+                    <input
+                      type="text"
+                      class="form-control"
+                      v-model="customer"
+                      readonly
+                    />
+                  </div>
+                  <div>
+                    <span class="input-group-text"
+                      ><strong>Tên dịch vụ </strong></span
+                    >
+                    <input
+                      type="text"
+                      class="form-control"
+                      v-model="service_name"
+                      readonly
+                    />
+                  </div>
+                  <div>
+                    <span class="input-group-text"
+                      ><strong>Tổng tiền </strong></span
+                    >
+                    <input
+                      type="text"
+                      class="form-control"
+                      v-model="price"
+                      readonly
+                    />
+                  </div>
+                  <div style="width: 150%">
+                    <span class="input-group-text"
+                      ><strong>Trạng thái</strong></span
+                    >
+                    <div class="btnRole-container">
+                      <input
+                        type="radio"
+                        class="btn-role"
+                        v-model="status"
+                        value="1"
+                      />&nbsp; Chưa thanh toán
+                      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                      <input
+                        type="radio"
+                        class="btn-role"
+                        v-model="status"
+                        value="2"
+                      />&nbsp; Đã thanh toán
+                    </div>
+                  </div>
+                  <div style="display: flex">
+                    <div>
+                      <span class="input-group-text"
+                        ><strong>Phương thức thanh toán</strong></span
+                      >
+                      <input
+                        type="radio"
+                        class="btn-role"
+                        v-model="paymentId"
+                        value="1"
+                      />&nbsp; Tiền mặt
+                      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                      <input
+                        type="radio"
+                        class="btn-role"
+                        v-model="paymentId"
+                        value="2"
+                      />&nbsp; Chuyển khoản
+                    </div>
+                  </div>
+                  <div>
+                    <span class="input-group-text"
+                      ><strong>Ghi chú</strong></span
+                    >
+                    <textarea
+                      type="text"
+                      class="form-control"
+                      v-model="comment"
+                      placeholder="Nhập ghi chú"
+                      style="height: 150px; width: 140%"
+                    ></textarea>
+                  </div>
+                </div>
+                <div>
+                  <button
+                    type="button"
+                    @click="updateInvoiceClick()"
+                    class="btn btn-primary"
+                  >
+                    Lưu
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   </div>
 </template>
 
 <script>
+import { format, parseISO } from "date-fns";
 import axios from "axios";
 import "../../../css/Admin/main.css";
 import User from "../../Admin/UserManagement/User.vue";
@@ -277,6 +636,8 @@ export default {
       appointments: [],
       services: [],
       users: [],
+      listSelectedMedicine: [],
+      mRecords: [],
       name: "",
       datetime: "",
       note: "",
@@ -294,6 +655,7 @@ export default {
       searchText: "",
       UserId: 0,
       userData: null,
+      docData: null,
       firstChar: "",
       searchText1: "",
       searchText2: "",
@@ -302,11 +664,72 @@ export default {
     };
   },
   methods: {
+    formatDateString(isoString) {
+      if (isoString == null) {
+        return;
+      }
+      return format(parseISO(isoString), "dd-MM-yyyy");
+    },
+    formatDateString2(isoString) {
+      return format(parseISO(isoString), "yyyy-MM-dd");
+    },
+    changPageNumber(number) {
+      this.currentPage = number;
+      this.fetchUsers();
+    },
+    decreasePage() {
+      if (this.currentPage > 1) {
+        this.currentPage--;
+        if (this.currentPage % 3 === 0) {
+          this.Page1 = this.currentPage - 2;
+          this.Page2 = this.currentPage - 1;
+          this.Page3 = this.currentPage;
+        }
+        this.fetchUsers();
+      }
+    },
+    increasePage() {
+      if (this.currentPage < this.totalPages) {
+        if (this.currentPage % 3 === 0) {
+          this.Page1 += 3;
+          this.Page2 += 3;
+          this.Page3 += 3;
+        }
+        this.flag = this.currentPage;
+        this.currentPage++;
+        this.fetchUsers();
+      }
+    },
     addService(id) {
       this.serviceId = id;
     },
     addUser(id) {
       this.doctorId = id;
+      let apiURL = "https://localhost:7034/api/User/" + this.doctorId;
+
+      axios
+        .get(apiURL)
+        .then((response) => {
+          this.docData = response.data.user;
+          this.searchText2 = this.docData.name;
+        })
+        .catch((error) => {
+          console.error("There has been a problem");
+        });
+    },
+
+    getDoctor() {
+      let apiURL = "https://localhost:7034/api/User/" + this.doctorId;
+
+      axios
+        .get(apiURL)
+        .then((response) => {
+          this.docData = response.data.user;
+          this.searchText2 = this.docData.name;
+        })
+        .catch((error) => {
+          console.error("There has been a problem");
+        });
     },
     filterResultsService() {
       if (this.searchText1) {
@@ -362,6 +785,21 @@ export default {
           console.error("There has been a problem");
         });
     },
+    getDoctor() {
+      let apiURL = "https://localhost:7034/api/User/" + this.UserId;
+
+      axios
+        .get(apiURL)
+        .then((response) => {
+          this.userData = response.data.user;
+          if (this.userData !== null) {
+            this.firstChar = this.userData.name.charAt(0);
+          }
+        })
+        .catch((error) => {
+          console.error("There has been a problem");
+        });
+    },
     fetchUsers() {
       let apiURL = "https://localhost:7034/api/User/" + this.UserId;
 
@@ -386,6 +824,7 @@ export default {
         .get(apiURL)
         .then((response) => {
           this.appointments = response.data;
+          console.log(this.appointments);
           // if (this.userData !== null) {
           //   this.firstChar = this.userData.name.charAt(0);
           // }
@@ -400,12 +839,7 @@ export default {
         .post(apiURL, {
           patientId: this.userData.userId,
           doctorId: this.doctorId,
-          services: [
-            {
-              id: this.serviceId,
-            },
-          ],
-          datetime: this.datetime,
+          bookingDate: this.datetime,
           note: this.note,
         })
         .then((response) => {
@@ -443,6 +877,35 @@ export default {
           console.error("There has been a problem");
         });
     },
+    async fetchMRecords() {
+      let apiURL = "https://localhost:7034/api/MedicalRecord/list";
+      apiURL =
+        "https://localhost:7034/api/MedicalRecord/list?pageNumber=" +
+        this.currentPage;
+      axios
+        .get(apiURL)
+        .then((response) => {
+          this.mRecords = response.data;
+        })
+        .catch((error) => {
+          console.error("There has been a problem");
+        });
+    },
+    fetchPreById: async function () {
+      try {
+        const response = await axios.get(
+          "https://localhost:7034/api/Prescription/" + this.preId,
+          {}
+        );
+        this.listPres = response.data;
+        this.fetchAllMedicine();
+        if (this.listPres.details) {
+          this.listSelectedMedicine = this.listPres.details;
+        }
+      } catch (error) {
+        console.error("Lỗi lấy dữ liệu:", error);
+      }
+    },
     selectService(service) {
       this.selectedService = services;
     },
@@ -450,7 +913,7 @@ export default {
       this.$router.push({ name: "Home" });
     },
     checkDiagnose() {
-      this.$router.push({ name: "Diagnose" });
+      this.$router.push({ name: "userMedical" });
     },
     logOut() {
       this.$router.push({ name: "Login" });
@@ -469,6 +932,13 @@ export default {
 </script>
 
 <style scoped>
+.pagination {
+  cursor: pointer;
+}
+.page-link.active-page {
+  background-color: rgb(77, 75, 75);
+  color: white;
+}
 .profile-container {
   margin: 0;
   display: flex;
@@ -553,5 +1023,6 @@ export default {
 }
 .dropdown100 {
   margin-left: 54% !important;
+  margin-top: -10%;
 }
 </style>

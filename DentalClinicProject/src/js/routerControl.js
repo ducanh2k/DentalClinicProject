@@ -33,6 +33,7 @@ import Infrastructure from "../layout/User/Infrastructure/Infrastructure.vue";
 // import ProfileStaff from "../layout/Admin/ProfileStaff/ProfileStaff.vue";
 import Material2 from "../layout/Admin/MaterialManagement2/Material2.vue";
 import ForgetPassword from "../ForgetPassword/ForgetPassword.vue";
+import UserMedical from "../layout/User/UserMedical/UserMedical.vue";
 const routes = [
   {
     path: "/home",
@@ -43,6 +44,11 @@ const routes = [
     path: "/forgetPass",
     name: "forgetPass",
     component: ForgetPassword,
+  },
+  {
+    path: "/userMedical",
+    name: "userMedical",
+    component: UserMedical,
   },
   {
     path: "/profileStaff",

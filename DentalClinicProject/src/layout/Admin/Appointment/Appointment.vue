@@ -409,6 +409,9 @@ export default {
   },
   methods: {
     formatDateString(isoString) {
+      if (isoString == null) {
+        return;
+      }
       return format(parseISO(isoString), "dd-MM-yyyy");
     },
     formatDateString2(isoString) {
@@ -594,6 +597,8 @@ export default {
       if (this.patientPhone == 0 || this.patientPhone == "") {
         alert("Vui lòng nhập số điện thoại và chọn bệnh nhân tương ứng!");
         return;
+      } else {
+        alert("not null");
       }
       if (this.doctorId == 0) {
         alert("Vui lòng nhập tên bác si và chọn bác sĩ tương ứng!");
@@ -658,7 +663,7 @@ export default {
     filterResults() {
       console.log(this.appointments);
       if (this.searchText) {
-        this.appointments = this.allApp.filter((a) =>
+        this.appointments = this.appointments.filter((a) =>
           Object.values(a).some((value) =>
             value
               .toString()

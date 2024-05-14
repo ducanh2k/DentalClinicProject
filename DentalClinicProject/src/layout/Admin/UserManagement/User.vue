@@ -68,14 +68,19 @@
                   {{ user.salary.toLocaleString("vi-VN") }}.000 VND
                 </td>
                 <td class="data-from-db" v-if="user.salary == null">0</td>
-                <td class="data-from-db" v-if="user.roleName == 'Staff'">Nhân viên</td>
-                <td class="data-from-db" v-if="user.roleName == 'Doctor'">Bác sĩ</td>
-                <td class="data-from-db" v-if="user.roleName == 'Patient'">Bệnh nhân</td>
-                <td class="data-from-db" v-if="user.roleName == 'Admin'">Quản trị viên</td>
+                <td class="data-from-db" v-if="user.roleName == 'Staff'">
+                  Nhân viên
+                </td>
+                <td class="data-from-db" v-if="user.roleName == 'Doctor'">
+                  Bác sĩ
+                </td>
+                <td class="data-from-db" v-if="user.roleName == 'Patient'">
+                  Bệnh nhân
+                </td>
+                <td class="data-from-db" v-if="user.roleName == 'Admin'">
+                  Quản trị viên
+                </td>
                 <td class="data-from-db" v-if="user.roleName == null"></td>
-
-
-
 
                 <td>
                   <button
@@ -1398,13 +1403,14 @@ export default {
         });
     },
     filterResults() {
-      if (this.searchText) {
+      if (this.searchText && this.searchText.trim() !== "") {
+        const searchTextLower = this.searchText.trim().toLowerCase();
         this.users = this.users.filter((user) =>
-          Object.values(user).some((value) =>
-            value
-              .toString()
-              .toLowerCase()
-              .includes(this.searchText.toLowerCase())
+          Object.values(user).some(
+            (value) =>
+              value !== null &&
+              value !== undefined &&
+              value.toString().toLowerCase().includes(searchTextLower)
           )
         );
       } else {
