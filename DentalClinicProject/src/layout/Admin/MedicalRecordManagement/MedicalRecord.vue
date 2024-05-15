@@ -1162,7 +1162,7 @@ export default {
         .then((response) => {
           this.mRecords = response.data;
         })
-        .catch((error) => {``
+        .catch((error) => {
           console.error("There has been a problem");
         });
     },
@@ -1416,13 +1416,14 @@ export default {
         });
     },
     filterResults() {
-      if (this.searchText) {
-        this.mRecords = this.mRecords.filter((mRecord) =>
-          Object.values(mRecord).some((value) =>
-            value
-              .toString()
-              .toLowerCase()
-              .includes(this.searchText.toLowerCase())
+      if (this.searchText && this.searchText.trim() !== "") {
+        const searchTextLower = this.searchText.trim().toLowerCase();
+        this.mRecords = this.mRecords.filter((user) =>
+          Object.values(user).some(
+            (value) =>
+              value !== null &&
+              value !== undefined &&
+              value.toString().toLowerCase().includes(searchTextLower)
           )
         );
       } else {

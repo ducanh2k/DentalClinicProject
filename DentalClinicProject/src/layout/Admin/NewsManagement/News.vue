@@ -111,7 +111,9 @@
           </table>
         </div>
         <div class="under-table">
-          <div class="sum__staff">Tổng số dịch vụ: <strong>{{ totalNews }}</strong></div>
+          <div class="sum__staff">
+            Tổng số dịch vụ: <strong>{{ totalNews }}</strong>
+          </div>
           <div class="pagination">
             <a @click="decreasePage()" class="page-link" v-if="currentPage > 1"
               >Previous</a
@@ -464,7 +466,7 @@ export default {
     },
     filterResults() {
       if (this.searchText) {
-        this.Newss = this.allNews.filter((News) =>
+        this.Newss = this.Newss.filter((News) =>
           Object.values(News).some((value) =>
             value
               .toString()

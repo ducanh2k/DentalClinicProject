@@ -35,12 +35,12 @@
                               />
                             </a>
                           </div> -->
-                          <h2 class="h4 text-center">Password Reset</h2>
+                          <h2 class="h4 text-center">Đặt lại mật khẩu</h2>
                           <h3
                             class="fs-6 fw-normal text-secondary text-center m-0"
                           >
-                            Provide the email address associated with your
-                            account to recover your password.
+                            Cung cấp địa chỉ email được liên kết với tài khoản
+                            của bạn để khôi phục mật khẩu.
                           </h3>
                         </div>
                       </div>
@@ -67,7 +67,7 @@
                               class="btn btn-dark btn-lg"
                               @click="resetClick()"
                             >
-                              Reset Password
+                            Đặt lại mật khẩu
                             </button>
                           </div>
                         </div>
@@ -82,7 +82,7 @@
                             href="#!"
                             class="link-secondary text-decoration-none"
                             @click="loginClick()"
-                            >Login</a
+                            >Đăng nhập</a
                           >
                         </div>
                       </div>
