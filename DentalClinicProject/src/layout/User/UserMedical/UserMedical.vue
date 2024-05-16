@@ -490,7 +490,7 @@
                 ></textarea>
               </div>
             </div>
-            <div>
+            <div v-if="role == 'Doctor'">
               <button
                 type="button"
                 @click="updatePreClick()"
