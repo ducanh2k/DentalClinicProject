@@ -1416,6 +1416,9 @@ export default {
         });
     },
     filterResults() {
+      if (this.searchText.includes("@")) {
+        this.searchText = "";
+      }
       if (this.searchText && this.searchText.trim() !== "") {
         const searchTextLower = this.searchText.trim().toLowerCase();
         this.mRecords = this.mRecords.filter((user) =>

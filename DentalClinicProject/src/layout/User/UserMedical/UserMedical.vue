@@ -21,7 +21,17 @@
 
         <p class="info-inner">Số điện thoại: {{ userData.phone }}</p>
 
-        <p class="info-inner">Đổi mật khẩu</p>
+        <!-- <p class="info-inner">Đổi mật khẩu</p> -->
+        <div class="d-grid">
+          <button
+            class="btn btn-dark btn-lg"
+            @click="changPassClick()"
+            data-bs-toggle="modal"
+            data-bs-target="#exampleModalChangePass"
+          >
+            Đổi mật khẩu
+          </button>
+        </div>
       </div>
     </div>
     <div class="profile-body">
@@ -259,6 +269,69 @@
                 v-if="currentPage < totalPages"
                 >Next</a
               >
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- ChangePass -->
+    <div
+      class="modal fade"
+      id="exampleModalChangePass"
+      tabindex="-1"
+      aria-labelledby="exampleModalLabel"
+      aria-hidden="true"
+    >
+      <div class="modal-dialog modal-lg modal-dialog-centered">
+        <div class="modal-content">
+          <div class="modal-header">
+            <div class="modal-header1">
+              <h5 class="modal-title" id="exampleModalLabel">
+                <strong> {{ modalTitle }} </strong>
+              </h5>
+            </div>
+          </div>
+          <div class="modal-body">
+            <div class="input-group md-3">
+              <div class="col-md-12">
+                <label class="labels">Mật khẩu cũ</label
+                ><input
+                  type="password"
+                  class="form-control"
+                  placeholder="Nhập mật khẩu cũ"
+                  value=""
+                  v-model="oldPass"
+                />
+              </div>
+              <div class="col-md-12">
+                <label class="labels">Mật khẩu mới</label
+                ><input
+                  type="password"
+                  class="form-control"
+                  placeholder="Nhập mật khẩu mới"
+                  value=""
+                  v-model="newPass"
+                />
+              </div>
+              <div class="col-md-12">
+                <label class="labels">Mật khẩu mới</label
+                ><input
+                  type="password"
+                  class="form-control"
+                  placeholder="Nhập lại mật khẩu mới"
+                  value=""
+                  v-model="newPass1"
+                />
+              </div>
+              <div class="mt-5 text-center">
+                <button
+                  class="btn btn-primary profile-button"
+                  @click="updatePassClick()"
+                  type="button"
+                >
+                  Lưu mật khẩu
+                </button>
+              </div>
             </div>
           </div>
         </div>
@@ -949,6 +1022,9 @@ export default {
       Page3: 3,
       flagNext: 0,
       totalRecords: 0,
+      oldPass: "",
+      newPass: "",
+      newPass1: "",
     };
   },
   computed: {
@@ -999,6 +1075,34 @@ export default {
         this.currentPage++;
         this.fetchUsers();
       }
+    },
+    updatePassClick() {
+      if (this.newPass.trim() != this.newPass1.trim()) {
+        alert("Mật khẩu không khớp.Vui lòng nhập lại!");
+        return;
+      }
+      axios
+        .put(
+          "https://localhost:7034/api/User/changePassword/" +
+            this.UserId +
+            "?Oldpassword=" +
+            this.oldPass.trim() +
+            "&Newpassword=" +
+            this.newPass.trim()
+        )
+        .then((response) => {
+          alert(response.data);
+          this.fetchUsers();
+        })
+        .catch((error) => {
+          if (error.response) {
+            alert("Đã xảy ra lỗi. Vui lòng kiểm tra lại thông tin" + "!");
+          } else if (error.request) {
+            alert("Error: No response received from the server");
+          } else {
+            alert(error.message);
+          }
+        });
     },
     addService(id) {
       this.serviceId = id;
@@ -1226,6 +1330,9 @@ export default {
       }
     },
     filterResults() {
+      if (this.searchText.includes("@")) {
+        this.searchText = "";
+      }
       if (this.searchText && this.searchText.trim() !== "") {
         const searchTextLower = this.searchText.trim().toLowerCase();
         this.mRecords = this.mRecords.filter((user) =>
@@ -1294,7 +1401,6 @@ export default {
         .get(apiURL)
         .then((response) => {
           this.appointments = response.data;
-          console.log(this.appointments);
           // if (this.userData !== null) {
           //   this.firstChar = this.userData.name.charAt(0);
           // }
@@ -1438,6 +1544,12 @@ export default {
         .catch((error) => {
           console.error("There has been a problem");
         });
+    },
+    changPassClick() {
+      this.modalTitle = "Đổi mật khẩu";
+      this.oldPass = "";
+      this.newPass = "";
+      this.newPass1 = "";
     },
     addClick() {
       this.modalTitle = "Thêm mới hồ sơ bệnh án";
@@ -1697,7 +1809,7 @@ export default {
     this.fetchProfiles();
     this.fetchServices();
     this.fetchListUsers();
-    this.fetchAppointment();
+    // this.fetchAppointment();
     this.fetchMRecords();
     this.getTotalRecords();
   },

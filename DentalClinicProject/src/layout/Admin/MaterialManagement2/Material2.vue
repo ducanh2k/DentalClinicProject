@@ -36,7 +36,7 @@
                 <div class="col-md-12">
                   <label class="labels">Mật khẩu cũ</label
                   ><input
-                    type="text"
+                    type="password"
                     class="form-control"
                     placeholder="Nhập mật khẩu cũ"
                     value=""
@@ -46,7 +46,7 @@
                 <div class="col-md-12">
                   <label class="labels">Mật khẩu mới</label
                   ><input
-                    type="text"
+                    type="password"
                     class="form-control"
                     placeholder="Nhập mật khẩu mới"
                     value=""
@@ -56,7 +56,7 @@
                 <div class="col-md-12">
                   <label class="labels">Mật khẩu mới</label
                   ><input
-                    type="text"
+                    type="password"
                     class="form-control"
                     placeholder="Nhập lại mật khẩu mới"
                     value=""

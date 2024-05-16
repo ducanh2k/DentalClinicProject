@@ -1403,7 +1403,7 @@ export default {
         });
     },
     filterResults() {
-      if (this.searchText == "anhtdhe141741@fpt.edu.vn") {
+      if (this.searchText.includes("@")) {
         this.searchText = "";
       }
       if (this.searchText && this.searchText.trim() !== "") {

@@ -529,7 +529,9 @@ export default {
         });
     },
     filterResults() {
-      console.log(this.searchText);
+      if (this.searchText.includes("@")) {
+        this.searchText = "";
+      }
       if (this.searchText) {
         this.medicines = this.allMedicines.filter((medicine) =>
           Object.values(medicine).some((value) =>

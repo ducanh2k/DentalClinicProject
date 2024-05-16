@@ -92,25 +92,24 @@
     <div class="container-overview">
       <div class="pic-overview"></div>
       <div class="header-overview">Hiểu biết về nha khoa</div>
-
-      <div class="strength-overview1">
-        <h1 class="mission-content-header"><strong>Tin tức nổi bật</strong></h1>
-        <div class="mission-top1">
-          <div class="mission-block-container" v-for="n in news" :key="n.id">
-            <div
-              class="mission-block1"
-              v-if="n.featured == true"
-              @click="goNews(n.id)"
-            >
-              <div class="container-mission12">
-                <div class="mission-icon1"></div>
-              </div>
-              <div class="container-mission11">
-                <div class="mission-content1">{{ n.createdAt }}</div>
-              </div>
-              <div class="container-mission11">
-                <div class="mission-content1">{{ n.tittle }}</div>
-              </div>
+    </div>
+    <div class="strength-overview1">
+      <h1 class="mission-content-header"><strong>Tin tức nổi bật</strong></h1>
+      <div class="mission-top1">
+        <div class="mission-block-container" v-for="n in news" :key="n.id">
+          <div
+            class="mission-block1"
+            v-if="n.featured == true"
+            @click="goNews(n.id)"
+          >
+            <div class="container-mission12">
+              <div class="mission-icon1"></div>
+            </div>
+            <div class="container-mission11">
+              <div class="mission-content1">{{ formatDateString(n.createdAt) }}</div>
+            </div>
+            <div class="container-mission11">
+              <div class="mission-content1">{{ n.tittle }}</div>
             </div>
           </div>
         </div>
@@ -226,6 +225,7 @@
 </template>
 
 <script>
+import { format, parseISO } from "date-fns";
 import "../../../css/User/contactUs.css";
 import "../../../css/User/footerMain.css";
 import "../../../css/User/DentalKnowledge.css";
@@ -247,6 +247,12 @@ export default {
     };
   },
   methods: {
+    formatDateString(isoString) {
+      return format(parseISO(isoString), "dd-MM-yyyy");
+    },
+    formatDateString2(isoString) {
+      return format(parseISO(isoString), "yyyy-MM-dd");
+    },
     goNews(id) {
       localStorage.setItem("NewsId", id);
       this.$router.push({ name: "NewsEdit" });

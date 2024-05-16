@@ -487,7 +487,9 @@ export default {
         });
     },
     filterResults() {
-      console.log(this.searchText);
+      if (this.searchText.includes("@")) {
+        this.searchText = "";
+      }
       if (this.searchText) {
         this.materials = this.allMaterial.filter((material) =>
           Object.values(material).some((value) =>

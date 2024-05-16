@@ -50,8 +50,8 @@
               </tr>
             </thead>
             <tbody>
-              <tr v-for="(service, index) in services" :key="service.serviceId">
-                <th scope="row">{{ index + 1 }}</th>
+              <tr v-for="service in services" :key="service.serviceId">
+                <th scope="row">{{ service.serviceId }}</th>
                 <td>{{ service.serviceName }}</td>
                 <td>{{ service.briefInfo }}</td>
                 <td>{{ service.price.toLocaleString("vi-VN") }}.000 VND</td>
@@ -431,6 +431,9 @@ export default {
         });
     },
     filterResults() {
+      if (this.searchText.includes("@")) {
+        this.searchText = "";
+      }
       if (this.searchText) {
         this.services = this.allServices.filter((service) =>
           Object.values(service).some(

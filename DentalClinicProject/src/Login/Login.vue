@@ -36,6 +36,8 @@
         <br />
         <br />
         <div class="lnkForget" style="cursor: pointer">
+          <a class="txtForget" @click="BackClick()" target="_blank">Quay lại</a
+          >&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
           <a class="txtForget" @click="forgetClick()" target="_blank"
             >Quên mật khẩu?</a
           >
@@ -61,6 +63,9 @@ export default {
     forgetClick() {
       this.$router.push({ name: "forgetPass" });
     },
+    BackClick() {
+      this.$router.push({ name: "Home" });
+    },
     loginClick() {
       if (this.email === "" || this.password === "") {
         alert("Email hoặc mật khẩu không được để trống!");
@@ -76,6 +81,7 @@ export default {
           const id = response.data.id;
           this.$emit("login-success", userRole);
           localStorage.setItem("userRole", userRole);
+          localStorage.setItem("userRole2", userRole);
           sessionStorage.setItem("firstRole", "false");
           localStorage.setItem("UserId", id);
           if (response.data.role === "Admin") {

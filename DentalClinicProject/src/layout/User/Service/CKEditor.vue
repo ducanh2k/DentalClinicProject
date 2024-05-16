@@ -15,7 +15,7 @@
       />
     </div>
     <button class="editorButton" @click="fetchDataClick()">
-      Lấy dữ liệu
+      Lấy dữ liệu dịch vụ
     </button>
     <button class="editorButton" @click="updateClick()">Lưu</button>
     <button class="editorButton" @click="backHome()">Trở về</button>
@@ -51,6 +51,10 @@ export default {
       this.role = localStorage.getItem("userRole");
     },
     fetchDataClick() {
+      if (this.ID == 0 || this.ID == "") {
+        alert("Vui lòng nhập mã dịch vụ!");
+        return;
+      }
       let apiURL = "https://localhost:7034/api/Service/" + this.ID;
       axios
         .get(apiURL)
@@ -63,9 +67,13 @@ export default {
         .catch((error) => {
           console.error("There has been a problem");
         });
-      alert("fetch successful");
+      alert("Lấy dữ liệu thành công!");
     },
     updateClick() {
+      if (this.ID == 0 || this.ID == "") {
+        alert("Vui lòng nhập mã dịch vụ!");
+        return;
+      }
       axios
         .put("https://localhost:7034/api/Service/" + this.ID, {
           description: this.description,
@@ -75,7 +83,7 @@ export default {
           deleteFlag: this.deleteFlag,
         })
         .then((response) => {
-          alert("Update thành công!");
+          alert("Cập nhật thành công!");
         });
     },
     backHome() {
@@ -89,9 +97,12 @@ export default {
 </script>
 <style scoped>
 .editorButton {
-  width: 7%;
-  height: 4% ;
   display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 9%;
+  height: 4%;
   bottom: 0;
+  margin: 1%;
 }
 </style>

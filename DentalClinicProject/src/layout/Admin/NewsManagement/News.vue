@@ -52,8 +52,8 @@
               </tr>
             </thead>
             <tbody>
-              <tr v-for="(News, index) in Newss" :key="News.id">
-                <th scope="row">{{ index + 1 }}</th>
+              <tr v-for="News in Newss" :key="News.id">
+                <th scope="row">{{ News.id }}</th>
                 <td>{{ News.tittle }}</td>
                 <td>{{ News.briefInfo }}</td>
                 <td>{{ News.description }}</td>

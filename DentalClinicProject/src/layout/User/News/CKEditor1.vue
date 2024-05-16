@@ -51,6 +51,10 @@ export default {
       this.role = localStorage.getItem("userRole");
     },
     fetchDataClick() {
+      if (this.ID == 0 || this.ID == "") {
+        alert("Vui lòng nhập mã tin tức!");
+        return;
+      }
       let apiURL = "https://localhost:7034/api/News/" + this.ID;
       axios
         .get(apiURL)
@@ -69,6 +73,10 @@ export default {
         });
     },
     updateClick() {
+      if (this.ID == 0 || this.ID == "") {
+        alert("Vui lòng nhập mã tin tức!");
+        return;
+      }
       axios
         .put("https://localhost:7034/api/News/" + this.ID, {
           description: this.description,
@@ -97,9 +105,12 @@ export default {
 </script>
 <style scoped>
 .editorButton {
-  width: 7%;
-  height: 2%;
   display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 9%;
+  height: 4% ;
   bottom: 0;
+  margin: 1%;
 }
 </style>

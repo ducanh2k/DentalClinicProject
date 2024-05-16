@@ -661,7 +661,9 @@ export default {
         });
     },
     filterResults() {
-      console.log(this.appointments);
+      if (this.searchText.includes("@")) {
+        this.searchText = "";
+      }
       if (this.searchText) {
         this.appointments = this.appointments.filter((a) =>
           Object.values(a).some((value) =>
