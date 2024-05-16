@@ -821,7 +821,6 @@ export default {
       currentPage: 1,
       pageSize: 10,
       totalItems: 0,
-      totalPages: 0,
       searchText: "",
       medicalRecordDetailId: 0,
       employeeId: 0,

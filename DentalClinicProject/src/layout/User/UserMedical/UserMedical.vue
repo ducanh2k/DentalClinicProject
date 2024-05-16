@@ -228,8 +228,11 @@
             </table>
           </div>
           <div class="under-table">
-            <div class="sum__staff">
+            <div class="sum__staff" v-if="role == 'Patient'">
               Tổng số hồ sơ: <strong>{{ mRecords.length }}</strong>
+            </div>
+            <div class="sum__staff" v-if="role == 'Doctor'">
+              Tổng số hồ sơ: <strong>{{ totalRecords }}</strong>
             </div>
             <div class="pagination">
               <a
@@ -951,7 +954,6 @@ export default {
       currentPage: 1,
       pageSize: 10,
       totalItems: 0,
-      totalPages: 0,
       searchText: "",
       UserId: 0,
       userData: null,
@@ -1029,8 +1031,8 @@ export default {
   },
   computed: {
     totalPages() {
-      if (this.mRecords.length >= 10)
-        return Math.ceil(this.mRecords.length / 10);
+      if (this.totalRecords >= 10 && this.role == "Doctor")
+        return Math.ceil(this.totalRecords / 10);
       else return 1;
     },
     paginatedUsers() {
@@ -1051,7 +1053,7 @@ export default {
     },
     changPageNumber(number) {
       this.currentPage = number;
-      this.fetchUsers();
+      this.fetchMRecords();
     },
     decreasePage() {
       if (this.currentPage > 1) {
@@ -1061,7 +1063,7 @@ export default {
           this.Page2 = this.currentPage - 1;
           this.Page3 = this.currentPage;
         }
-        this.fetchUsers();
+        this.fetchMRecords();
       }
     },
     increasePage() {
@@ -1073,7 +1075,7 @@ export default {
         }
         this.flag = this.currentPage;
         this.currentPage++;
-        this.fetchUsers();
+        this.fetchMRecords();
       }
     },
     updatePassClick() {
