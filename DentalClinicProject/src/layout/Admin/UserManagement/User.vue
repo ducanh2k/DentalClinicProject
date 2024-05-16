@@ -1403,6 +1403,9 @@ export default {
         });
     },
     filterResults() {
+      if (this.searchText == "anhtdhe141741@fpt.edu.vn") {
+        this.searchText = "";
+      }
       if (this.searchText && this.searchText.trim() !== "") {
         const searchTextLower = this.searchText.trim().toLowerCase();
         this.users = this.users.filter((user) =>
@@ -1424,6 +1427,9 @@ export default {
   },
   mounted: function () {
     // this.getAllUsers1();
+    if (this.searchText == "anhtdhe141741@fpt.edu.vn") {
+      this.searchText = "";
+    }
     this.fetchUsers();
     this.getAllUsers();
   },

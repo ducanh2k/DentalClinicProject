@@ -18,14 +18,14 @@
       </div>
       <div class="main-body">
         <div id="dashboard">
-          <div class="dropdown-year">
+          <div class="dropdown-year" style="width: 14%;">
             <select v-model="selectedYear" @change="onYearChange">
               <option v-for="year in years" :key="year" :value="year">
                 {{ year }}
               </option>
             </select>
           </div>
-          <div class="overview">
+          <div class="overview" style="width: 140% !important; margin-left: -70%;">
             <div class="revenue">
               <h5>Tổng thu</h5>
               <h5>{{ totalRevenue.toLocaleString("vi-VN") }} VND</h5>

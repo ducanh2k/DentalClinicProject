@@ -64,7 +64,7 @@
                 <tr>
                   <th scope="col">#</th>
                   <th scope="col">Ngày khám</th>
-                  <th scope="col">Nội dung khám</th>
+                  <th scope="col">Số điện thoại</th>
                   <th scope="col" v-if="role !== 'Doctor'">Bác sĩ</th>
                   <th scope="col" v-if="role == 'Doctor'">Bệnh nhân</th>
                   <!-- <th scope="col">Đơn thuốc</th> -->
@@ -171,14 +171,14 @@
                   </td> -->
                   <td
                     class="data-from-db"
-                    v-if="role !== 'Doctor' && p.status != 1"
+                    v-if="p.status != 1"
                     style="color: red"
                   >
                     Kết thúc
                   </td>
                   <td
                     class="data-from-db"
-                    v-if="role !== 'Doctor' && p.status == 1"
+                    v-if="p.status == 1"
                     style="color: green"
                   >
                     Đang chờ
@@ -188,7 +188,9 @@
             </table>
           </div>
           <div class="under-table">
-            <div class="sum__staff">Tổng số lịch hẹn: <strong>10</strong></div>
+            <div class="sum__staff">
+              Tổng số lịch hẹn: <strong>{{ appCount }}</strong>
+            </div>
             <div class="pagination">
               <a
                 @click="decreasePage()"
@@ -250,7 +252,10 @@
                 <div class="input-group md-3">
                   <div>
                     <span class="input-group-text"
-                      ><strong>Chọn ngày</strong></span
+                      ><strong
+                        >Chọn ngày
+                        <b class="star" style="color: red">*</b></strong
+                      ></span
                     >
                     <input
                       type="date"
@@ -270,71 +275,46 @@
                       placeholder="Nhập ghi chú"
                     />
                   </div>
-                  <!-- <div class="dropdown">
-                    <button
-                      class="btn btn-secondary dropdown-toggle"
-                      type="button"
-                      id="dropdownMenuButton1"
-                      data-bs-toggle="dropdown"
-                      aria-expanded="false"
-                      @click="filterResultsService"
+                  <div>
+                    <span class="input-group-text"
+                      ><strong
+                        >Chọn bác sĩ
+                        <b class="star" style="color: red">*</b></strong
+                      ></span
                     >
-                      <input
-                        type="text"
-                        placeholder="Nhập tên dịch vụ"
-                        class="search-box1"
-                        v-model="searchText1"
-                        @input="filterResultsService"
-                      />
-                    </button>
-                    <ul
-                      class="dropdown-menu"
-                      aria-labelledby="dropdownMenuButton1"
-                    >
-                      <li>
-                        <a
-                          class="dropdown-item"
-                          v-for="service in services"
-                          :key="service.serviceId"
-                          @click.prevent="addService(service.serviceId)"
-                        >
-                          {{ service.serviceName }}</a
-                        >
-                      </li>
-                    </ul>
-                  </div> -->
-                  <div class="dropdown100">
-                    <button
-                      class="btn btn-secondary dropdown-toggle"
-                      type="button"
-                      id="dropdownMenuButton1"
-                      data-bs-toggle="dropdown"
-                      aria-expanded="false"
-                      @click="filterResultsUser"
-                    >
-                      <input
-                        type="text"
-                        placeholder="Chọn bác sĩ"
-                        class="search-box2"
-                        v-model="searchText2"
-                        @input="filterResultsUser"
-                      />
-                    </button>
-                    <ul
-                      class="dropdown-menu"
-                      aria-labelledby="dropdownMenuButton1"
-                    >
-                      <li style="height: 200px; overflow-y: auto">
-                        <a
-                          class="dropdown-item"
-                          v-for="user in users"
-                          :key="user.userId"
-                          @click.prevent="addUser(user.userId)"
-                        >
-                          {{ user.name }}</a
-                        >
-                      </li>
-                    </ul>
+                    <div class="dropdown100">
+                      <button
+                        class="btn btn-secondary dropdown-toggle"
+                        type="button"
+                        id="dropdownMenuButton1"
+                        data-bs-toggle="dropdown"
+                        aria-expanded="false"
+                        @click="filterResultsUser"
+                      >
+                        <input
+                          type="text"
+                          placeholder="Chọn bác sĩ"
+                          class="search-box2"
+                          v-model="searchText2"
+                          @input="filterResultsUser"
+                        />
+                      </button>
+                      <ul
+                        class="dropdown-menu"
+                        aria-labelledby="dropdownMenuButton1"
+                      >
+                        <li style="height: 200px; overflow-y: auto">
+                          <a
+                            class="dropdown-item"
+                            v-for="user in users"
+                            :key="user.userId"
+                            @click.prevent="addUser(user.userId)"
+                          >
+                            {{ user.name }}</a
+                          >
+                        </li>
+                      </ul>
+                    </div>
                   </div>
                 </div>
                 <div>
@@ -661,7 +641,23 @@ export default {
       searchText2: "",
       serviceId: 0,
       doctorId: 0,
+      appCount: 0,
+      flag: 0,
+      Page1: 1,
+      Page2: 2,
+      Page3: 3,
+      flagNext: 0,
     };
+  },
+  computed: {
+    totalPages() {
+      return Math.ceil(this.appointments.length / 10);
+    },
+    paginatedUsers() {
+      const start = (this.currentPage - 1) * this.pageSize;
+      const end = start + this.pageSize;
+      return this.appointments.slice(start, end);
+    },
   },
   methods: {
     formatDateString(isoString) {
@@ -699,6 +695,11 @@ export default {
         this.currentPage++;
         this.fetchUsers();
       }
+    },
+    addClick() {
+      this.datetime = "";
+      this.note = "";
+      this.searchText2 = "";
     },
     addService(id) {
       this.serviceId = id;
@@ -743,31 +744,30 @@ export default {
       }
     },
     filterResultsUser() {
-      if (this.searchText1) {
+      if (this.searchText2) {
         this.users = this.users.filter((user) =>
-          user.userName.toLowerCase().includes(this.searchText2.toLowerCase())
+          user.userName
+            .trim()
+            .toLowerCase()
+            .includes(this.searchText2.trim().toLowerCase())
         );
       } else {
         this.fetchListUsers();
       }
     },
     filterResults() {
-      if (this.searchText) {
-        const lowerSearchText = this.searchText.toLowerCase();
-        this.profiles = this.profiles.filter((profile) => {
-          const valuesToCheck = [
-            profile.datetime,
-            profile.note,
-            profile.serviceInfos[0].serviceName,
-            profile.doctorName,
-            profile.status,
-          ];
-          return valuesToCheck.some(
-            (value) => value && value.toLowerCase().includes(lowerSearchText)
-          );
-        });
+      if (this.searchText && this.searchText.trim() !== "") {
+        const searchTextLower = this.searchText.trim().toLowerCase();
+        this.appointments = this.appointments.filter((user) =>
+          Object.values(user).some(
+            (value) =>
+              value !== null &&
+              value !== undefined &&
+              value.toString().toLowerCase().includes(searchTextLower)
+          )
+        );
       } else {
-        this.fetchProfiles();
+        this.fetchAppointment();
       }
     },
     CheckRole() {
@@ -815,25 +815,55 @@ export default {
           console.error("There has been a problem");
         });
     },
-    fetchAppointment() {
-      let apiURL =
-        "https://localhost:7034/api/Appointment/list/userId?userId=" +
-        this.UserId;
+    // fetchAppointment() {
+    //   let apiURL =
+    //     "https://localhost:7034/api/Appointment/list/userId?userId=" +
+    //     this.UserId;
 
-      axios
-        .get(apiURL)
-        .then((response) => {
-          this.appointments = response.data;
-          console.log(this.appointments);
-          // if (this.userData !== null) {
-          //   this.firstChar = this.userData.name.charAt(0);
-          // }
-        })
-        .catch((error) => {
-          console.error("There has been a problem");
-        });
-    },
+    //   if (this.role == "Doctor") {
+    //     apiURL = "https://localhost:7034/api/Appointment/listall";
+    //   }
+    //   axios
+    //     .get(apiURL)
+    //     .then((response) => {
+    //       this.appointments = response.data;
+    //       this.appCount = this.appointments.length;
+
+    //       // if (this.role === "Doctor") {
+    //       //   this.appointments = this.appointments.filter(
+    //       //     (appointment) =>
+    //       //       appointment.doctorName.toLowerCase() ===
+    //       //       this.userData.name.toLowerCase()
+    //       //   );
+    //       // }
+
+    //       // if (this.userData !== null) {
+    //       //   this.firstChar = this.userData.name.charAt(0);
+    //       // }
+    //     })
+    //     .catch((error) => {
+    //       console.error("There has been a problem");
+    //     });
+    // },
     Booking() {
+      if (this.datetime == "") {
+        alert("Ngày đặt lịch không được để trống!");
+        return;
+      }
+
+      const bookingDate = new Date(this.datetime);
+      const currentDate = new Date();
+      bookingDate.setHours(0, 0, 0, 0);
+      currentDate.setHours(0, 0, 0, 0);
+
+      if (bookingDate < currentDate) {
+        alert("Ngày đặt lịch phải lớn hơn hoặc bằng ngày hiện tại!");
+        return;
+      }
+      if (this.searchText2 == "" || this.doctorId == null) {
+        alert("Vui lòng nhập tên bác sĩ và chọn bác sĩ tương ứng!");
+        return;
+      }
       let apiURL = "https://localhost:7034/api/Appointment";
       axios
         .post(apiURL, {
@@ -843,7 +873,7 @@ export default {
           note: this.note,
         })
         .then((response) => {
-          alert("Đặt lịch thành công.");
+          alert("Đặt lịch thành công!");
           this.fetchProfiles();
         });
     },
@@ -859,7 +889,8 @@ export default {
       axios
         .get(apiURL)
         .then((response) => {
-          this.profiles = response.data;
+          this.appointments = response.data;
+          this.appCount = this.appointments.length;
         })
         .catch((error) => {
           console.error("There has been a problem");
@@ -926,7 +957,7 @@ export default {
     this.fetchProfiles();
     this.fetchServices();
     this.fetchListUsers();
-    this.fetchAppointment();
+    // this.fetchAppointment();
   },
 };
 </script>
@@ -1022,7 +1053,5 @@ export default {
   color: black;
 }
 .dropdown100 {
-  margin-left: 54% !important;
-  margin-top: -10%;
 }
 </style>

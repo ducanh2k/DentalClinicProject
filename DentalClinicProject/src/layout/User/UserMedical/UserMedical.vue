@@ -46,11 +46,11 @@
             <button class="search-button" @click="filterResults">
               Tìm kiếm
             </button>
-            <div class="addnew" v-if="role === 'Patient'">
+            <div class="addnew">
               <button
                 class="button-create"
                 data-bs-toggle="modal"
-                data-bs-target="#exampleModal"
+                data-bs-target="#exampleModalAddNew"
                 @click="addClick()"
                 style="margin-right: -250px"
                 v-if="role == 'Doctor'"
@@ -218,7 +218,9 @@
             </table>
           </div>
           <div class="under-table">
-            <div class="sum__staff">Tổng số hồ sơ: <strong>10</strong></div>
+            <div class="sum__staff">
+              Tổng số hồ sơ: <strong>{{ mRecords.length }}</strong>
+            </div>
             <div class="pagination">
               <a
                 @click="decreasePage()"
@@ -775,8 +777,8 @@
                       <th scope="col">Ngày khám</th>
                       <th scope="col">Nội dung</th>
                       <th scope="col">Ghi chú</th>
-                      <th scope="col"></th>
-                      <th scope="col"></th>
+                      <th scope="col" v-if="role == 'Doctor'"></th>
+                      <th scope="col" v-if="role == 'Doctor'"></th>
                     </tr>
                   </thead>
                   <tbody>
@@ -951,7 +953,8 @@ export default {
   },
   computed: {
     totalPages() {
-      if (this.totalRecords >= 10) return Math.ceil(this.totalRecords / 10);
+      if (this.mRecords.length >= 10)
+        return Math.ceil(this.mRecords.length / 10);
       else return 1;
     },
     paginatedUsers() {
@@ -1223,20 +1226,16 @@ export default {
       }
     },
     filterResults() {
-      if (this.searchText) {
-        const lowerSearchText = this.searchText.toLowerCase();
-        this.profiles = this.profiles.filter((profile) => {
-          const valuesToCheck = [
-            profile.datetime,
-            profile.note,
-            profile.serviceInfos[0].serviceName,
-            profile.doctorName,
-            profile.status,
-          ];
-          return valuesToCheck.some(
-            (value) => value && value.toLowerCase().includes(lowerSearchText)
-          );
-        });
+      if (this.searchText && this.searchText.trim() !== "") {
+        const searchTextLower = this.searchText.trim().toLowerCase();
+        this.mRecords = this.mRecords.filter((user) =>
+          Object.values(user).some(
+            (value) =>
+              value !== null &&
+              value !== undefined &&
+              value.toString().toLowerCase().includes(searchTextLower)
+          )
+        );
       } else {
         this.fetchProfiles();
       }
@@ -1447,7 +1446,10 @@ export default {
       this.deleteFlag = false;
       this.phonePatient = 0;
       this.serviceName = "";
+      this.service_name = "";
       this.descriptionMdr = "";
+      this.suggestions = null;
+      this.suggestionsService = null;
     },
     fetchPreById: async function () {
       try {
