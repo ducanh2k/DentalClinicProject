@@ -731,8 +731,8 @@
                       <th scope="col">Ngày khám</th>
                       <th scope="col">Nội dung</th>
                       <th scope="col">Ghi chú</th>
-                      <th scope="col"></th>
-                      <th scope="col"></th>
+                      <th scope="col" v-if="role === 'Admin'"></th>
+                      <th scope="col" v-if="role === 'Admin'"></th>
                     </tr>
                   </thead>
                   <tbody>
