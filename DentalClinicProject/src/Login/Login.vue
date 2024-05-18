@@ -4,7 +4,7 @@
       <div class="left_containerLogin"></div>
       <div class="rigt_containerLogin">
         <h2 class="lbLogin">Đăng nhập</h2>
-        <img class="logoLogin" src="../imgs/logo.jpg" alt="" />
+        <img class="logoLogin" src="../imgs/logoDental.png" style="width: 300px;" alt="" />
         <br />
         <label for="email"
           ><b class="lbTitle">Tên đăng nhập</b><b class="lbSt">*</b></label
@@ -36,7 +36,7 @@
         <br />
         <br />
         <div class="lnkForget" style="cursor: pointer">
-          <a class="txtForget" @click="BackClick()" target="_blank">Quay lại</a
+          <a class="txtForget" @click="BackClick()" target="_blank">Trang chủ</a
           >&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
           <a class="txtForget" @click="forgetClick()" target="_blank"
             >Quên mật khẩu?</a

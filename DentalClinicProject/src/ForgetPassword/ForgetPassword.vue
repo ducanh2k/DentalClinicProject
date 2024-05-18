@@ -13,7 +13,7 @@
                 <img
                   class="img-fluid rounded-start w-100 h-100 object-fit-cover"
                   loading="lazy"
-                  src="../imgs/logo-img-1.webp"
+                  src="../imgs/forgetPass.webp"
                   alt="Welcome back you've been missed!"
                 />
               </div>

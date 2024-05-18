@@ -14,7 +14,7 @@
           <span class="navbar-toggler-icon"></span>
         </button>
         <div class="collapse navbar-collapse" id="navbarTogglerDemo01">
-          <a class="navbar-brand" @click="backHome()">WebSiteName</a>
+          <a class="navbar-brand" @click="backHome()"></a>
           <ul class="navbar-nav me-auto mb-2 mb-lg-0">
             <li class="nav-item">
               <a
@@ -34,7 +34,7 @@
                   >
                 </li>
                 <li class="li-service">
-                  <a class="a-service" href="#">Cơ sở vật chất hiện đại</a>
+                  <a class="a-service" href="#" @click="Modern()">Cơ sở vật chất hiện đại</a>
                 </li>
                 <li class="li-service">
                   <a class="a-service" @click="teamDoctor()">Đội ngũ bác sĩ</a>
@@ -294,6 +294,9 @@ export default {
       localStorage.setItem("ServiceId", id);
       this.$router.push({ name: "Service" });
     },
+    Modern() {
+      this.$router.push({ name: "Infrastructure" });
+    },
   },
   computed: {
     filteredServices() {
@@ -351,6 +354,12 @@ a {
   font-size: 1rem;
 }
 .navbar-brand {
+  width: 10%;
+  height: 50px;
+  background-image: url("../../../imgs/logoDental.png");
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center;
   cursor: pointer;
   font-size: 1.3rem;
   display: flex;

@@ -14,7 +14,7 @@
           <span class="navbar-toggler-icon"></span>
         </button>
         <div class="collapse navbar-collapse" id="navbarTogglerDemo01">
-          <a class="navbar-brand" @click="backHome()">WebSiteName</a>
+          <a class="navbar-brand" @click="backHome()"></a>
           <ul class="navbar-nav me-auto mb-2 mb-lg-0">
             <li class="nav-item">
               <a
@@ -215,8 +215,12 @@ a {
   font-size: 1.5rem;
 }
 .navbar-brand {
+  width: 10%;
+  background-image: url("../../imgs/logoDental.png");
   cursor: pointer;
-
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center;
   font-size: 2rem;
   display: flex;
   justify-content: center;
