@@ -52,7 +52,7 @@
                 <th scope="col">Vai trò</th>
                 <th scope="col"></th>
                 <th scope="col"></th>
-                <th scope="col"></th>
+                <th scope="col" v-if="roleName == 'Doctor'"  ></th>
               </tr>
             </thead>
             <tbody>
@@ -129,7 +129,7 @@
                   </button>
                 </td>
                 <td
-                  v-if="user.roleName == 'Staff' || user.roleName == 'Doctor'"
+                  v-if="user.roleName == 'Doctor'"
                 >
                   <button
                     type="button"
