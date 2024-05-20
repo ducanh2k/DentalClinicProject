@@ -18,14 +18,17 @@
       </div>
       <div class="main-body">
         <div id="dashboard">
-          <div class="dropdown-year" style="width: 14%;">
+          <div class="dropdown-year" style="width: 14%">
             <select v-model="selectedYear" @change="onYearChange">
               <option v-for="year in years" :key="year" :value="year">
                 {{ year }}
               </option>
             </select>
           </div>
-          <div class="overview" style="width: 140% !important; margin-left: -70%;">
+          <div
+            class="overview"
+            style="width: 140% !important; margin-left: -70%"
+          >
             <div class="revenue">
               <h5>Tổng thu</h5>
               <h5>{{ totalRevenue.toLocaleString("vi-VN") }} VND</h5>
@@ -38,7 +41,7 @@
             </div>
             <div class="profit">
               <h5>Lãi/lỗ so với năm ngoái</h5>
-              <h5>{{ profit.toLocaleString("vi-VN") }} VND </h5>
+              <h5>{{ profit.toLocaleString("vi-VN") }} VND</h5>
               <!-- <h5 style="color: rgb(58, 197, 8)">↑ 25%</h5> -->
             </div>
           </div>
@@ -50,8 +53,8 @@
               <canvas id="myChart"></canvas>
             </div>
             <div class="second-chart">
-              <div class="Title-chart">Chi phí trong 12 tháng</div>
-              <canvas id="myLineChart"></canvas>
+              <div class="Title-chart">Các dịch vụ được sử dụng</div>
+              <canvas id="myPolarAreaChart1"></canvas>
             </div>
           </div>
           <div class="polar-radar">
@@ -59,12 +62,12 @@
               <div class="Title-chart">Số lượng khách hàng trong 12 tháng</div>
               <canvas id="myPolarAreaChart"></canvas>
             </div>
-            <div class="forth-chart">
+            <!-- <div class="forth-chart">
               <div class="Title-chart">
                 Số liệu về Top vật liệu được sử dụng
               </div>
               <canvas id="myRadarChart"></canvas>
-            </div>
+            </div> -->
           </div>
         </div>
       </div>
@@ -109,6 +112,7 @@ export default {
       minusLast: 0,
       isClicked: true,
       percentage: [],
+      serviceName: [],
     };
   },
   mounted() {
@@ -118,13 +122,15 @@ export default {
     this.lastYear = this.selectedYear - 1;
     this.generateLastFiveYears();
     this.fetchRevenueYearly();
-    this.fetchExpenses();
+    this.fetchServices();
     this.fetchPatients();
-    this.fetchTopMaterial();
+    // this.fetchTopMaterial();
     this.barChart();
-    this.LineChart();
+    // this.LineChart();
     this.PolarAreaChart();
-    this.RadarChart();
+    this.PolarAreaChart1();
+
+    // this.RadarChart();
   },
   methods: {
     openSideBar() {
@@ -137,9 +143,9 @@ export default {
       }
       this.lastYear = this.selectedYear - 1;
       this.fetchRevenueYearly();
-      this.fetchExpenses();
+      this.fetchServices();
       this.fetchPatients();
-      this.fetchTopMaterial();
+      // this.fetchTopMaterial();
     },
     fetchRevenueYearly() {
       if (this.selectedYear === null) {
@@ -184,49 +190,34 @@ export default {
           console.error("There has been a problem");
         });
     },
-    fetchExpenses() {
+    fetchServices() {
       if (this.selectedYear === null) {
         this.selectedYear = 2024;
       }
-      let apiURL =
-        "https://localhost:7034/api/Dashboard/expense?year=" +
-        this.selectedYear;
-      let apiURLLastYear =
-        "https://localhost:7034/api/Dashboard/expense?year=" + this.lastYear;
-      axios
-        .get(apiURLLastYear)
-        .then((response) => {
-          this.totalSpentOfMonth = response.data.map(
-            (item) => item.totalSpentOfMonth
-          );
-          this.totalSpentOfMonth = [...new Set(this.totalSpentOfMonth)];
-          this.totalExpensesLastYear = this.totalSpentOfMonth.reduce(
-            (accumulator, currentValue) => accumulator + currentValue,
-            0
-          );
-          this.minusLast =
-            this.totalRevenueLastYear - this.totalExpensesLastYear;
-          console.log(this.minusLast);
-        })
-        .catch((error) => {
-          console.error("There has been a problem");
-        });
+      let apiURL = "https://localhost:7034/api/Dashboard/topService";
+      // let apiURLLastYear =
+      //   "https://localhost:7034/api/Dashboard/service?year=" + this.lastYear;
+      // axios
+      //   .get(apiURL)
+      //   .then((response) => {
+      //     this.percentage = response.data.map((item) => item.percentage);
+      //     this.percentage = [...new Set(this.percentage)];
+      //     this.serviceName = response.data.map((item) => item.serviceName);
+      //     this.serviceName = [...new Set(this.serviceName)];
+      //   })
+      //   .catch((error) => {
+      //     console.error("There has been a problem");
+      //   });
       axios
         .get(apiURL)
         .then((response) => {
-          this.monthsEx = response.data.map((item) => item.month);
-          this.monthsEx = [...new Set(this.monthsEx)];
-          this.totalSpentOfMonth = response.data.map(
-            (item) => item.totalSpentOfMonth
-          );
-          this.totalSpentOfMonth = [...new Set(this.totalSpentOfMonth)];
-          this.totalExpenses = this.totalSpentOfMonth.reduce(
-            (accumulator, currentValue) => accumulator + currentValue,
-            0
-          );
-          this.minus = this.totalRevenue - this.totalExpenses;
-          this.profit = this.minus - this.minusLast;
-          this.LineChart();
+          // this.monthsEx = response.data.map((item) => item.month);
+          // this.monthsEx = [...new Set(this.monthsEx)];
+          this.percentage = response.data.topServicesPercentage.map((item) => item.percentage);
+          this.percentage = [...new Set(this.percentage)];
+          this.serviceName = response.data.topServicesPercentage.map((item) => item.serviceName);
+          this.serviceName = [...new Set(this.serviceName)];
+          this.PolarAreaChart1();
         })
         .catch((error) => {
           console.error("There has been a problem");
@@ -266,7 +257,7 @@ export default {
           this.percentage = response.data.topMaterials.map(
             (item) => item.percentage
           );
-            this.PolarAreaChart2();
+          this.PolarAreaChart2();
         })
         .catch((error) => {
           console.error("There has been a problem");
@@ -377,12 +368,12 @@ export default {
         },
       });
     },
-    PolarAreaChart2() {
-      const ctx = document.getElementById("myRadarChart").getContext("2d");
+    PolarAreaChart1() {
+      const ctx = document.getElementById("myPolarAreaChart1").getContext("2d");
       const myChart = new Chart(ctx, {
         type: "polarArea",
         data: {
-          labels: this.topMaterial,
+          labels: this.serviceName,
           datasets: [
             {
               label: "My First Dataset",
@@ -406,51 +397,80 @@ export default {
         },
       });
     },
-    RadarChart() {
-      const ctx = document.getElementById("myRadarChart").getContext("2d");
-      const myChart = new Chart(ctx, {
-        type: "radar",
-        data: {
-          labels: this.topMaterial,
-          datasets: [
-            {
-              label: "My First Dataset",
-              data: this.percentage,
-              fill: true,
-              backgroundColor: "rgba(255, 99, 132, 0.2)",
-              borderColor: "rgb(255, 99, 132)",
-              pointBackgroundColor: "rgb(255, 99, 132)",
-              pointBorderColor: "#fff",
-              pointHoverBackgroundColor: "#fff",
-              pointHoverBorderColor: "rgb(255, 99, 132)",
-            },
-            // {
-            //   label: "My Second Dataset",
-            //   data: this.totalPay,
-            //   fill: true,
-            //   backgroundColor: "rgba(54, 162, 235, 0.2)",
-            //   borderColor: "rgb(54, 162, 235)",
-            //   pointBackgroundColor: "rgb(54, 162, 235)",
-            //   pointBorderColor: "#fff",
-            //   pointHoverBackgroundColor: "#fff",
-            //   pointHoverBorderColor: "rgb(54, 162, 235)",
-            // },
-          ],
-        },
-        options: {
-          scales: {
-            y: {
-              beginAtZero: true,
-            },
-          },
-          elements: {
-            line: {
-              borderWidth: 3,
-            },
-          },
-        },
-      });
-    },
+    // PolarAreaChart2() {
+    //   const ctx = document.getElementById("myRadarChart").getContext("2d");
+    //   const myChart = new Chart(ctx, {
+    //     type: "polarArea",
+    //     data: {
+    //       labels: this.topMaterial,
+    //       datasets: [
+    //         {
+    //           label: "My First Dataset",
+    //           data: this.percentage,
+    //           backgroundColor: [
+    //             "rgb(255, 99, 132)",
+    //             "rgb(75, 192, 192)",
+    //             "rgb(255, 205, 86)",
+    //             "rgb(201, 203, 207)",
+    //             "rgb(54, 162, 235)",
+    //           ],
+    //         },
+    //       ],
+    //     },
+    //     options: {
+    //       scales: {
+    //         y: {
+    //           beginAtZero: true,
+    //         },
+    //       },
+    //     },
+    //   });
+    // },
+    // RadarChart() {
+    //   const ctx = document.getElementById("myRadarChart").getContext("2d");
+    //   const myChart = new Chart(ctx, {
+    //     type: "radar",
+    //     data: {
+    //       labels: this.topMaterial,
+    //       datasets: [
+    //         {
+    //           label: "My First Dataset",
+    //           data: this.percentage,
+    //           fill: true,
+    //           backgroundColor: "rgba(255, 99, 132, 0.2)",
+    //           borderColor: "rgb(255, 99, 132)",
+    //           pointBackgroundColor: "rgb(255, 99, 132)",
+    //           pointBorderColor: "#fff",
+    //           pointHoverBackgroundColor: "#fff",
+    //           pointHoverBorderColor: "rgb(255, 99, 132)",
+    //         },
+    //         // {
+    //         //   label: "My Second Dataset",
+    //         //   data: this.totalPay,
+    //         //   fill: true,
+    //         //   backgroundColor: "rgba(54, 162, 235, 0.2)",
+    //         //   borderColor: "rgb(54, 162, 235)",
+    //         //   pointBackgroundColor: "rgb(54, 162, 235)",
+    //         //   pointBorderColor: "#fff",
+    //         //   pointHoverBackgroundColor: "#fff",
+    //         //   pointHoverBorderColor: "rgb(54, 162, 235)",
+    //         // },
+    //       ],
+    //     },
+    //     options: {
+    //       scales: {
+    //         y: {
+    //           beginAtZero: true,
+    //         },
+    //       },
+    //       elements: {
+    //         line: {
+    //           borderWidth: 3,
+    //         },
+    //       },
+    //     },
+    //   });
+    // },
     logOut() {
       this.$router.push({ name: "Login" });
       localStorage.removeItem("userRole");

@@ -34,7 +34,7 @@
                   >
                 </li>
                 <li class="li-service">
-                  <a class="a-service" href="#">Cơ sở vật chất hiện đại</a>
+                  <a class="a-service" @click="Modern()" href="#">Cơ sở vật chất hiện đại</a>
                 </li>
                 <li class="li-service">
                   <a class="a-service" @click="teamDoctor()">Đội ngũ bác sĩ</a>
@@ -351,6 +351,9 @@ export default {
     },
     backHome() {
       this.$router.push({ name: "Home" });
+    },
+    Modern() {
+      this.$router.push({ name: "Infrastructure" });
     },
     goService(id) {
       localStorage.setItem("ServiceId", id);

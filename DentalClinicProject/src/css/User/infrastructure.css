@@ -44,7 +44,6 @@
   font-size: 16px; /* Cỡ chữ của đoạn văn */
 }
 
-
 .clinic-space-section {
   text-align: center; /* Centers text elements like <h2> and <p> */
   max-width: 1000px; /* or whatever maximum width you prefer */
@@ -68,6 +67,8 @@
 }
 
 .row {
+  width: 100%;
+  height: 11%;
   display: flex;
   justify-content: space-around;
   flex-wrap: wrap;
@@ -75,14 +76,15 @@
 }
 
 .gallery-image {
+  width: 400px;
   background-repeat: no-repeat;
-  flex-basis: calc(25% - 10px); 
-  margin-bottom: 10px;
   background-position: center;
   background-size: cover;
-  height: 200px; 
-  border-radius: 10px; 
-  box-shadow: 0 4px 8px rgba(0,0,0,0.1); 
+  height: 200px;
+  flex-basis: calc(25% - 10px);
+  border-radius: 10px;
+  margin-bottom: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
 /* Media queries for responsiveness */

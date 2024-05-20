@@ -108,7 +108,7 @@
         </p>
         <div class="row">
           <!-- Replace # with your image paths -->
-          <div class="gallery-image" style="background-image: url('')"></div>
+          <div class="gallery-image" style="background-image: url('../../../teeth.jpg')"></div>
           <div class="gallery-image" style="background-image: url('#')"></div>
           <div class="gallery-image" style="background-image: url('#')"></div>
           <div class="gallery-image" style="background-image: url('#')"></div>
