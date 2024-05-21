@@ -53,7 +53,12 @@
               <tr v-for="service in services" :key="service.serviceId">
                 <th scope="row">{{ service.serviceId }}</th>
                 <td>{{ service.serviceName }}</td>
-                <td>{{ service.briefInfo }}</td>
+                <td v-if="service.briefInfo != 'title'">
+                  {{ service.briefInfo }}
+                </td>
+                <td v-if="service.briefInfo == 'title'">
+                  Tiêu đề
+                </td>
                 <td>{{ service.price.toLocaleString("vi-VN") }}.000 VND</td>
                 <td v-if="role === 'Admin'">
                   <button

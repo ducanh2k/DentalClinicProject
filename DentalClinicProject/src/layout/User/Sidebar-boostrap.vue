@@ -48,11 +48,15 @@
                 data-toggle="dropdown"
                 >Dịch vụ <span class="caret"></span
               ></a>
-              <ul class="dropdown-menu dropdown-service">
+              <ul
+                class="dropdown-menu dropdown-service"
+                style="overflow-y: auto"
+              >
                 <li
                   class="li-service"
                   v-for="service in filteredServices"
                   :key="service.serviceId"
+                  style="overflow-y: auto"
                 >
                   <a class="a-service" @click="goService(service.serviceId)">
                     {{ service.serviceName }}

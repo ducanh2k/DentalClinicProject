@@ -45,10 +45,10 @@
                 <th scope="col">#</th>
                 <th scope="col">Tên thuốc</th>
                 <th scope="col">Đơn vị sản xuất</th>
-                <th scope="col">Ngày hết hạn</th>
-                <th scope="col">Ngày sản xuất</th>
+                <!-- <th scope="col">Ngày hết hạn</th> -->
+                <!-- <th scope="col">Ngày sản xuất</th> -->
                 <th scope="col">Giá</th>
-                <th scope="col">Số lượng</th>
+                <!-- <th scope="col">Số lượng</th> -->
                 <th scope="col">Liều lượng</th>
                 <th scope="col">Ghi chú</th>
                 <th scope="col" v-if="role === 'Admin'"></th>
@@ -60,16 +60,16 @@
                 <th scope="row">{{ index + 1 }}</th>
                 <td class="data-from-db">{{ medicine.name }}</td>
                 <td class="data-from-db">{{ medicine.manufacturer }}</td>
-                <td class="data-from-db">
+                <!-- <td class="data-from-db">
                   {{ formatDateString(medicine.expiryDate) }}
                 </td>
                 <td class="data-from-db">
                   {{ formatDateString(medicine.inputDay) }}
-                </td>
+                </td> -->
                 <td class="data-from-db">
                   {{ medicine.price.toLocaleString("vi-VN") }}.000 VND
                 </td>
-                <td class="data-from-db">{{ medicine.quantityInStock }}</td>
+                <!-- <td class="data-from-db">{{ medicine.quantityInStock }}</td> -->
                 <td class="data-from-db">{{ medicine.dosage }}</td>
                 <td class="data-from-db">{{ medicine.description }}</td>
                 <td v-if="role === 'Admin'">
