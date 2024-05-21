@@ -879,7 +879,7 @@ export default {
           )
         );
       } else {
-        this.fetchAppointment();
+        this.fetchProfiles();
       }
     },
     CheckRole() {

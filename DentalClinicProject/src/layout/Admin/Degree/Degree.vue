@@ -5,7 +5,7 @@
       <div class="main-header">
         <div class="title">
           <div class="title__toggle"></div>
-          <div class="title__company">Nha khoa Dentistry</div>
+          <div class="title__company">Nha khoa DBMS</div>
           <div class="exit__button"></div>
           <i class="fa-solid fa-right-from-bracket fa-xl" @click="logOut()"></i>
         </div>

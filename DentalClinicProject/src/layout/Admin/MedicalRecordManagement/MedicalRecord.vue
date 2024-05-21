@@ -7,7 +7,7 @@
           <div class="title__toggle" @click="openSideBar()">
             <i class="fa-solid fa-bars fa-xl"></i>
           </div>
-          <div class="title__company">Nha khoa Dentistry</div>
+          <div class="title__company">Nha khoa DBMS</div>
           <div class="exit__button">
             <i
               class="fa-solid fa-right-from-bracket fa-xl"

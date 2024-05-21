@@ -1346,7 +1346,7 @@ export default {
           )
         );
       } else {
-        this.fetchProfiles();
+        this.fetchMRecords();
       }
     },
     CheckRole() {
