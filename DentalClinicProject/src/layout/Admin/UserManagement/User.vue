@@ -64,10 +64,10 @@
                 <td class="data-from-db">{{ user.address }}</td>
                 <!-- <td class="data-from-db">{{ user.img }}</td> -->
                 <td class="data-from-db">{{ user.description }}</td>
-                <td class="data-from-db" v-if="user.salary != null">
+                <td class="data-from-db" v-if="user.salary != null && (user.roleName == 'Doctor'||user.roleName == 'Staff')">
                   {{ user.salary.toLocaleString("vi-VN") }}.000 VND
                 </td>
-                <td class="data-from-db" v-if="user.salary == null">0</td>
+                <td class="data-from-db" v-if="user.salary == null || (user.roleName != 'Doctor' && user.roleName != 'Staff')">0</td>
                 <td class="data-from-db" v-if="user.roleName == 'Staff'">
                   Nhân viên
                 </td>

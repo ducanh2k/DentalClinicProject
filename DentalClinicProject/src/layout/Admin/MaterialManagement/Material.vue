@@ -394,6 +394,7 @@ export default {
       // alert(this.type);
     },
     addClick() {
+      this.ID = 0;
       if (this.type === "true") {
         this.type = true;
       } else {

@@ -112,7 +112,7 @@
         </div>
         <div class="under-table">
           <div class="sum__staff">
-            Tổng số dịch vụ: <strong>{{ totalNews }}</strong>
+            Tổng số tin tức: <strong>{{ totalNews }}</strong>
           </div>
           <div class="pagination">
             <a @click="decreasePage()" class="page-link" v-if="currentPage > 1"
