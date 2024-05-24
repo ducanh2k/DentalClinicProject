@@ -106,8 +106,8 @@
                     {{ p.status }}
                   </td>
                 </tr> -->
-                <tr v-for="p in appointments" :key="p.appointmentId">
-                  <th scope="row">{{ p.appointmentId }}</th>
+                <tr v-for="(p,index) in appointments" :key="p.appointmentId">
+                  <th scope="row">{{ index+1 }}</th>
                   <td class="data-from-db">
                     {{ formatDateString(p.bookingDate) }}
                   </td>

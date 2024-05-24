@@ -27,23 +27,21 @@
           </div>
           <div
             class="overview"
-            style="width: 140% !important; margin-left: -70%"
+            style="width: 60% !important; margin-left: -40%"
           >
-            <div class="revenue">
+            <div class="revenue" style="margin-left: 30%;">
               <h5>Tổng thu</h5>
               <h5>{{ totalRevenue.toLocaleString("vi-VN") }} VND</h5>
               <!-- <h5 style="color: rgb(58, 197, 8)">↑ 25%</h5> -->
             </div>
-            <div class="expenses">
+            <!-- <div class="expenses">
               <h5>Tổng chi</h5>
               <h5>{{ totalExpenses.toLocaleString("vi-VN") }} VND</h5>
-              <!-- <h5 style="color: rgb(255, 64, 64)">↓ 30%</h5> -->
             </div>
             <div class="profit">
               <h5>Lãi/lỗ so với năm ngoái</h5>
               <h5>{{ profit.toLocaleString("vi-VN") }} VND</h5>
-              <!-- <h5 style="color: rgb(58, 197, 8)">↑ 25%</h5> -->
-            </div>
+            </div> -->
           </div>
         </div>
         <div class="charts">

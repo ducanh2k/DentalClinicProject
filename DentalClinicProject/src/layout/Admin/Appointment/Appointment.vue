@@ -597,9 +597,7 @@ export default {
       if (this.patientPhone == 0 || this.patientPhone == "") {
         alert("Vui lòng nhập số điện thoại và chọn bệnh nhân tương ứng!");
         return;
-      } else {
-        alert("not null");
-      }
+      } 
       if (this.doctorId == 0) {
         alert("Vui lòng nhập tên bác si và chọn bác sĩ tương ứng!");
         return;
